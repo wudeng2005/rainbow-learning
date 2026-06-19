@@ -1,0 +1,33 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+branch: main
+exported_at: "2026-06-19T10:01:08Z"
+modules:
+    "":
+        dir_name: Rainbow Learning 前端应用脚手架
+        title: Rainbow Learning 前端应用脚手架
+        scope:
+            - .gitignore
+            - README.md
+            - eslint.config.js
+            - index.html
+            - package-lock.json
+            - package.json
+            - tsconfig.app.json
+            - tsconfig.json
+            - tsconfig.node.json
+            - vite.config.ts
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    app:
+        dir_name: 应用入口与根组件
+        title: 应用入口与根组件
+        scope:
+            - src/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
