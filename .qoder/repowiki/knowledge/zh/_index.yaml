@@ -2,31 +2,64 @@
 schema_version: 1
 locale: zh-CN
 branch: main
-exported_at: "2026-06-19T10:01:08Z"
+exported_at: "2026-06-19T13:36:27Z"
 modules:
     "":
-        dir_name: Rainbow Learning 前端应用脚手架
-        title: Rainbow Learning 前端应用脚手架
-        scope:
-            - .gitignore
-            - README.md
-            - eslint.config.js
-            - index.html
-            - package-lock.json
-            - package.json
-            - tsconfig.app.json
-            - tsconfig.json
-            - tsconfig.node.json
-            - vite.config.ts
+        dir_name: Rainbow 快乐学堂应用编排层_2
+        title: Rainbow 快乐学堂应用编排层
+        scope: []
         source_files: []
         children: []
         depends_on: []
         related_to: []
     app:
-        dir_name: 应用入口与根组件
-        title: 应用入口与根组件
+        dir_name: Rainbow 快乐学堂应用编排层
+        title: Rainbow 快乐学堂应用编排层
         scope:
             - src/
+        source_files: []
+        children:
+            - app/app_core
+            - app/shared_ui
+        depends_on: []
+        related_to: []
+    app/app_core:
+        dir_name: 应用核心状态管理与数据同步
+        title: 应用核心状态管理与数据同步
+        scope:
+            - src/store/
+            - src/lib/
+            - src/hooks/
+            - src/types/
+            - src/data/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: app/shared_ui
+    app/shared_ui:
+        dir_name: 通用 UI 组件库
+        title: 通用 UI 组件库
+        scope:
+            - src/components/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: app/app_core
+    decisions:
+        dir_name: 决策记录
+        title: 决策记录
+        scope: []
+        source_files: []
+        children:
+            - decisions/cbee9d5100c6_b11bfff2d657
+        depends_on: []
+        related_to: []
+    decisions/cbee9d5100c6_b11bfff2d657:
+        dir_name: 采用 Supabase 直连与本地缓存混合持久化架构
+        title: 采用 Supabase 直连与本地缓存混合持久化架构
+        scope: []
         source_files: []
         children: []
         depends_on: []

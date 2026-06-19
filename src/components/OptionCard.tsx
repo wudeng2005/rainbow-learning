@@ -8,35 +8,68 @@ interface OptionCardProps {
   onSelect: () => void
 }
 
-export default function OptionCard({ option, state, isCharOption, onSelect }: OptionCardProps) {
+// 每个选项不同的柔和底色
+const cardColors = [
+  'bg-pink-50 border-pink-200 hover:border-pink-400',
+  'bg-blue-50 border-blue-200 hover:border-blue-400',
+  'bg-green-50 border-green-200 hover:border-green-400',
+]
+
+export default function OptionCard({ option, index, state, isCharOption, onSelect }: OptionCardProps) {
+  const idleStyle = cardColors[index % cardColors.length]
+
   const stateStyles = {
-    idle: 'bg-white border-2 border-gray-200 shadow-sm active:scale-95',
-    correct: 'bg-correct/10 border-2 border-correct shadow-md',
-    wrong: 'bg-wrong-soft/10 border-2 border-wrong-soft shadow-md',
-    reveal: 'bg-correct/5 border-2 border-correct/50',
-    disabled: 'bg-gray-50 border-2 border-gray-100 opacity-60',
+    idle: `${idleStyle} shadow-md hover:shadow-lg`,
+    correct: 'bg-emerald-100 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]',
+    wrong: 'bg-purple-50 border-purple-300 shadow-md',
+    reveal: 'bg-emerald-50 border-emerald-300 border-dashed',
+    disabled: 'bg-gray-50 border-gray-200 opacity-50',
   }
 
   const animations = {
-    idle: { scale: 1 },
-    correct: { scale: [1, 1.1, 1] },
-    wrong: { x: [0, -6, 6, -4, 4, 0] },
-    reveal: { scale: 1, opacity: 0.8 },
-    disabled: { scale: 1 },
+    idle: { scale: 1, y: 0 },
+    correct: { scale: [1, 1.15, 1.05], y: [0, -8, 0] },
+    wrong: { x: [0, -6, 6, -4, 4, 0], scale: 1 },
+    reveal: { scale: [1, 1.05, 1], opacity: 0.9 },
+    disabled: { scale: 0.95, opacity: 0.5 },
   }
 
   return (
     <motion.button
       type="button"
-      className={`rounded-2xl p-4 min-h-[80px] min-w-[80px] flex items-center justify-center 
-        transition-colors cursor-pointer select-none ${stateStyles[state]}`}
+      className={`relative rounded-3xl p-5 min-h-[100px] min-w-[100px] flex items-center justify-center 
+        border-3 transition-all duration-200 cursor-pointer select-none touch-manipulation
+        ${stateStyles[state]}`}
       onClick={state === 'idle' ? onSelect : undefined}
       animate={animations[state]}
       transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-      whileTap={state === 'idle' ? { scale: 0.92 } : undefined}
+      whileTap={state === 'idle' ? { scale: 0.9, y: 2 } : undefined}
+      whileHover={state === 'idle' ? { y: -4, scale: 1.03 } : undefined}
       disabled={state !== 'idle'}
     >
-      <span className={isCharOption ? 'text-3xl md:text-4xl font-bold' : 'text-4xl md:text-5xl'}>
+      {/* 正确时的星星装饰 */}
+      {state === 'correct' && (
+        <>
+          <motion.span
+            className="absolute -top-2 -right-2 text-xl"
+            initial={{ scale: 0, rotate: 0 }}
+            animate={{ scale: 1, rotate: 20 }}
+            transition={{ delay: 0.1 }}
+          >
+            ⭐
+          </motion.span>
+          <motion.span
+            className="absolute -bottom-1 -left-1 text-lg"
+            initial={{ scale: 0, rotate: 0 }}
+            animate={{ scale: 1, rotate: -15 }}
+            transition={{ delay: 0.2 }}
+          >
+            ✨
+          </motion.span>
+        </>
+      )}
+      
+      <span className={isCharOption ? 'text-4xl md:text-5xl font-bold' : 'text-5xl md:text-6xl'}>
         {option}
       </span>
     </motion.button>

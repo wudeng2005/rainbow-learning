@@ -24,9 +24,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 答题页独立全屏布局，不使用 Layout */}
+        <Route path="/learn" element={<LearnPage />} />
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/learn" element={<LearnPage />} />
           <Route path="/gems" element={<GemPage />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/profile" element={<ProfilePage />} />

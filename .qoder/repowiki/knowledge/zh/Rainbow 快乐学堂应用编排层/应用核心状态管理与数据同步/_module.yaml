@@ -1,0 +1,13 @@
+schema_version: 1
+module_path: app/app_core
+title: 应用核心状态管理与数据同步
+scope:
+    - src/store/
+    - src/lib/
+    - src/hooks/
+    - src/types/
+    - src/data/
+source_files: []
+depends_on: []
+related_to:
+    - path: app/shared_ui

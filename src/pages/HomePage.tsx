@@ -139,7 +139,7 @@ export default function HomePage() {
             title="汉字天地"
             gradient="bg-gradient-to-b from-rainbow-orange to-amber-500"
             badge={chineseBadge}
-            onClick={() => navigate(isCompleted ? '/' : '/learn')}
+            onClick={() => navigate('/learn')}
           />
           <SubjectCard
             icon="🦜"

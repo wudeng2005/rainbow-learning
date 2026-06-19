@@ -8,8 +8,14 @@ import OptionCard from '@/components/OptionCard'
 import ProgressBar from '@/components/ProgressBar'
 import FeedbackOverlay from '@/components/FeedbackOverlay'
 import DailyComplete from '@/components/DailyComplete'
+import FloatingDecorations from '@/components/FloatingDecorations'
 import { correctMessages, wrongMessages, getRandomMessage } from '@/data/encouragements'
 import { playCorrectSound, playWrongSound, playGemSound } from '@/lib/sounds'
+import type { Question } from '@/types'
+import questionsData from '@/data/questions.json'
+
+const ALL_QUESTIONS = questionsData as Question[]
+const DAILY_QUESTION_COUNT = 5
 
 type OptionState = 'idle' | 'correct' | 'wrong' | 'disabled' | 'reveal'
 
@@ -36,6 +42,11 @@ export default function LearnPage() {
   const [correctAnswerText, setCorrectAnswerText] = useState<string | undefined>()
   const [gemsEarned, setGemsEarned] = useState(0)
   const [isSessionComplete, setIsSessionComplete] = useState(false)
+  // 练习模式：完成后再玩，不计分不记录
+  const [isPracticeMode, setIsPracticeMode] = useState(false)
+  const [practiceQuestions, setPracticeQuestions] = useState<Question[]>([])
+  const [practiceIndex, setPracticeIndex] = useState(0)
+  const [practiceComplete, setPracticeComplete] = useState(false)
 
   // 初始化或恢复学习会话
   useEffect(() => {
@@ -52,18 +63,24 @@ export default function LearnPage() {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const question = getCurrentQuestion()
+  const question = isPracticeMode
+    ? (practiceQuestions[practiceIndex] ?? null)
+    : getCurrentQuestion()
 
   // 重置选项状态（题目切换时）
   useEffect(() => {
     setOptionStates(['idle', 'idle', 'idle'])
-  }, [currentIndex])
+  }, [currentIndex, practiceIndex])
 
   const handleSelectOption = useCallback((selectedIndex: number) => {
     if (!question) return
 
-    const result = submitAnswer(selectedIndex)
-    const isCorrect = result.isCorrect
+    const isCorrect = selectedIndex === question.answer
+
+    // 仅在正式模式下记录答题结果
+    if (!isPracticeMode) {
+      submitAnswer(selectedIndex)
+    }
 
     // 更新选项状态
     const newStates: OptionState[] = question.options.map((_, i) => {
@@ -81,11 +98,13 @@ export default function LearnPage() {
       playWrongSound()
     }
 
-    // 记录错题
-    if (isCorrect) {
-      recordCorrect(question.id)
-    } else {
-      recordError(question.id)
+    // 仅在正式模式下记录错题
+    if (!isPracticeMode) {
+      if (isCorrect) {
+        recordCorrect(question.id)
+      } else {
+        recordError(question.id)
+      }
     }
 
     // 设置反馈信息
@@ -103,40 +122,83 @@ export default function LearnPage() {
 
     // 延迟显示反馈浮层
     setTimeout(() => setShowFeedback(true), 400)
-  }, [question, submitAnswer, recordCorrect, recordError])
+  }, [question, isPracticeMode, submitAnswer, recordCorrect, recordError])
 
   const handleContinue = useCallback(() => {
     setShowFeedback(false)
 
-    // 检查是否是最后一题
+    if (isPracticeMode) {
+      // 练习模式：简单推进，不计分
+      const nextIdx = practiceIndex + 1
+      if (nextIdx >= practiceQuestions.length) {
+        setPracticeComplete(true)
+      } else {
+        setPracticeIndex(nextIdx)
+      }
+      return
+    }
+
+    // 正式模式
     const isLast = currentIndex >= todayQuestions.length - 1
 
     if (isLast) {
       // 发放宝石
       const totalQ = todayQuestions.length
-      let gems = 3 // 完成任务基础奖励
+      let gems = 3
       if (dailyProgress.questionsCorrect === totalQ) {
-        gems += 2 // 全对额外奖励
+        gems += 2
       }
       addGems(gems, dailyProgress.questionsCorrect === totalQ ? 'perfect_score' : 'daily_complete')
       playGemSound()
       setGemsEarned(gems)
 
-      // 标记完成
-      nextQuestion() // 这会设置 completed = true
+      nextQuestion()
       setTimeout(() => setIsSessionComplete(true), 100)
     } else {
       nextQuestion()
     }
-  }, [currentIndex, todayQuestions.length, dailyProgress.questionsCorrect, feedbackCorrect, addGems, nextQuestion])
+  }, [isPracticeMode, practiceIndex, practiceQuestions.length, currentIndex, todayQuestions.length, dailyProgress.questionsCorrect, addGems, nextQuestion])
 
-  // 已完成状态
-  if (isSessionComplete || dailyProgress.completed) {
+  // 开始练习模式
+  const handlePlayAgain = useCallback(() => {
+    // 从题库随机抽5题（不重复当次正式题目）
+    const usedIds = todayQuestions.map(q => q.id)
+    const available = ALL_QUESTIONS.filter(q => !usedIds.includes(q.id))
+    const shuffled = [...available]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    const newQuestions = shuffled.slice(0, DAILY_QUESTION_COUNT)
+
+    setIsPracticeMode(true)
+    setPracticeQuestions(newQuestions)
+    setPracticeIndex(0)
+    setPracticeComplete(false)
+    setIsSessionComplete(false)
+  }, [todayQuestions])
+
+  // 练习完成
+  if (isPracticeMode && practiceComplete) {
+    return (
+      <DailyComplete
+        questionsCorrect={0}
+        totalQuestions={practiceQuestions.length}
+        gemsEarned={0}
+        isPractice
+        onPlayAgain={handlePlayAgain}
+      />
+    )
+  }
+
+  // 已完成状态（正式）— 练习模式下不拦截
+  if (!isPracticeMode && (isSessionComplete || dailyProgress.completed)) {
     return (
       <DailyComplete
         questionsCorrect={dailyProgress.questionsCorrect}
         totalQuestions={todayQuestions.length || 5}
         gemsEarned={gemsEarned}
+        onPlayAgain={handlePlayAgain}
       />
     )
   }
@@ -144,11 +206,11 @@ export default function LearnPage() {
   // 加载中
   if (!question) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="min-h-dvh flex items-center justify-center bg-gradient-to-b from-sky-100 via-purple-50 to-pink-50">
         <motion.span
-          className="text-4xl"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+          className="text-5xl"
+          animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
         >
           🌈
         </motion.span>
@@ -159,56 +221,100 @@ export default function LearnPage() {
   const isCharToEmo = question.type === 'char_to_pic'
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* 顶部：进度 + 返回 */}
-      <div className="flex items-center gap-3">
-        <button
+    <div className="min-h-dvh flex flex-col bg-gradient-to-b from-sky-100 via-purple-50 to-pink-50 relative overflow-hidden">
+      {/* 漂浮装饰 */}
+      <FloatingDecorations />
+
+      {/* 顶部栏：返回 + 进度星星 */}
+      <div className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-2 safe-top">
+        <motion.button
           type="button"
-          className="text-2xl min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="w-11 h-11 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl"
           onClick={() => navigate('/')}
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
         >
           ←
-        </button>
+        </motion.button>
         <div className="flex-1">
-          <ProgressBar current={currentIndex + 1} total={todayQuestions.length} />
+          <ProgressBar
+            current={(isPracticeMode ? practiceIndex : currentIndex) + 1}
+            total={isPracticeMode ? practiceQuestions.length : todayQuestions.length}
+          />
         </div>
+        {/* 练习模式标签 */}
+        {isPracticeMode && (
+          <span className="px-3 py-1 rounded-full bg-rainbow-purple/20 text-rainbow-purple text-xs font-bold">
+            练习
+          </span>
+        )}
       </div>
 
-      {/* 题目区域 */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={question.id}
-          className="flex flex-col items-center gap-6"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -50 }}
-          transition={{ duration: 0.3 }}
-        >
-          {/* 题目内容 */}
-          <div className="bg-white rounded-3xl p-8 shadow-sm w-full text-center">
-            <p className="text-sm text-text-secondary mb-2">
-              {isCharToEmo ? '这个字是什么？' : '哪个字是它？'}
-            </p>
-            <span className={isCharToEmo ? 'text-6xl md:text-7xl font-bold' : 'text-6xl md:text-7xl'}>
-              {question.content}
-            </span>
-          </div>
+      {/* 主内容区 */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 pb-8 overflow-y-auto">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={question.id}
+            className="flex flex-col items-center gap-6 w-full max-w-md"
+            initial={{ opacity: 0, x: 50, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -50, scale: 0.95 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            {/* 题目气泡区域 */}
+            <div className="w-full text-center">
+              {/* 提示文字 */}
+              <motion.p
+                className="text-base md:text-lg text-purple-600 font-bold mb-3"
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                {isCharToEmo ? '🤔 这个字是什么？' : '🧐 哪个字是它？'}
+              </motion.p>
 
-          {/* 选项 */}
-          <div className="grid grid-cols-3 gap-3 w-full md:gap-4">
-            {question.options.map((option, index) => (
-              <OptionCard
-                key={`${question.id}-${index}`}
-                option={option}
-                index={index}
-                state={optionStates[index]}
-                isCharOption={!isCharToEmo}
-                onSelect={() => handleSelectOption(index)}
-              />
-            ))}
-          </div>
-        </motion.div>
-      </AnimatePresence>
+              {/* 题目内容卡片 */}
+              <motion.div
+                className="relative inline-block bg-white rounded-[2rem] px-10 py-8 shadow-xl border-2 border-purple-100"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.15 }}
+              >
+                {/* 装饰角标 */}
+                <span className="absolute -top-3 -left-3 text-2xl animate-float-fast">✨</span>
+                <span className="absolute -top-2 -right-3 text-xl animate-float-medium">🌟</span>
+                
+                <span className={`block ${
+                  isCharToEmo 
+                    ? 'text-7xl md:text-8xl font-bold text-text-primary' 
+                    : 'text-7xl md:text-8xl'
+                }`}>
+                  {question.content}
+                </span>
+              </motion.div>
+            </div>
+
+            {/* 选项区域 */}
+            <motion.div
+              className="grid grid-cols-3 gap-4 w-full mt-4"
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.25, duration: 0.3 }}
+            >
+              {question.options.map((option, index) => (
+                <OptionCard
+                  key={`${question.id}-${index}`}
+                  option={option}
+                  index={index}
+                  state={optionStates[index]}
+                  isCharOption={!isCharToEmo}
+                  onSelect={() => handleSelectOption(index)}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       {/* 答题反馈浮层 */}
       <FeedbackOverlay

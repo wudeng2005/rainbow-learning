@@ -6,23 +6,30 @@ interface ProgressBarProps {
 }
 
 export default function ProgressBar({ current, total }: ProgressBarProps) {
-  const percentage = total > 0 ? (current / total) * 100 : 0
-
   return (
-    <div className="w-full">
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-sm text-text-secondary font-medium">
-          {current}/{total}
-        </span>
-      </div>
-      <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-        <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-rainbow-red via-rainbow-yellow to-rainbow-green"
-          initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-        />
-      </div>
+    <div className="flex items-center justify-center gap-2">
+      {Array.from({ length: total }, (_, i) => {
+        const isCompleted = i < current - 1
+        const isCurrent = i === current - 1
+        const isPending = i >= current
+
+        return (
+          <motion.span
+            key={i}
+            className={`text-xl md:text-2xl transition-all duration-300 ${
+              isCurrent ? 'animate-star-pulse' : ''
+            }`}
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ 
+              scale: isCompleted || isCurrent ? 1 : 0.7, 
+              opacity: 1 
+            }}
+            transition={{ delay: i * 0.05, type: 'spring', stiffness: 300 }}
+          >
+            {isCompleted ? '⭐' : isCurrent ? '🌟' : isPending ? '☆' : '☆'}
+          </motion.span>
+        )
+      })}
     </div>
   )
 }
