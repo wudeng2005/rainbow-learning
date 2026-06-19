@@ -128,12 +128,12 @@ export default function HomePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15, duration: 0.4 }}
       >
-        <h3 className="text-xs font-semibold text-text-secondary tracking-widest uppercase px-2 mb-3">
+        <h3 className="text-xs font-semibold text-text-secondary tracking-widest uppercase mb-3">
           📚 学习乐园
         </h3>
 
         {/* Flex row — fills width on all screens */}
-        <div className="flex gap-3 px-1">
+        <div className="flex gap-3 justify-center">
           <SubjectCard
             icon="🐼"
             title="汉字天地"
@@ -158,12 +158,12 @@ export default function HomePage() {
 
       {/* ─── Error Challenge ─── */}
       <motion.section
-        className="relative z-10 px-1"
+        className="relative z-10"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.4 }}
       >
-        <h3 className="text-xs font-semibold text-text-secondary tracking-widest uppercase px-2 mb-3">
+        <h3 className="text-xs font-semibold text-text-secondary tracking-widest uppercase mb-3">
           🏰 挑战关卡
         </h3>
 

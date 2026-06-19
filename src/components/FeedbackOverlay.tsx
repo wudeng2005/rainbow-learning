@@ -68,15 +68,10 @@ export default function FeedbackOverlay({
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
             onClick={e => e.stopPropagation()}
           >
-            {/* 大表情 */}
-            <motion.span
-              className="text-6xl md:text-7xl block mb-4"
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', delay: 0.2, stiffness: 400 }}
-            >
+            {/* 大表情 - 静态展示 */}
+            <span className="text-6xl md:text-7xl block mb-4">
               {isCorrect ? '🎉' : '💪'}
-            </motion.span>
+            </span>
 
             {/* 鼓励消息 */}
             <motion.p
