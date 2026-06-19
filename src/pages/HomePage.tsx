@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useLearningStore } from '@/store/useLearningStore'
+import { useMathLearningStore } from '@/store/useMathLearningStore'
 import { useErrorBankStore } from '@/store/useErrorBankStore'
 import { useUserStore } from '@/store/useUserStore'
 
@@ -71,16 +72,24 @@ function SubjectCard({
 export default function HomePage() {
   const navigate = useNavigate()
   const { dailyProgress, resetIfNewDay } = useLearningStore()
+  const mathProgress = useMathLearningStore(s => s.dailyProgress)
+  const mathResetIfNewDay = useMathLearningStore(s => s.resetIfNewDay)
   const errorCount = useErrorBankStore(s => s.getErrorCount())
   const { currentUser } = useUserStore()
 
-  useEffect(() => { resetIfNewDay() }, [resetIfNewDay])
+  useEffect(() => { resetIfNewDay(); mathResetIfNewDay() }, [resetIfNewDay, mathResetIfNewDay])
 
   const isCompleted = dailyProgress.completed
   const chineseBadge = isCompleted
     ? '完成啦 ✅'
     : dailyProgress.questionsDone > 0
       ? `${dailyProgress.questionsDone}/5`
+      : '去冒险'
+
+  const mathBadge = mathProgress.completed
+    ? '完成啦 ✅'
+    : mathProgress.questionsDone > 0
+      ? `${mathProgress.questionsDone}/5`
       : '去冒险'
 
   return (
@@ -150,8 +159,9 @@ export default function HomePage() {
           <SubjectCard
             icon="🎲"
             title="数学王国"
-            gradient="bg-gradient-to-b from-rainbow-green to-emerald-500"
-            locked
+            gradient="bg-gradient-to-b from-pink-400 to-emerald-400"
+            badge={mathBadge}
+            onClick={() => navigate('/math-learn')}
           />
         </div>
       </motion.section>

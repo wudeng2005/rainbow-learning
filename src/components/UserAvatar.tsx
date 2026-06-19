@@ -12,7 +12,7 @@ export default function UserAvatar() {
       whileTap={{ scale: 0.9 }}
       onClick={() => navigate('/profile')}
     >
-      {currentUser.avatar.startsWith('http') ? (
+      {currentUser.avatar.startsWith('http') || currentUser.avatar.startsWith('/') ? (
         <img
           src={currentUser.avatar}
           alt={currentUser.name}

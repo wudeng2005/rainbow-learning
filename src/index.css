@@ -92,3 +92,19 @@ body {
   animation: star-pulse 1.2s ease-in-out infinite;
 }
 
+/* 糖果飘落动画 */
+@keyframes candy-fall {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(8deg); }
+}
+@keyframes candy-fall-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(-6deg); }
+}
+.animate-candy-fall {
+  animation: candy-fall 3s ease-in-out infinite;
+}
+.animate-candy-fall-slow {
+  animation: candy-fall-slow 4.5s ease-in-out infinite;
+}
+

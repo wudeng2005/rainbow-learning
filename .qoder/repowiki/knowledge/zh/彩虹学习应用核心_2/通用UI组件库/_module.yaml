@@ -1,9 +1,8 @@
 schema_version: 1
 module_path: app/shared_ui
-title: 通用 UI 组件库
+title: 通用UI组件库
 scope:
     - src/components/
 source_files: []
 depends_on: []
-related_to:
-    - path: app/app_core
+related_to: []

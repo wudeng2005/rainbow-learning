@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from '@/components/Layout'
 import HomePage from '@/pages/HomePage'
 import LearnPage from '@/pages/LearnPage'
+import MathLearnPage from '@/pages/MathLearnPage'
 import GemPage from '@/pages/GemPage'
 import ReviewPage from '@/pages/ReviewPage'
 import ProfilePage from '@/pages/ProfilePage'
@@ -26,6 +27,7 @@ function App() {
       <Routes>
         {/* 答题页独立全屏布局，不使用 Layout */}
         <Route path="/learn" element={<LearnPage />} />
+        <Route path="/math-learn" element={<MathLearnPage />} />
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/gems" element={<GemPage />} />

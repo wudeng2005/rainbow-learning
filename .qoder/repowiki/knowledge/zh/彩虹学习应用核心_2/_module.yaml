@@ -1,6 +1,6 @@
 schema_version: 1
 module_path: app
-title: Rainbow 快乐学堂应用编排层
+title: 彩虹学习应用核心
 scope:
     - src/
 source_files: []

@@ -7,7 +7,7 @@ import { syncManager } from '@/lib/db/syncManager'
 const DEFAULT_USER: User = {
   id: 'rainbow-001',
   name: 'Rainbow',
-  avatar: '🧒🏻',
+  avatar: '/avatar.png',
 }
 
 interface UserState {

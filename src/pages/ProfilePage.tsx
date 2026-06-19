@@ -21,7 +21,7 @@ export default function ProfilePage() {
           className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-rainbow-orange via-rainbow-yellow to-rainbow-green flex items-center justify-center shadow-md border-3 border-white"
           whileTap={{ scale: 0.9 }}
         >
-          {currentUser.avatar.startsWith('http') ? (
+          {currentUser.avatar.startsWith('http') || currentUser.avatar.startsWith('/') ? (
             <img
               src={currentUser.avatar}
               alt={currentUser.name}

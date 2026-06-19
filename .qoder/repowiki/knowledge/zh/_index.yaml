@@ -2,19 +2,19 @@
 schema_version: 1
 locale: zh-CN
 branch: main
-exported_at: "2026-06-19T13:36:27Z"
+exported_at: "2026-06-19T14:30:08Z"
 modules:
     "":
-        dir_name: Rainbow 快乐学堂应用编排层_2
-        title: Rainbow 快乐学堂应用编排层
+        dir_name: 彩虹学习应用核心
+        title: 彩虹学习应用核心
         scope: []
         source_files: []
         children: []
         depends_on: []
         related_to: []
     app:
-        dir_name: Rainbow 快乐学堂应用编排层
-        title: Rainbow 快乐学堂应用编排层
+        dir_name: 彩虹学习应用核心_2
+        title: 彩虹学习应用核心
         scope:
             - src/
         source_files: []
@@ -36,24 +36,42 @@ modules:
         children: []
         depends_on: []
         related_to:
-            - path: app/shared_ui
+            - path: decisions/cbee9d5100c6_b11bfff2d657
     app/shared_ui:
-        dir_name: 通用 UI 组件库
-        title: 通用 UI 组件库
+        dir_name: 通用UI组件库
+        title: 通用UI组件库
         scope:
             - src/components/
         source_files: []
         children: []
         depends_on: []
-        related_to:
-            - path: app/app_core
+        related_to: []
     decisions:
         dir_name: 决策记录
         title: 决策记录
         scope: []
         source_files: []
         children:
+            - decisions/026352a1a7e4_04763d9778e0
+            - decisions/026352a1a7e4_784d54b95140
             - decisions/cbee9d5100c6_b11bfff2d657
+        depends_on: []
+        related_to: []
+    decisions/026352a1a7e4_784d54b95140:
+        dir_name: 采用 Supabase 直连与 localStorage 缓存的混合持久化架构
+        title: 采用 Supabase 直连与 localStorage 缓存的混合持久化架构
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: decisions/cbee9d5100c6_b11bfff2d657
+    decisions/026352a1a7e4_04763d9778e0:
+        dir_name: 答题页面采用全屏沉浸式布局以优化儿童交互体验
+        title: 答题页面采用全屏沉浸式布局以优化儿童交互体验
+        scope: []
+        source_files: []
+        children: []
         depends_on: []
         related_to: []
     decisions/cbee9d5100c6_b11bfff2d657:
@@ -63,4 +81,6 @@ modules:
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: decisions/026352a1a7e4_784d54b95140
+            - path: app/app_core
