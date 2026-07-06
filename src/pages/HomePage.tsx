@@ -157,6 +157,12 @@ export default function HomePage() {
             badge={mathBadge}
             onClick={() => navigate('/math-learn')}
           />
+          <SubjectCard
+            icon="🦜"
+            title="英语乐园"
+            gradient="bg-gradient-to-b from-rainbow-blue to-sky-500"
+            locked
+          />
         </div>
       </motion.section>
 
