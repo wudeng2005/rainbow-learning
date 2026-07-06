@@ -9,6 +9,4 @@ scope:
     - src/data/
 source_files: []
 depends_on: []
-related_to:
-    - path: decisions/026352a1a7e4_784d54b95140
-    - path: decisions/cbee9d5100c6_b11bfff2d657
+related_to: []

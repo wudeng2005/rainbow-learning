@@ -1,3 +1,10 @@
+---
+kind: design
+name: 前端动画实现选用 CSS Animation 而非 Framer Motion
+source: session
+category: adr
+---
+
 # 前端动画实现选用 CSS Animation 而非 Framer Motion
 
 _来源：dd02dbe → ab20740 提交周期内记录的编码计划——内容为规划时意图，实现可能滞后或有出入。_

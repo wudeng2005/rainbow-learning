@@ -1,3 +1,10 @@
+---
+kind: design
+name: 采用 Supabase 直连与 localStorage 缓存的混合持久化架构
+source: session
+category: adr
+---
+
 # 采用 Supabase 直连与 localStorage 缓存的混合持久化架构
 
 _来源：cbee9d5 → 026352a 提交周期内记录的编码计划——内容为规划时意图，实现可能滞后或有出入。_

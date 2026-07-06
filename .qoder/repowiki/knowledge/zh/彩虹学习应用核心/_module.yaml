@@ -1,7 +1,8 @@
 schema_version: 1
-module_path: ""
+module_path: app
 title: 彩虹学习应用核心
-scope: []
+scope:
+    - src/
 source_files: []
 depends_on: []
 related_to: []

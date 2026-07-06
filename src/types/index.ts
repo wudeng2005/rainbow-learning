@@ -5,8 +5,14 @@ export interface User {
   avatar: string // URL or emoji
 }
 
-/** 题型：看字选图 / 看图选字 */
-export type QuestionType = 'char_to_pic' | 'pic_to_char'
+/** 题型：看字选图 / 看图选字 / 看字选拼音 / 听音选字 / 组词选字 / 看字选义 */
+export type QuestionType =
+  | 'char_to_pic'
+  | 'pic_to_char'
+  | 'char_to_pinyin'
+  | 'pinyin_to_char'
+  | 'char_to_word'
+  | 'char_to_meaning'
 
 /** 数学题型 */
 export type MathQuestionType = 'pattern' | 'counting' | 'comparison' | 'shape_recognition'
@@ -64,13 +70,17 @@ export interface Question {
   subject: Subject
   level: number
   type: QuestionType
-  /** 展示内容：char_to_pic 时为汉字，pic_to_char 时为 emoji */
+  /** 所属天数 (1-90)，用于确定性顺序出题 */
+  day: number
+  /** 展示内容：char_to_pic 时为汉字，pic_to_char 时为 emoji，pinyin_to_char 时为拼音 */
   content: string
   /** 正确选项索引 0-2 */
   answer: number
   /** 3个选项 */
   options: string[]
   difficulty: number
+  /** 听音选字时的音频路径（如 /audio/chars/花.mp3） */
+  audio?: string | null
 }
 
 /** 错题记录 */

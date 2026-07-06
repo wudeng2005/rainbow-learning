@@ -1,8 +1,0 @@
-schema_version: 1
-module_path: decisions/cbee9d5100c6_b11bfff2d657
-title: 采用 Supabase 直连与本地缓存混合持久化架构
-scope: []
-source_files: []
-depends_on: []
-related_to:
-    - path: app/app_core

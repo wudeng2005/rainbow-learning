@@ -5,5 +5,4 @@ scope:
     - src/components/
 source_files: []
 depends_on: []
-related_to:
-    - path: decisions/026352a1a7e4_04763d9778e0
+related_to: []

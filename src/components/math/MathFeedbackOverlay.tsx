@@ -46,57 +46,75 @@ export default function MathFeedbackOverlay({
           )}
 
           <motion.div
-            className={`w-full max-w-sm rounded-[2rem] p-8 relative overflow-hidden text-center ${
-              isCorrect
-                ? 'bg-gradient-to-br from-pink-50 via-white to-emerald-50 border-2 border-pink-200'
-                : 'bg-gradient-to-br from-purple-50 via-white to-pink-50 border-2 border-purple-200'
-            } shadow-2xl`}
-            initial={{ scale: 0.7, y: 30, opacity: 0 }}
+            className={`w-full max-w-[320px] rounded-[1.5rem] relative overflow-hidden text-center shadow-2xl bg-white ${
+              isCorrect ? 'border-2 border-emerald-300' : 'border-2 border-amber-300'
+            }`}
+            initial={{ scale: 0.8, y: 20, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.85, y: 20, opacity: 0 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 400 }}
+            exit={{ scale: 0.85, y: 15, opacity: 0 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 450 }}
             onClick={e => e.stopPropagation()}
           >
-            <span className="text-6xl md:text-7xl block mb-4">
-              {isCorrect ? '🎉' : '💪'}
-            </span>
+            {/* 顶部色带 */}
+            <div className={`h-1.5 ${
+              isCorrect
+                ? 'bg-gradient-to-r from-emerald-400 to-teal-400'
+                : 'bg-gradient-to-r from-amber-400 to-orange-400'
+            }`} />
 
-            <motion.p
-              className="text-xl md:text-2xl font-bold text-text-primary mb-2"
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              {message}
-            </motion.p>
+            <div className="px-6 pt-5 pb-5">
+              {/* 图标圆形背景 */}
+              <div className={`w-14 h-14 mx-auto mb-3 rounded-full flex items-center justify-center ${
+                isCorrect ? 'bg-emerald-100' : 'bg-amber-100'
+              }`}>
+                <span className="text-3xl">
+                  {isCorrect ? '🎉' : '💪'}
+                </span>
+              </div>
 
-            {!isCorrect && correctAnswer && (
+              {/* 鼓励消息 */}
               <motion.p
-                className="text-base text-text-secondary mb-3"
-                initial={{ y: 10, opacity: 0 }}
+                className={`text-lg font-bold mb-1.5 ${
+                  isCorrect ? 'text-emerald-600' : 'text-amber-600'
+                }`}
+                initial={{ y: 8, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.15 }}
               >
-                正确答案是：<span className="text-3xl ml-1">{correctAnswer}</span>
+                {message}
               </motion.p>
-            )}
 
-            <motion.button
-              type="button"
-              className={`mt-5 px-10 py-4 rounded-full text-white font-bold text-lg min-h-[56px] min-w-[160px]
-                shadow-lg active:shadow-md transition-shadow ${
-                isCorrect
-                  ? 'bg-gradient-to-r from-pink-400 to-emerald-400'
-                  : 'bg-gradient-to-r from-purple-400 to-pink-400'
-              }`}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4, type: 'spring' }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onContinue}
-            >
-              {isCorrect ? '太棒了！继续' : '知道了！'}
-            </motion.button>
+              {/* 错误时显示正确答案 */}
+              {!isCorrect && correctAnswer && (
+                <motion.div
+                  className="inline-flex items-center gap-1.5 bg-amber-50 rounded-full px-3.5 py-1 mb-3"
+                  initial={{ y: 8, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.22 }}
+                >
+                  <span className="text-xs text-amber-500">正确答案</span>
+                  <span className="text-lg font-bold text-amber-700">{correctAnswer}</span>
+                </motion.div>
+              )}
+
+              {/* 继续按钮 */}
+              <motion.button
+                type="button"
+                className={`w-full px-6 py-2.5 rounded-full text-white font-bold text-base min-h-[48px]
+                  shadow-md active:shadow-sm transition-shadow ${
+                  isCorrect
+                    ? 'bg-gradient-to-r from-emerald-400 to-teal-400'
+                    : 'bg-gradient-to-r from-amber-400 to-orange-400'
+                }`}
+                initial={{ y: 12, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.28, type: 'spring' }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onContinue}
+              >
+                {isCorrect ? '太棒了！继续' : '知道了！'}
+              </motion.button>
+            </div>
           </motion.div>
         </motion.div>
       )}

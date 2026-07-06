@@ -1,3 +1,10 @@
+---
+kind: design
+name: 答题页采用全屏沉浸式布局并移除通用 Layout 包裹
+source: session
+category: adr
+---
+
 # 答题页采用全屏沉浸式布局并移除通用 Layout 包裹
 
 _来源：dd02dbe → ab20740 提交周期内记录的编码计划——内容为规划时意图，实现可能滞后或有出入。_
