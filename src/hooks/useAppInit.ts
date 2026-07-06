@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { fetchUser, fetchDailyProgress, fetchGemRecords, fetchErrorBank } from '@/lib/db'
 import { registerVisibilitySync } from '@/lib/db/syncManager'
@@ -16,40 +16,28 @@ const MIGRATION_KEY = 'rainbow-migration-done'
 /**
  * App 初始化 Hook
  * 
- * 流程：migrateLocalStorage() → fetchFromSupabase() → hydrate Stores → ready
+ * 优化策略：立即渲染（localStorage 数据已由 zustand persist 自动恢复），Supabase 后台同步
  */
 export function useAppInit() {
-  const [ready, setReady] = useState(false)
-
   useEffect(() => {
-    let cancelled = false
-
-    async function init() {
-      try {
-        // Step 1: 尝试迁移 localStorage → Supabase（幂等）
-        await migrateLocalStorageToSupabase()
-
-        // Step 2: 从 Supabase 加载最新数据
-        if (!cancelled) {
-          await hydrateFromSupabase()
-        }
-      } catch (error) {
-        // 网络失败时 fallback 到 localStorage（persist 自动恢复）
-        console.warn('[AppInit] Supabase sync failed, using local data:', error)
-      } finally {
-        if (!cancelled) {
-          setReady(true)
-          // Step 3: 注册 visibilitychange 监听
-          registerVisibilitySync()
-        }
-      }
-    }
-
-    init()
-    return () => { cancelled = true }
+    // 后台异步同步 Supabase，不阻塞渲染
+    backgroundSync()
   }, [])
 
-  return ready
+  // 立即就绪：Zustand persist 已从 localStorage 自动恢复状态
+  return true
+}
+
+/** 后台同步：迁移 + 拉取云端数据 + 注册监听 */
+async function backgroundSync() {
+  try {
+    await migrateLocalStorageToSupabase()
+    await hydrateFromSupabase()
+  } catch (error) {
+    console.warn('[AppInit] Supabase sync failed, using local data:', error)
+  } finally {
+    registerVisibilitySync()
+  }
 }
 
 /** 从 Supabase 拉取数据覆盖本地 */
