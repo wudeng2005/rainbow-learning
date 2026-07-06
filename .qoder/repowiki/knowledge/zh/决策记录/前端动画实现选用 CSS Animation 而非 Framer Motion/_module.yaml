@@ -1,0 +1,7 @@
+schema_version: 1
+module_path: decisions/ab2074057d6f_b6e02c7ac299
+title: 前端动画实现选用 CSS Animation 而非 Framer Motion
+scope: []
+source_files: []
+depends_on: []
+related_to: []

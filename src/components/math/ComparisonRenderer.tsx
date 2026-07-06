@@ -1,13 +1,18 @@
 import { motion } from 'framer-motion'
 import type { ComparisonData } from '@/types'
+import MathOptionCard from './MathOptionCard'
 
 interface ComparisonRendererProps {
   data: ComparisonData
-  optionStates: ('idle' | 'correct' | 'wrong' | 'disabled')[]
+  options: string[]
+  optionStates: ('idle' | 'correct' | 'wrong' | 'disabled' | 'reveal')[]
   onSelect: (index: number) => void
 }
 
-export default function ComparisonRenderer({ data, optionStates, onSelect }: ComparisonRendererProps) {
+export default function ComparisonRenderer({ data, options, optionStates, onSelect }: ComparisonRendererProps) {
+  // 判断是否为"一样多"题型（选项中包含"一样多"）
+  const isSameMode = options.some(o => o.includes('一样多'))
+
   const containerStyle = (state: string) => {
     if (state === 'correct') return 'border-emerald-400 bg-emerald-50 scale-105 shadow-xl'
     if (state === 'wrong') return 'border-purple-300 bg-purple-50 opacity-60 scale-95'
@@ -15,6 +20,68 @@ export default function ComparisonRenderer({ data, optionStates, onSelect }: Com
     return 'border-pink-200 bg-white hover:border-pink-400 hover:shadow-lg'
   }
 
+  // ─── "一样多"模式：容器仅展示，下方提供文字选项按钮 ───
+  if (isSameMode) {
+    return (
+      <div className="flex flex-col items-center gap-5 w-full">
+        <div className="flex items-center gap-3 w-full max-w-[360px]">
+          {/* 左容器 - 仅展示 */}
+          <div className="flex-1 rounded-3xl p-5 min-h-[120px] border-3 border-pink-200 bg-white flex flex-wrap justify-center items-center gap-1">
+            {Array.from({ length: data.left.count }, (_, i) => (
+              <motion.span
+                key={i}
+                className="text-2xl md:text-3xl"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: i * 0.05, type: 'spring' }}
+              >
+                {data.left.emoji}
+              </motion.span>
+            ))}
+          </div>
+
+          {/* = 号 */}
+          <motion.span
+            className="text-2xl font-bold text-pink-400 flex-shrink-0"
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            =
+          </motion.span>
+
+          {/* 右容器 - 仅展示 */}
+          <div className="flex-1 rounded-3xl p-5 min-h-[120px] border-3 border-pink-200 bg-white flex flex-wrap justify-center items-center gap-1">
+            {Array.from({ length: data.right.count }, (_, i) => (
+              <motion.span
+                key={i}
+                className="text-2xl md:text-3xl"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: i * 0.05 + 0.2, type: 'spring' }}
+              >
+                {data.right.emoji}
+              </motion.span>
+            ))}
+          </div>
+        </div>
+
+        {/* 文字选项按钮 */}
+        <div className="grid grid-cols-2 gap-3 w-full max-w-[360px]">
+          {options.map((option, index) => (
+            <MathOptionCard
+              key={index}
+              option={option}
+              index={index}
+              state={optionStates[index]}
+              onSelect={() => onSelect(index)}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  // ─── 常规模式：哪边多/哪边少 - 点击容器选择 ───
   return (
     <div className="flex flex-col items-center gap-4 w-full">
       <div className="flex items-center gap-3 w-full max-w-[360px]">

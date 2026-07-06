@@ -4,4 +4,5 @@ title: 答题页面采用全屏沉浸式布局以优化儿童交互体验
 scope: []
 source_files: []
 depends_on: []
-related_to: []
+related_to:
+    - path: app/shared_ui

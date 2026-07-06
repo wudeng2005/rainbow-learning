@@ -51,10 +51,10 @@ export default function MathFeedbackOverlay({
                 ? 'bg-gradient-to-br from-pink-50 via-white to-emerald-50 border-2 border-pink-200'
                 : 'bg-gradient-to-br from-purple-50 via-white to-pink-50 border-2 border-purple-200'
             } shadow-2xl`}
-            initial={{ scale: 0.5, y: 50, opacity: 0 }}
+            initial={{ scale: 0.7, y: 30, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.8, y: 30, opacity: 0 }}
-            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+            exit={{ scale: 0.85, y: 20, opacity: 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 400 }}
             onClick={e => e.stopPropagation()}
           >
             <span className="text-6xl md:text-7xl block mb-4">

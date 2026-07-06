@@ -22,9 +22,9 @@ export default function PatternRenderer({ data, options, optionStates, onSelect 
                 ? 'border-3 border-dashed border-pink-400 bg-pink-50'
                 : 'bg-white border-2 border-pink-100 shadow-sm'
             }`}
-            initial={{ scale: 0, opacity: 0 }}
+            initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: i * 0.1, type: 'spring', stiffness: 300 }}
+            transition={{ delay: i * 0.04, duration: 0.2 }}
           >
             <span className={`text-2xl md:text-3xl ${item === '❓' ? 'animate-star-pulse text-pink-400' : ''}`}>
               {item}

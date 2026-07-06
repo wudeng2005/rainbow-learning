@@ -26,9 +26,9 @@ export default function ShapeRenderer({ data, optionStates, onSelect }: ShapeRen
               cursor-pointer transition-all duration-300 touch-manipulation ${cellStyle(optionStates[i])}`}
             onClick={optionStates[i] === 'idle' ? () => onSelect(i) : undefined}
             disabled={optionStates[i] !== 'idle'}
-            initial={{ scale: 0, opacity: 0 }}
+            initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: i * 0.1, type: 'spring', stiffness: 300 }}
+            transition={{ delay: i * 0.05, duration: 0.2 }}
             whileTap={optionStates[i] === 'idle' ? { scale: 0.9 } : undefined}
           >
             <span className="text-5xl md:text-6xl">{item}</span>

@@ -151,12 +151,6 @@ export default function HomePage() {
             onClick={() => navigate('/learn')}
           />
           <SubjectCard
-            icon="🦜"
-            title="英语乐园"
-            gradient="bg-gradient-to-b from-rainbow-blue to-sky-500"
-            locked
-          />
-          <SubjectCard
             icon="🎲"
             title="数学王国"
             gradient="bg-gradient-to-b from-pink-400 to-emerald-400"

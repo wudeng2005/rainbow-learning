@@ -2,7 +2,7 @@
 schema_version: 1
 locale: zh-CN
 branch: main
-exported_at: "2026-06-19T14:30:08Z"
+exported_at: "2026-06-19T15:36:04Z"
 modules:
     "":
         dir_name: 彩虹学习应用核心
@@ -19,8 +19,9 @@ modules:
             - src/
         source_files: []
         children:
-            - app/app_core
+            - app/math_kingdom
             - app/shared_ui
+            - app/app_core
         depends_on: []
         related_to: []
     app/app_core:
@@ -36,16 +37,31 @@ modules:
         children: []
         depends_on: []
         related_to:
+            - path: decisions/026352a1a7e4_784d54b95140
             - path: decisions/cbee9d5100c6_b11bfff2d657
+    app/math_kingdom:
+        dir_name: 儿童数学思维训练模块
+        title: 儿童数学思维训练模块
+        scope:
+            - src/components/math/
+            - src/data/math-encouragements.ts
+            - src/data/math-questions.json
+            - src/pages/MathLearnPage.tsx
+            - src/store/useMathLearningStore.ts
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
     app/shared_ui:
-        dir_name: 通用UI组件库
-        title: 通用UI组件库
+        dir_name: 儿童化交互与视觉组件库
+        title: 儿童化交互与视觉组件库
         scope:
             - src/components/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: decisions/026352a1a7e4_04763d9778e0
     decisions:
         dir_name: 决策记录
         title: 决策记录
@@ -53,8 +69,10 @@ modules:
         source_files: []
         children:
             - decisions/026352a1a7e4_04763d9778e0
-            - decisions/026352a1a7e4_784d54b95140
             - decisions/cbee9d5100c6_b11bfff2d657
+            - decisions/ab2074057d6f_b6e02c7ac299
+            - decisions/026352a1a7e4_784d54b95140
+            - decisions/ab2074057d6f_1d4aea71f130
         depends_on: []
         related_to: []
     decisions/026352a1a7e4_784d54b95140:
@@ -65,10 +83,27 @@ modules:
         children: []
         depends_on: []
         related_to:
-            - path: decisions/cbee9d5100c6_b11bfff2d657
+            - path: app/app_core
     decisions/026352a1a7e4_04763d9778e0:
         dir_name: 答题页面采用全屏沉浸式布局以优化儿童交互体验
         title: 答题页面采用全屏沉浸式布局以优化儿童交互体验
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: app/shared_ui
+    decisions/ab2074057d6f_1d4aea71f130:
+        dir_name: 答题页采用全屏沉浸式布局并移除通用 Layout 包裹
+        title: 答题页采用全屏沉浸式布局并移除通用 Layout 包裹
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    decisions/ab2074057d6f_b6e02c7ac299:
+        dir_name: 前端动画实现选用 CSS Animation 而非 Framer Motion
+        title: 前端动画实现选用 CSS Animation 而非 Framer Motion
         scope: []
         source_files: []
         children: []
@@ -82,5 +117,4 @@ modules:
         children: []
         depends_on: []
         related_to:
-            - path: decisions/026352a1a7e4_784d54b95140
             - path: app/app_core

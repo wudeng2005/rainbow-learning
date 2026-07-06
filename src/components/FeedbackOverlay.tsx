@@ -62,10 +62,10 @@ export default function FeedbackOverlay({
                 ? 'bg-gradient-to-br from-emerald-50 via-white to-yellow-50 border-2 border-emerald-200'
                 : 'bg-gradient-to-br from-purple-50 via-white to-blue-50 border-2 border-purple-200'
             } shadow-2xl`}
-            initial={{ scale: 0.5, y: 50, opacity: 0 }}
+            initial={{ scale: 0.7, y: 30, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.8, y: 30, opacity: 0 }}
-            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+            exit={{ scale: 0.85, y: 20, opacity: 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 400 }}
             onClick={e => e.stopPropagation()}
           >
             {/* 大表情 - 静态展示 */}
@@ -78,7 +78,7 @@ export default function FeedbackOverlay({
               className="text-xl md:text-2xl font-bold text-text-primary mb-2"
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.15 }}
             >
               {message}
             </motion.p>
@@ -89,7 +89,7 @@ export default function FeedbackOverlay({
                 className="text-base text-text-secondary mb-3"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.2 }}
               >
                 正确答案是：<span className="text-3xl ml-1">{correctAnswer}</span>
               </motion.p>
@@ -106,7 +106,7 @@ export default function FeedbackOverlay({
               }`}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, type: 'spring' }}
+              transition={{ delay: 0.25, type: 'spring' }}
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.05 }}
               onClick={onContinue}

@@ -20,7 +20,7 @@ interface UserState {
 
 export const useUserStore = create<UserState>()(
   persist(
-    (set) => ({
+    (set, _get) => ({
       currentUser: DEFAULT_USER,
 
       setAvatar: (avatar: string) => {
@@ -45,6 +45,12 @@ export const useUserStore = create<UserState>()(
     }),
     {
       name: 'rainbow-user',
+      onRehydrateStorage: () => (state) => {
+        // 将旧 emoji 头像迁移为新图片头像
+        if (state && !state.currentUser.avatar.startsWith('/') && !state.currentUser.avatar.startsWith('http')) {
+          state.currentUser.avatar = '/avatar.png'
+        }
+      },
     }
   )
 )

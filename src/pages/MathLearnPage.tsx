@@ -81,6 +81,8 @@ export default function MathLearnPage() {
 
   const handleSelectOption = useCallback((selectedIndex: number) => {
     if (!question) return
+    // 防止重复点击
+    if (optionStates.some(s => s !== 'idle')) return
 
     const isCorrect = selectedIndex === question.answer
 
@@ -127,8 +129,8 @@ export default function MathLearnPage() {
       setCorrectAnswerText(undefined)
     }
 
-    setTimeout(() => setShowFeedback(true), 400)
-  }, [question, isPracticeMode, submitAnswer, recordCorrect, recordError])
+    setTimeout(() => setShowFeedback(true), 150)
+  }, [question, isPracticeMode, submitAnswer, recordCorrect, recordError, optionStates])
 
   const handleContinue = useCallback(() => {
     setShowFeedback(false)
@@ -255,10 +257,10 @@ export default function MathLearnPage() {
           <motion.div
             key={question.id}
             className="flex flex-col items-center gap-6 w-full max-w-md"
-            initial={{ opacity: 0, x: 50, scale: 0.95 }}
+            initial={{ opacity: 0, x: 30, scale: 0.97 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -50, scale: 0.95 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
+            exit={{ opacity: 0, x: -30, scale: 0.97 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
           >
             {/* 提示文字 */}
             <motion.p
@@ -334,7 +336,8 @@ function renderQuestion(
       return (
         <ComparisonRenderer
           data={question.data as ComparisonData}
-          optionStates={optionStates as ('idle' | 'correct' | 'wrong' | 'disabled')[]}
+          options={question.options}
+          optionStates={optionStates as ('idle' | 'correct' | 'wrong' | 'disabled' | 'reveal')[]}
           onSelect={onSelect}
         />
       )

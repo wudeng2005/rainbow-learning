@@ -27,10 +27,10 @@ export default function MathOptionCard({ option, index, state, onSelect }: MathO
 
   const animations = {
     idle: { scale: 1, y: 0 },
-    correct: { scale: [1, 1.15, 1.05], y: [0, -8, 0] },
-    wrong: { x: [0, -6, 6, -4, 4, 0], scale: 1 },
-    reveal: { scale: [1, 1.05, 1], opacity: 0.9 },
-    disabled: { scale: 0.95, opacity: 0.5 },
+    correct: { scale: 1.08, y: -4 },
+    wrong: { x: [0, -4, 4, -2, 2, 0], scale: 1 },
+    reveal: { scale: 1, opacity: 0.9 },
+    disabled: { scale: 0.97, opacity: 0.5 },
   }
 
   return (
@@ -41,9 +41,9 @@ export default function MathOptionCard({ option, index, state, onSelect }: MathO
         ${stateStyles[state]}`}
       onClick={state === 'idle' ? onSelect : undefined}
       animate={animations[state]}
-      transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-      whileTap={state === 'idle' ? { scale: 0.9, y: 2 } : undefined}
-      whileHover={state === 'idle' ? { y: -4, scale: 1.03 } : undefined}
+      transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+      whileTap={state === 'idle' ? { scale: 0.93 } : undefined}
+      whileHover={state === 'idle' ? { y: -3, scale: 1.02 } : undefined}
       disabled={state !== 'idle'}
     >
       {state === 'correct' && (

@@ -5,5 +5,4 @@ scope: []
 source_files: []
 depends_on: []
 related_to:
-    - path: decisions/026352a1a7e4_784d54b95140
     - path: app/app_core
