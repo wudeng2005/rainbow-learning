@@ -55,7 +55,7 @@ class SyncManager {
             completed: learningState.dailyProgress.completed,
             today_questions: learningState.todayQuestions.map(q => q.id),
             session_answers: learningState.sessionAnswers,
-            recent_question_ids: learningState.recentQuestionIds,
+            chinese_day_index: learningState.chineseDayIndex,
             current_index: learningState.currentIndex,
           })
         )

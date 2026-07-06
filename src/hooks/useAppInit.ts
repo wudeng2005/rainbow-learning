@@ -72,7 +72,7 @@ async function hydrateFromSupabase() {
       todayQuestions,
       currentIndex: progress.current_index,
       sessionAnswers: progress.session_answers || [],
-      recentQuestionIds: progress.recent_question_ids || [],
+      chineseDayIndex: progress.chinese_day_index || 1,
     })
   }
 
@@ -161,7 +161,7 @@ async function migrateLocalStorageToSupabase() {
         completed: learningState.dailyProgress.completed || false,
         today_questions: (learningState.todayQuestions || []).map((q: { id: string }) => q.id),
         session_answers: learningState.sessionAnswers || [],
-        recent_question_ids: learningState.recentQuestionIds || [],
+        chinese_day_index: learningState.chineseDayIndex || 1,
         current_index: learningState.currentIndex || 0,
       }, { onConflict: 'user_id,date' })
     }

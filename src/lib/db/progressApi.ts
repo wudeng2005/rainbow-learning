@@ -10,7 +10,7 @@ export interface DbDailyProgress {
   completed: boolean
   today_questions: string[]  // question IDs
   session_answers: AnswerResult[]
-  recent_question_ids: string[]
+  chinese_day_index: number
   current_index: number
 }
 
@@ -18,7 +18,7 @@ export interface DbDailyProgress {
 export async function fetchDailyProgress(date: string): Promise<DbDailyProgress | null> {
   const { data, error } = await supabase
     .from('daily_progress')
-    .select('date, questions_done, questions_correct, completed, today_questions, session_answers, recent_question_ids, current_index')
+    .select('date, questions_done, questions_correct, completed, today_questions, session_answers, chinese_day_index, current_index')
     .eq('user_id', USER_ID)
     .eq('date', date)
     .maybeSingle()
@@ -40,7 +40,7 @@ export async function upsertDailyProgress(data: DbDailyProgress) {
         completed: data.completed,
         today_questions: data.today_questions,
         session_answers: data.session_answers,
-        recent_question_ids: data.recent_question_ids,
+        chinese_day_index: data.chinese_day_index,
         current_index: data.current_index,
       },
       { onConflict: 'user_id,date' }

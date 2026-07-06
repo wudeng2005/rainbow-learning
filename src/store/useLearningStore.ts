@@ -6,15 +6,16 @@ import { syncManager } from '@/lib/db/syncManager'
 import questionsData from '@/data/questions.json'
 
 const ALL_QUESTIONS = questionsData as Question[]
-const DAILY_QUESTION_COUNT = 5
+const DAILY_QUESTION_COUNT = 10
+const MAX_DAY = 90
 
 interface LearningState {
   dailyProgress: DailyProgress
   todayQuestions: Question[]
   currentIndex: number
   sessionAnswers: AnswerResult[]
-  /** 已经做过的题目ID（近3天），避免重复 */
-  recentQuestionIds: string[]
+  /** 当前学习进度天数 (1-90)，按顺序推进 */
+  chineseDayIndex: number
 
   // Actions
   startDailySession: (reviewQuestionIds?: string[]) => void
@@ -23,13 +24,15 @@ interface LearningState {
   isCompleted: () => boolean
   getCurrentQuestion: () => Question | null
   resetIfNewDay: () => boolean
+  /** 是否已完成全部 90 天 */
+  isAllComplete: () => boolean
   /** 用 DB 数据覆盖本地状态 */
   hydrate: (data: {
     dailyProgress: DailyProgress
     todayQuestions: Question[]
     currentIndex: number
     sessionAnswers: AnswerResult[]
-    recentQuestionIds: string[]
+    chineseDayIndex: number
   }) => void
 }
 
@@ -45,7 +48,7 @@ export const useLearningStore = create<LearningState>()(
       todayQuestions: [],
       currentIndex: 0,
       sessionAnswers: [],
-      recentQuestionIds: [],
+      chineseDayIndex: 1,
 
       resetIfNewDay: () => {
         const today = getTodayStr()
@@ -68,47 +71,31 @@ export const useLearningStore = create<LearningState>()(
       },
 
       startDailySession: (reviewQuestionIds: string[] = []) => {
-        const { recentQuestionIds } = get()
-        const today = getTodayStr()
+        const { chineseDayIndex } = get()
 
-        // 优先填入错题复习（最多2题）
+        // 按 day 序号取当日题目
+        let dayQuestions = ALL_QUESTIONS.filter(q => q.day === chineseDayIndex)
+
+        // 如果题库中该天没有题目（可能超范围），取最后一天
+        if (dayQuestions.length === 0 && chineseDayIndex <= MAX_DAY) {
+          dayQuestions = ALL_QUESTIONS.filter(q => q.day === MAX_DAY)
+        }
+
+        // 插入错题复习（最多 2 题，从已做过的天中找）
         const reviewQuestions = reviewQuestionIds
           .slice(0, 2)
           .map(id => ALL_QUESTIONS.find(q => q.id === id))
           .filter((q): q is Question => q !== undefined)
+          .filter(q => !dayQuestions.some(dq => dq.id === q.id))
 
-        // 剩余从题库随机抽取
-        const remainCount = DAILY_QUESTION_COUNT - reviewQuestions.length
-        const availableQuestions = ALL_QUESTIONS.filter(
-          q => !reviewQuestionIds.includes(q.id) && !recentQuestionIds.includes(q.id)
-        )
-
-        // Fisher-Yates 洗牌
-        const shuffled = [...availableQuestions]
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-        }
-        const newQuestions = shuffled.slice(0, remainCount)
-
-        const todayQuestions = [...reviewQuestions, ...newQuestions]
-        // 打乱顺序
-        for (let i = todayQuestions.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [todayQuestions[i], todayQuestions[j]] = [todayQuestions[j], todayQuestions[i]]
-        }
-
-        // 更新近期做过的题
-        const newRecentIds = [...recentQuestionIds, ...todayQuestions.map(q => q.id)]
-          .slice(-15) // 保留最近15题
+        const todayQuestions = [...reviewQuestions, ...dayQuestions].slice(0, DAILY_QUESTION_COUNT)
 
         set({
           todayQuestions,
           currentIndex: 0,
           sessionAnswers: [],
-          recentQuestionIds: newRecentIds,
           dailyProgress: {
-            date: today,
+            date: getTodayStr(),
             questionsDone: 0,
             questionsCorrect: 0,
             completed: false,
@@ -140,11 +127,14 @@ export const useLearningStore = create<LearningState>()(
       },
 
       nextQuestion: () => {
-        const { currentIndex, todayQuestions, dailyProgress } = get()
+        const { currentIndex, todayQuestions, dailyProgress, chineseDayIndex } = get()
         const nextIdx = currentIndex + 1
         if (nextIdx >= todayQuestions.length) {
+          // 当天完成，推进到下一天
+          const nextDay = Math.min(chineseDayIndex + 1, MAX_DAY + 1)
           set({
             dailyProgress: { ...dailyProgress, completed: true },
+            chineseDayIndex: nextDay,
           })
           // 学习完成，触发批量同步
           syncManager.syncAfterSession()
@@ -160,13 +150,15 @@ export const useLearningStore = create<LearningState>()(
         return todayQuestions[currentIndex] ?? null
       },
 
+      isAllComplete: () => get().chineseDayIndex > MAX_DAY,
+
       hydrate: (data) => {
         set({
           dailyProgress: data.dailyProgress,
           todayQuestions: data.todayQuestions,
           currentIndex: data.currentIndex,
           sessionAnswers: data.sessionAnswers,
-          recentQuestionIds: data.recentQuestionIds,
+          chineseDayIndex: data.chineseDayIndex,
         })
       },
     }),
@@ -177,7 +169,7 @@ export const useLearningStore = create<LearningState>()(
         todayQuestions: state.todayQuestions,
         currentIndex: state.currentIndex,
         sessionAnswers: state.sessionAnswers,
-        recentQuestionIds: state.recentQuestionIds,
+        chineseDayIndex: state.chineseDayIndex,
       }),
     }
   )

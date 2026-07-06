@@ -11,13 +11,43 @@ import DailyComplete from '@/components/DailyComplete'
 import FloatingDecorations from '@/components/FloatingDecorations'
 import { correctMessages, wrongMessages, getRandomMessage } from '@/data/encouragements'
 import { playCorrectSound, playWrongSound, playGemSound } from '@/lib/sounds'
-import type { Question } from '@/types'
+import type { Question, QuestionType } from '@/types'
 import questionsData from '@/data/questions.json'
 
 const ALL_QUESTIONS = questionsData as Question[]
-const DAILY_QUESTION_COUNT = 5
+const DAILY_QUESTION_COUNT = 10
 
 type OptionState = 'idle' | 'correct' | 'wrong' | 'disabled' | 'reveal'
+
+/** 根据题型返回提示文字 */
+function getPromptText(type: QuestionType): string {
+  switch (type) {
+    case 'char_to_pic': return '🤔 这个字是什么？'
+    case 'pic_to_char': return '🧐 哪个字是它？'
+    case 'char_to_pinyin': return '🗣️ 这个字怎么读？'
+    case 'pinyin_to_char': return '👂 听一听，选对应的字'
+    case 'char_to_word': return '✏️ 哪个字填进去最合适？'
+    case 'char_to_meaning': return '💡 这个字是什么意思？'
+    default: return '🤔 选一个答案吧'
+  }
+}
+
+/** 判断选项是否为纯文字（非 emoji） */
+function isTextOption(type: QuestionType): boolean {
+  return type !== 'char_to_pic'
+}
+
+/** 播放汉字读音音频 */
+function playCharAudio(audioPath: string | null | undefined) {
+  if (!audioPath) return
+  try {
+    const audio = new Audio(audioPath)
+    audio.volume = 0.85
+    audio.play().catch(() => {})
+  } catch {
+    // 静默处理
+  }
+}
 
 export default function LearnPage() {
   const navigate = useNavigate()
@@ -30,6 +60,7 @@ export default function LearnPage() {
     nextQuestion,
     resetIfNewDay,
     getCurrentQuestion,
+    isAllComplete,
   } = useLearningStore()
 
   const addGems = useGemStore(s => s.addGems)
@@ -67,14 +98,18 @@ export default function LearnPage() {
     ? (practiceQuestions[practiceIndex] ?? null)
     : getCurrentQuestion()
 
-  // 重置选项状态（题目切换时）
+  // 重置选项状态 + 自动播放音频（题目切换时）
   useEffect(() => {
     setOptionStates(['idle', 'idle', 'idle'])
-  }, [currentIndex, practiceIndex])
+    // pinyin_to_char 题型自动播放音频
+    if (question?.type === 'pinyin_to_char' && question.audio) {
+      setTimeout(() => playCharAudio(question.audio), 300)
+    }
+  }, [currentIndex, practiceIndex, question?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSelectOption = useCallback((selectedIndex: number) => {
     if (!question) return
-    // 防止重复点击：如果已经有选项不是 idle 了，直接返回
+    // 防止重复点击
     if (optionStates.some(s => s !== 'idle')) return
 
     const isCorrect = selectedIndex === question.answer
@@ -130,7 +165,6 @@ export default function LearnPage() {
     setShowFeedback(false)
 
     if (isPracticeMode) {
-      // 练习模式：简单推进，不计分
       const nextIdx = practiceIndex + 1
       if (nextIdx >= practiceQuestions.length) {
         setPracticeComplete(true)
@@ -140,11 +174,9 @@ export default function LearnPage() {
       return
     }
 
-    // 正式模式
     const isLast = currentIndex >= todayQuestions.length - 1
 
     if (isLast) {
-      // 发放宝石
       const totalQ = todayQuestions.length
       let gems = 3
       if (dailyProgress.questionsCorrect === totalQ) {
@@ -163,7 +195,6 @@ export default function LearnPage() {
 
   // 开始练习模式
   const handlePlayAgain = useCallback(() => {
-    // 从题库随机抽5题（不重复当次正式题目）
     const usedIds = todayQuestions.map(q => q.id)
     const available = ALL_QUESTIONS.filter(q => !usedIds.includes(q.id))
     const shuffled = [...available]
@@ -193,12 +224,24 @@ export default function LearnPage() {
     )
   }
 
+  // 90 天全部完成
+  if (!isPracticeMode && isAllComplete()) {
+    return (
+      <DailyComplete
+        questionsCorrect={dailyProgress.questionsCorrect}
+        totalQuestions={todayQuestions.length || 10}
+        gemsEarned={0}
+        onPlayAgain={handlePlayAgain}
+      />
+    )
+  }
+
   // 已完成状态（正式）— 练习模式下不拦截
   if (!isPracticeMode && (isSessionComplete || dailyProgress.completed)) {
     return (
       <DailyComplete
         questionsCorrect={dailyProgress.questionsCorrect}
-        totalQuestions={todayQuestions.length || 5}
+        totalQuestions={todayQuestions.length || 10}
         gemsEarned={gemsEarned}
         onPlayAgain={handlePlayAgain}
       />
@@ -220,7 +263,84 @@ export default function LearnPage() {
     )
   }
 
-  const isCharToEmo = question.type === 'char_to_pic'
+  const qType = question.type
+  const isTextOpt = isTextOption(qType)
+  const promptText = getPromptText(qType)
+
+  // 内容区域渲染
+  const renderContent = () => {
+    switch (qType) {
+      case 'char_to_pic':
+      case 'char_to_pinyin':
+      case 'char_to_meaning':
+        // 上方大字展示汉字
+        return (
+          <span className="block text-7xl md:text-8xl font-bold text-text-primary">
+            {question.content}
+          </span>
+        )
+
+      case 'pic_to_char':
+        // 展示 emoji
+        return (
+          <span className="block text-7xl md:text-8xl">
+            {question.content}
+          </span>
+        )
+
+      case 'pinyin_to_char':
+        // 展示拼音 + 播放音频按钮
+        return (
+          <div className="flex flex-col items-center gap-3">
+            <span className="block text-5xl md:text-6xl font-bold text-purple-700">
+              {question.content}
+            </span>
+            {question.audio && (
+              <motion.button
+                type="button"
+                className="flex items-center gap-2 px-5 py-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-600 font-bold text-sm transition-colors"
+                onClick={() => playCharAudio(question.audio)}
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                🔊 再听一次
+              </motion.button>
+            )}
+          </div>
+        )
+
+      case 'char_to_word':
+        // 展示 "（ ）+ 词语" 格式
+        return (
+          <span className="block text-4xl md:text-5xl font-bold text-text-primary leading-relaxed">
+            {question.content}
+          </span>
+        )
+
+      default:
+        return (
+          <span className="block text-5xl md:text-6xl">{question.content}</span>
+        )
+    }
+  }
+
+  // 选项样式：根据内容长度决定大小
+  const getOptionTextStyle = (option: string): string => {
+    // 拼音选项（包含声调符号的拉丁字母）
+    if (/^[a-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]+$/i.test(option)) {
+      return 'text-3xl md:text-4xl font-bold'
+    }
+    // 含义描述（较长的文字）
+    if (option.length > 4) {
+      return 'text-xl md:text-2xl font-medium leading-tight'
+    }
+    // 汉字选项
+    if (isTextOpt) {
+      return 'text-4xl md:text-5xl font-bold'
+    }
+    // emoji 选项
+    return 'text-5xl md:text-6xl'
+  }
 
   return (
     <div className="min-h-dvh flex flex-col bg-gradient-to-b from-sky-100 via-purple-50 to-pink-50 relative overflow-hidden">
@@ -272,12 +392,12 @@ export default function LearnPage() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                {isCharToEmo ? '🤔 这个字是什么？' : '🧐 哪个字是它？'}
+                {promptText}
               </motion.p>
 
               {/* 题目内容卡片 */}
               <motion.div
-                className="relative inline-block bg-white rounded-[2rem] px-10 py-8 shadow-xl border-2 border-purple-100"
+                className="relative inline-block bg-white rounded-[2rem] px-8 md:px-10 py-6 md:py-8 shadow-xl border-2 border-purple-100"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.15 }}
@@ -286,32 +406,67 @@ export default function LearnPage() {
                 <span className="absolute -top-3 -left-3 text-2xl animate-float-fast">✨</span>
                 <span className="absolute -top-2 -right-3 text-xl animate-float-medium">🌟</span>
                 
-                <span className={`block ${
-                  isCharToEmo 
-                    ? 'text-7xl md:text-8xl font-bold text-text-primary' 
-                    : 'text-7xl md:text-8xl'
-                }`}>
-                  {question.content}
-                </span>
+                {renderContent()}
               </motion.div>
             </div>
 
             {/* 选项区域 */}
             <motion.div
-              className="grid grid-cols-3 gap-4 w-full mt-4"
+              className={`grid gap-3 md:gap-4 w-full mt-4 ${
+                question.options.length > 3 ? 'grid-cols-2' : 'grid-cols-3'
+              }`}
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.25, duration: 0.3 }}
             >
               {question.options.map((option, index) => (
-                <OptionCard
+                <motion.button
                   key={`${question.id}-${index}`}
-                  option={option}
-                  index={index}
-                  state={optionStates[index]}
-                  isCharOption={!isCharToEmo}
-                  onSelect={() => handleSelectOption(index)}
-                />
+                  type="button"
+                  className={`relative rounded-3xl p-4 md:p-5 min-h-[80px] flex items-center justify-center
+                    border-3 transition-all duration-200 cursor-pointer select-none touch-manipulation
+                    ${optionStates[index] === 'idle'
+                      ? `${['bg-pink-50 border-pink-200 hover:border-pink-400','bg-blue-50 border-blue-200 hover:border-blue-400','bg-green-50 border-green-200 hover:border-green-400'][index % 3]} shadow-md hover:shadow-lg`
+                      : optionStates[index] === 'correct'
+                        ? 'bg-emerald-100 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+                        : optionStates[index] === 'wrong'
+                          ? 'bg-purple-50 border-purple-300 shadow-md'
+                          : optionStates[index] === 'reveal'
+                            ? 'bg-emerald-50 border-emerald-300 border-dashed'
+                            : 'bg-gray-50 border-gray-200 opacity-50'
+                    }`}
+                  onClick={optionStates[index] === 'idle' ? () => handleSelectOption(index) : undefined}
+                  animate={
+                    optionStates[index] === 'correct' ? { scale: 1.08, y: -4 } :
+                    optionStates[index] === 'wrong' ? { x: [0, -4, 4, -2, 2, 0], scale: 1 } :
+                    optionStates[index] === 'disabled' ? { scale: 0.97, opacity: 0.5 } :
+                    { scale: 1, y: 0 }
+                  }
+                  transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                  whileTap={optionStates[index] === 'idle' ? { scale: 0.93 } : undefined}
+                  whileHover={optionStates[index] === 'idle' ? { y: -4, scale: 1.03 } : undefined}
+                  disabled={optionStates[index] !== 'idle'}
+                >
+                  {optionStates[index] === 'correct' && (
+                    <>
+                      <motion.span
+                        className="absolute -top-2 -right-2 text-xl"
+                        initial={{ scale: 0, rotate: 0 }}
+                        animate={{ scale: 1, rotate: 20 }}
+                        transition={{ delay: 0.1 }}
+                      >⭐</motion.span>
+                      <motion.span
+                        className="absolute -bottom-1 -left-1 text-lg"
+                        initial={{ scale: 0, rotate: 0 }}
+                        animate={{ scale: 1, rotate: -15 }}
+                        transition={{ delay: 0.2 }}
+                      >✨</motion.span>
+                    </>
+                  )}
+                  <span className={getOptionTextStyle(option)}>
+                    {option}
+                  </span>
+                </motion.button>
               ))}
             </motion.div>
           </motion.div>
