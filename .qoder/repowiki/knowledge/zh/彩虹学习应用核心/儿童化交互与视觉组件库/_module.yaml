@@ -1,8 +1,0 @@
-schema_version: 1
-module_path: app/shared_ui
-title: 儿童化交互与视觉组件库
-scope:
-    - src/components/
-source_files: []
-depends_on: []
-related_to: []

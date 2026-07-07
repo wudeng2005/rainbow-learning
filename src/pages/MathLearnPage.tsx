@@ -12,13 +12,16 @@ import PatternRenderer from '@/components/math/PatternRenderer'
 import CountingRenderer from '@/components/math/CountingRenderer'
 import ComparisonRenderer from '@/components/math/ComparisonRenderer'
 import ShapeRenderer from '@/components/math/ShapeRenderer'
+import ArithmeticRenderer from '@/components/math/ArithmeticRenderer'
+import WordProblemRenderer from '@/components/math/WordProblemRenderer'
+import NumberSequenceRenderer from '@/components/math/NumberSequenceRenderer'
 import {
   mathCorrectMessages,
   mathWrongMessages,
   getRandomMathMessage,
 } from '@/data/math-encouragements'
 import { playCorrectSound, playWrongSound, playGemSound } from '@/lib/sounds'
-import type { MathQuestion, PatternData, CountingData, ComparisonData, ShapeData } from '@/types'
+import type { MathQuestion, PatternData, CountingData, ComparisonData, ShapeData, ArithmeticData, WordProblemData, NumberSequenceData } from '@/types'
 import mathQuestionsData from '@/data/math-questions.json'
 
 const ALL_MATH_QUESTIONS = mathQuestionsData as unknown as MathQuestion[]
@@ -173,7 +176,7 @@ export default function MathLearnPage() {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
-    const newQuestions = shuffled.slice(0, 5)
+    const newQuestions = shuffled.slice(0, 10)
 
     setIsPracticeMode(true)
     setPracticeQuestions(newQuestions)
@@ -200,7 +203,7 @@ export default function MathLearnPage() {
     return (
       <MathDailyComplete
         questionsCorrect={dailyProgress.questionsCorrect}
-        totalQuestions={todayQuestions.length || 5}
+        totalQuestions={todayQuestions.length || 10}
         gemsEarned={gemsEarned}
         onPlayAgain={handlePlayAgain}
       />
@@ -304,6 +307,10 @@ function getPromptEmoji(question: MathQuestion): string {
     case 'counting': return '👀'
     case 'comparison': return '⚖️'
     case 'shape_recognition': return '🔍'
+    case 'addition': return '➕'
+    case 'subtraction': return '➖'
+    case 'word_problem': return '📖'
+    case 'number_sequence': return '🔢'
     default: return '🍭'
   }
 }
@@ -346,6 +353,34 @@ function renderQuestion(
         <ShapeRenderer
           data={question.data as ShapeData}
           optionStates={optionStates as ('idle' | 'correct' | 'wrong' | 'disabled')[]}
+          onSelect={onSelect}
+        />
+      )
+    case 'addition':
+    case 'subtraction':
+      return (
+        <ArithmeticRenderer
+          data={question.data as ArithmeticData}
+          options={question.options}
+          optionStates={optionStates as ('idle' | 'correct' | 'wrong' | 'disabled' | 'reveal')[]}
+          onSelect={onSelect}
+        />
+      )
+    case 'word_problem':
+      return (
+        <WordProblemRenderer
+          data={question.data as WordProblemData}
+          options={question.options}
+          optionStates={optionStates as ('idle' | 'correct' | 'wrong' | 'disabled' | 'reveal')[]}
+          onSelect={onSelect}
+        />
+      )
+    case 'number_sequence':
+      return (
+        <NumberSequenceRenderer
+          data={question.data as NumberSequenceData}
+          options={question.options}
+          optionStates={optionStates as ('idle' | 'correct' | 'wrong' | 'disabled' | 'reveal')[]}
           onSelect={onSelect}
         />
       )

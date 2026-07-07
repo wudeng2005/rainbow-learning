@@ -15,13 +15,35 @@ export type QuestionType =
   | 'char_to_meaning'
 
 /** 数学题型 */
-export type MathQuestionType = 'pattern' | 'counting' | 'comparison' | 'shape_recognition'
+export type MathQuestionType =
+  | 'pattern'
+  | 'counting'
+  | 'comparison'
+  | 'shape_recognition'
+  | 'addition'
+  | 'subtraction'
+  | 'word_problem'
+  | 'number_sequence'
 
 /** 学科 */
-export type Subject = 'chinese' | 'math'
+export type Subject = 'chinese' | 'math' | 'english'
+
+/** 英语题型：听音选图 / 看图选词 / 自然拼读 / 听句选图 */
+export type EnglishQuestionType =
+  | 'listen_pic'
+  | 'pic_word'
+  | 'phonics'
+  | 'listen_sentence'
 
 /** 宝石来源 */
-export type GemSource = 'daily_complete' | 'perfect_score' | 'review_complete' | 'math_daily_complete' | 'math_perfect_score'
+export type GemSource =
+  | 'daily_complete'
+  | 'perfect_score'
+  | 'review_complete'
+  | 'math_daily_complete'
+  | 'math_perfect_score'
+  | 'english_daily_complete'
+  | 'english_perfect_score'
 
 /** 找规律数据 */
 export interface PatternData {
@@ -51,6 +73,35 @@ export interface ShapeData {
   oddIndex: number
 }
 
+/** 加减法运算数据（加减法共用） */
+export interface ArithmeticData {
+  type: 'addition' | 'subtraction'
+  left: number
+  right: number
+  /** 图形辅助 emoji */
+  emoji: string
+}
+
+/** 应用题（情境）数据 */
+export interface WordProblemData {
+  type: 'word_problem'
+  /** 情境图示 emoji */
+  emoji: string
+  /** 初始数量 */
+  start: number
+  /** 变化数量 */
+  change: number
+  /** 运算方向 */
+  op: 'add' | 'subtract'
+}
+
+/** 数字推理数据 */
+export interface NumberSequenceData {
+  type: 'number_sequence'
+  /** 数字序列，null 表示待填空位 */
+  sequence: (number | null)[]
+}
+
 /** 数学题目 */
 export interface MathQuestion {
   id: string
@@ -59,7 +110,16 @@ export interface MathQuestion {
   type: MathQuestionType
   difficulty: number
   prompt: string
-  data: PatternData | CountingData | ComparisonData | ShapeData
+  /** 所属天数 (1-90)，用于确定性顺序出题 */
+  day: number
+  data:
+    | PatternData
+    | CountingData
+    | ComparisonData
+    | ShapeData
+    | ArithmeticData
+    | WordProblemData
+    | NumberSequenceData
   answer: number
   options: string[]
 }
@@ -81,6 +141,29 @@ export interface Question {
   difficulty: number
   /** 听音选字时的音频路径（如 /audio/chars/花.mp3） */
   audio?: string | null
+}
+
+/** 英语题目 */
+export interface EnglishQuestion {
+  id: string
+  subject: 'english'
+  level: number
+  type: EnglishQuestionType
+  difficulty: number
+  /** 所属天数 (1-90)，用于确定性顺序出题 */
+  day: number
+  /** 中文引导语，如"听一听，选出小狗" */
+  prompt: string
+  /** 核心文本：单词/字母/句子，如 'dog' */
+  content: string
+  /** 看图选词题的题干 emoji（仅 pic_word 题型） */
+  pic?: string
+  /** 发音音频路径，如 /audio/en/words/dog.mp3 */
+  audio: string
+  /** 3个选项：emoji 图片 或 英文单词/字母 */
+  options: string[]
+  /** 正确选项索引 0-2 */
+  answer: number
 }
 
 /** 错题记录 */

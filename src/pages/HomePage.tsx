@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useLearningStore } from '@/store/useLearningStore'
 import { useMathLearningStore } from '@/store/useMathLearningStore'
+import { useEnglishLearningStore } from '@/store/useEnglishLearningStore'
 import { useErrorBankStore } from '@/store/useErrorBankStore'
 import { useUserStore } from '@/store/useUserStore'
 
@@ -74,10 +75,12 @@ export default function HomePage() {
   const { dailyProgress, resetIfNewDay } = useLearningStore()
   const mathProgress = useMathLearningStore(s => s.dailyProgress)
   const mathResetIfNewDay = useMathLearningStore(s => s.resetIfNewDay)
+  const englishProgress = useEnglishLearningStore(s => s.dailyProgress)
+  const englishResetIfNewDay = useEnglishLearningStore(s => s.resetIfNewDay)
   const errorCount = useErrorBankStore(s => s.getErrorCount())
   const { currentUser } = useUserStore()
 
-  useEffect(() => { resetIfNewDay(); mathResetIfNewDay() }, [resetIfNewDay, mathResetIfNewDay])
+  useEffect(() => { resetIfNewDay(); mathResetIfNewDay(); englishResetIfNewDay() }, [resetIfNewDay, mathResetIfNewDay, englishResetIfNewDay])
 
   const isCompleted = dailyProgress.completed
   const chineseBadge = isCompleted
@@ -90,6 +93,12 @@ export default function HomePage() {
     ? '完成啦 ✅'
     : mathProgress.questionsDone > 0
       ? `${mathProgress.questionsDone}/5`
+      : '去冒险'
+
+  const englishBadge = englishProgress.completed
+    ? '完成啦 ✅'
+    : englishProgress.questionsDone > 0
+      ? `${englishProgress.questionsDone}/5`
       : '去冒险'
 
   return (
@@ -161,7 +170,8 @@ export default function HomePage() {
             icon="🦜"
             title="英语乐园"
             gradient="bg-gradient-to-b from-rainbow-blue to-sky-500"
-            locked
+            badge={englishBadge}
+            onClick={() => navigate('/english-learn')}
           />
         </div>
       </motion.section>

@@ -5,6 +5,10 @@ const sourceLabels: Record<string, string> = {
   daily_complete: '完成每日任务',
   perfect_score: '全部答对奖励',
   review_complete: '闯关成功',
+  math_daily_complete: '完成数学任务',
+  math_perfect_score: '数学全对奖励',
+  english_daily_complete: '完成英语任务',
+  english_perfect_score: '英语全对奖励',
 }
 
 /* ─── 宝石颜色 ─── */

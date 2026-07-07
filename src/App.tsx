@@ -7,6 +7,7 @@ import { useAppInit } from '@/hooks/useAppInit'
 // 懒加载非首页页面，减少初始包体积
 const LearnPage = lazy(() => import('@/pages/LearnPage'))
 const MathLearnPage = lazy(() => import('@/pages/MathLearnPage'))
+const EnglishLearnPage = lazy(() => import('@/pages/EnglishLearnPage'))
 const GemPage = lazy(() => import('@/pages/GemPage'))
 const ReviewPage = lazy(() => import('@/pages/ReviewPage'))
 const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
@@ -40,6 +41,7 @@ function App() {
           {/* 答题页独立全屏布局，不使用 Layout */}
           <Route path="/learn" element={<LearnPage />} />
           <Route path="/math-learn" element={<MathLearnPage />} />
+          <Route path="/english-learn" element={<EnglishLearnPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/gems" element={<GemPage />} />

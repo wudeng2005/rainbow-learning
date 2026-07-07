@@ -45,6 +45,40 @@ export function speakCorrectEncouragement() {
   playVoice(CORRECT_AUDIO_FILES)
 }
 
+/** 浏览器语音合成兜底（预录音频缺失时朗读英文文本） */
+function speakEnglishFallback(text: string) {
+  try {
+    const synth = window.speechSynthesis
+    if (!synth) return
+    synth.cancel()
+    const utter = new SpeechSynthesisUtterance(text)
+    utter.lang = 'en-US'
+    utter.rate = 0.8 // 放慢，方便孩子听清
+    synth.speak(utter)
+  } catch {
+    // 静默处理
+  }
+}
+
+/**
+ * 播放英文发音：优先使用预录音频，失败时用浏览器语音合成兜底。
+ * @param text 英文单词/字母/句子（用于兜底朗读）
+ * @param src  预录音频路径（可选）
+ */
+export function speakEnglish(text: string, src?: string) {
+  if (!src) {
+    speakEnglishFallback(text)
+    return
+  }
+  try {
+    const audio = new Audio(src)
+    audio.volume = 1
+    audio.play().catch(() => speakEnglishFallback(text))
+  } catch {
+    speakEnglishFallback(text)
+  }
+}
+
 /** 答错时播放温柔语音 */
 export function speakWrongEncouragement() {
   playVoice(WRONG_AUDIO_FILES)

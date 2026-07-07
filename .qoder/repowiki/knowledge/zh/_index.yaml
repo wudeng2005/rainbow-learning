@@ -3,51 +3,12 @@ schema_version: 1
 locale: zh-CN
 branch: main
 nodes_managed: true
-exported_at: "2026-07-06T12:55:56Z"
+exported_at: "2026-07-06T14:38:04Z"
 modules:
-    app:
-        dir_name: 彩虹学习应用核心
-        title: 彩虹学习应用核心
-        scope:
-            - src/
-        source_files: []
-        children:
-            - app/app_core
-            - app/math_kingdom
-            - app/shared_ui
-        depends_on: []
-        related_to: []
-    app/app_core:
-        dir_name: 应用核心状态管理与数据同步
-        title: 应用核心状态管理与数据同步
-        scope:
-            - src/store/
-            - src/lib/
-            - src/hooks/
-            - src/types/
-            - src/data/
-        source_files: []
-        children: []
-        depends_on: []
-        related_to: []
-    app/math_kingdom:
-        dir_name: 儿童数学思维训练模块
-        title: 儿童数学思维训练模块
-        scope:
-            - src/components/math/
-            - src/data/math-encouragements.ts
-            - src/data/math-questions.json
-            - src/pages/MathLearnPage.tsx
-            - src/store/useMathLearningStore.ts
-        source_files: []
-        children: []
-        depends_on: []
-        related_to: []
-    app/shared_ui:
-        dir_name: 儿童化交互与视觉组件库
-        title: 儿童化交互与视觉组件库
-        scope:
-            - src/components/
+    "":
+        dir_name: Rainbow 快乐学堂 — 汉字与数学双学科学习应用
+        title: Rainbow 快乐学堂 — 汉字与数学双学科学习应用
+        scope: []
         source_files: []
         children: []
         depends_on: []

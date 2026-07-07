@@ -5,14 +5,16 @@ import { getTodayStr } from '@/lib/storage'
 import mathQuestionsData from '@/data/math-questions.json'
 
 const ALL_MATH_QUESTIONS = mathQuestionsData as unknown as MathQuestion[]
-const DAILY_QUESTION_COUNT = 5
+const DAILY_QUESTION_COUNT = 10
+const MAX_DAY = 90
 
 interface MathLearningState {
   dailyProgress: MathDailyProgress
   todayQuestions: MathQuestion[]
   currentIndex: number
   sessionAnswers: AnswerResult[]
-  recentQuestionIds: string[]
+  /** 当前学习进度天数 (1-90)，按顺序推进 */
+  mathDayIndex: number
 
   startDailySession: () => void
   submitAnswer: (selectedIndex: number) => AnswerResult
@@ -20,6 +22,8 @@ interface MathLearningState {
   isCompleted: () => boolean
   getCurrentQuestion: () => MathQuestion | null
   resetIfNewDay: () => boolean
+  /** 是否已完成全部 90 天 */
+  isAllComplete: () => boolean
 }
 
 export const useMathLearningStore = create<MathLearningState>()(
@@ -34,7 +38,7 @@ export const useMathLearningStore = create<MathLearningState>()(
       todayQuestions: [],
       currentIndex: 0,
       sessionAnswers: [],
-      recentQuestionIds: [],
+      mathDayIndex: 1,
 
       resetIfNewDay: () => {
         const today = getTodayStr()
@@ -57,47 +61,23 @@ export const useMathLearningStore = create<MathLearningState>()(
       },
 
       startDailySession: () => {
-        const { recentQuestionIds } = get()
+        const { mathDayIndex } = get()
         const today = getTodayStr()
 
-        // 从题库中筛选未做过的题
-        const available = ALL_MATH_QUESTIONS.filter(
-          q => !recentQuestionIds.includes(q.id)
-        )
+        // 按 day 序号取当日题目
+        let dayQuestions = ALL_MATH_QUESTIONS.filter(q => q.day === mathDayIndex)
 
-        // Fisher-Yates 洗牌
-        const shuffled = [...available]
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+        // 如果该天没有题目（可能超范围），取最后一天
+        if (dayQuestions.length === 0) {
+          dayQuestions = ALL_MATH_QUESTIONS.filter(q => q.day === MAX_DAY)
         }
 
-        // 尽量保证4种题型都有覆盖
-        const types: string[] = ['pattern', 'counting', 'comparison', 'shape_recognition']
-        const picked: MathQuestion[] = []
-        for (const t of types) {
-          const q = shuffled.find(q => q.type === t && !picked.includes(q))
-          if (q) picked.push(q)
-        }
-        // 补齐到5题
-        for (const q of shuffled) {
-          if (picked.length >= DAILY_QUESTION_COUNT) break
-          if (!picked.includes(q)) picked.push(q)
-        }
-
-        // 打乱顺序
-        for (let i = picked.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [picked[i], picked[j]] = [picked[j], picked[i]]
-        }
-
-        const newRecentIds = [...recentQuestionIds, ...picked.map(q => q.id)].slice(-15)
+        const todayQuestions = dayQuestions.slice(0, DAILY_QUESTION_COUNT)
 
         set({
-          todayQuestions: picked,
+          todayQuestions,
           currentIndex: 0,
           sessionAnswers: [],
-          recentQuestionIds: newRecentIds,
           dailyProgress: {
             date: today,
             questionsDone: 0,
@@ -131,11 +111,14 @@ export const useMathLearningStore = create<MathLearningState>()(
       },
 
       nextQuestion: () => {
-        const { currentIndex, todayQuestions, dailyProgress } = get()
+        const { currentIndex, todayQuestions, dailyProgress, mathDayIndex } = get()
         const nextIdx = currentIndex + 1
         if (nextIdx >= todayQuestions.length) {
+          // 当天完成，推进到下一天
+          const nextDay = Math.min(mathDayIndex + 1, MAX_DAY + 1)
           set({
             dailyProgress: { ...dailyProgress, completed: true },
+            mathDayIndex: nextDay,
           })
         } else {
           set({ currentIndex: nextIdx })
@@ -148,6 +131,8 @@ export const useMathLearningStore = create<MathLearningState>()(
         const { todayQuestions, currentIndex } = get()
         return todayQuestions[currentIndex] ?? null
       },
+
+      isAllComplete: () => get().mathDayIndex > MAX_DAY,
     }),
     {
       name: 'rainbow-math-progress',
@@ -156,7 +141,7 @@ export const useMathLearningStore = create<MathLearningState>()(
         todayQuestions: state.todayQuestions,
         currentIndex: state.currentIndex,
         sessionAnswers: state.sessionAnswers,
-        recentQuestionIds: state.recentQuestionIds,
+        mathDayIndex: state.mathDayIndex,
       }),
     }
   )
