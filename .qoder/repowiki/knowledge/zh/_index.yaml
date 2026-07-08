@@ -3,14 +3,27 @@ schema_version: 1
 locale: zh-CN
 branch: main
 nodes_managed: true
-exported_at: "2026-07-08T08:05:32Z"
+exported_at: "2026-07-08T08:35:25Z"
 modules:
     "":
-        dir_name: 儿童学习应用（数学+英语双模块）
-        title: 儿童学习应用（数学+英语双模块）
-        scope: []
+        dir_name: 彩虹学习应用（React + Vite 单仓）
+        title: 彩虹学习应用（React + Vite 单仓）
+        scope:
+            - README.md
+            - AGENTS.md
+            - .gitignore
+            - package.json
+            - package-lock.json
+            - index.html
+            - vite.config.ts
+            - tsconfig.json
+            - tsconfig.app.json
+            - tsconfig.node.json
+            - eslint.config.js
+            - vercel.json
         source_files: []
         children:
+            - app_source
             - scripts
         depends_on: []
         related_to: []
@@ -22,13 +35,15 @@ modules:
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: scripts
     scripts:
-        dir_name: scripts
-        title: scripts
+        dir_name: 题库与音频素材生成脚本集
+        title: 题库与音频素材生成脚本集
         scope:
             - scripts/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: app_source

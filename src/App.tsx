@@ -42,10 +42,10 @@ function App() {
           <Route path="/learn" element={<LearnPage />} />
           <Route path="/math-learn" element={<MathLearnPage />} />
           <Route path="/english-learn" element={<EnglishLearnPage />} />
+          <Route path="/review" element={<ReviewPage />} />
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/gems" element={<GemPage />} />
-            <Route path="/review" element={<ReviewPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Routes>
