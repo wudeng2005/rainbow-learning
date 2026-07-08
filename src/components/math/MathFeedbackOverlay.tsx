@@ -9,7 +9,78 @@ interface MathFeedbackOverlayProps {
 }
 
 const CONFETTI_EMOJIS = ['🍬', '🍭', '⭐', '🧁', '🌈', '✨', '🎈', '💫', '🦄', '🎵', '🍩', '🎀']
-const ORBIT_ITEMS = ['🍬', '⭐', '🍭', '✨']
+
+function CheckIcon() {
+  return (
+    <div className="relative w-24 h-24 mx-auto mb-4">
+      <motion.div
+        className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-300 to-purple-200 flex items-center justify-center shadow-lg"
+        initial={{ scale: 0, rotate: -30 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: 'spring', damping: 12, stiffness: 300, delay: 0.1 }}
+      >
+        <svg viewBox="0 0 80 80" className="w-14 h-14">
+          <motion.path
+            d="M22 42 L34 56 L58 24"
+            fill="none" stroke="white" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ delay: 0.3, duration: 0.5, ease: 'easeOut' }}
+          />
+        </svg>
+      </motion.div>
+      <motion.div
+        className="absolute inset-0 rounded-full border-4 border-indigo-300/50"
+        initial={{ scale: 1, opacity: 0.8 }}
+        animate={{ scale: 1.4, opacity: 0 }}
+        transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 0.5 }}
+      />
+    </div>
+  )
+}
+
+function BulbIcon() {
+  return (
+    <div className="relative w-24 h-24 mx-auto mb-4">
+      <motion.div
+        className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-200 to-orange-100 flex items-center justify-center shadow-lg"
+        initial={{ scale: 0, rotate: 15 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: 'spring', damping: 12, stiffness: 300, delay: 0.1 }}
+      >
+        <svg viewBox="0 0 80 80" className="w-14 h-14">
+          <motion.path
+            d="M30 38 C30 24, 50 24, 50 38 C50 44, 46 48, 46 52 L34 52 C34 48, 30 44, 30 38Z"
+            fill="#FBBF24" stroke="#F59E0B" strokeWidth="2"
+            initial={{ opacity: 0.5 }} animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+          />
+          <rect x="35" y="53" width="10" height="4" rx="2" fill="#F59E0B" />
+          <rect x="36" y="58" width="8" height="3" rx="1.5" fill="#D97706" />
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+            const rad = (angle * Math.PI) / 180
+            const x1 = 40 + Math.cos(rad) * 22, y1 = 35 + Math.sin(rad) * 22
+            const x2 = 40 + Math.cos(rad) * 28, y2 = 35 + Math.sin(rad) * 28
+            return (
+              <motion.line
+                key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+                stroke="#FCD34D" strokeWidth="2.5" strokeLinecap="round"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.8, 0.4] }}
+                transition={{ delay: 0.4 + i * 0.05, duration: 1.5, repeat: Infinity }}
+              />
+            )
+          })}
+        </svg>
+      </motion.div>
+      <motion.div
+        className="absolute inset-0 rounded-full border-4 border-amber-300/40"
+        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      />
+    </div>
+  )
+}
 
 export default function MathFeedbackOverlay({
   isVisible, isCorrect, message, correctAnswer, onContinue,
@@ -19,81 +90,41 @@ export default function MathFeedbackOverlay({
       {isVisible && (
         <motion.div
           className="fixed inset-0 z-50 flex items-center justify-center px-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          onClick={onContinue}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }} onClick={onContinue}
         >
-          {/* 背景遮罩 */}
           <div className={`absolute inset-0 ${
-            isCorrect
-              ? 'bg-gradient-to-b from-indigo-500/20 via-purple-500/15 to-pink-500/20'
+            isCorrect ? 'bg-gradient-to-b from-indigo-500/20 via-purple-500/15 to-pink-500/20'
               : 'bg-gradient-to-b from-amber-500/15 via-orange-400/10 to-yellow-500/15'
           } backdrop-blur-sm`} />
 
-          {/* 正确：撒糖果 */}
           {isCorrect && (
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               {CONFETTI_EMOJIS.map((emoji, i) => (
-                <motion.span
-                  key={i}
-                  className="absolute"
-                  style={{
-                    left: `${5 + i * 8}%`,
-                    top: '-8%',
-                    fontSize: `${20 + Math.random() * 16}px`,
-                  }}
+                <motion.span key={i} className="absolute" style={{ left: `${5 + i * 8}%`, top: '-8%', fontSize: `${20 + Math.random() * 16}px` }}
                   initial={{ y: -20, opacity: 0, rotate: 0 }}
-                  animate={{
-                    y: [null, window.innerHeight + 40],
-                    opacity: [0, 1, 1, 0.8, 0],
-                    rotate: [0, 180 + Math.random() * 360],
-                    x: [0, (Math.random() - 0.5) * 100],
-                  }}
-                  transition={{
-                    duration: 2.2 + Math.random() * 0.8,
-                    delay: i * 0.08,
-                    ease: 'easeIn',
-                  }}
-                >
-                  {emoji}
-                </motion.span>
+                  animate={{ y: [null, window.innerHeight + 40], opacity: [0, 1, 1, 0.8, 0], rotate: [0, 180 + Math.random() * 360], x: [0, (Math.random() - 0.5) * 100] }}
+                  transition={{ duration: 2.2 + Math.random() * 0.8, delay: i * 0.08, ease: 'easeIn' }}
+                >{emoji}</motion.span>
               ))}
             </div>
           )}
 
-          {/* 错误：浮动爱心 */}
           {!isCorrect && (
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               {['💛', '🧡', '💕', '🌸', '🌻'].map((emoji, i) => (
-                <motion.span
-                  key={i}
-                  className="absolute text-xl"
-                  style={{ left: `${15 + i * 16}%`, top: '60%' }}
+                <motion.span key={i} className="absolute text-xl" style={{ left: `${15 + i * 16}%`, top: '60%' }}
                   initial={{ y: 0, opacity: 0, scale: 0.5 }}
-                  animate={{
-                    y: [0, -60 - Math.random() * 40],
-                    opacity: [0, 0.7, 0],
-                    scale: [0.5, 1, 0.8],
-                  }}
-                  transition={{
-                    duration: 2, delay: i * 0.15, ease: 'easeOut',
-                    repeat: Infinity, repeatDelay: 1,
-                  }}
-                >
-                  {emoji}
-                </motion.span>
+                  animate={{ y: [0, -60 - Math.random() * 40], opacity: [0, 0.7, 0], scale: [0.5, 1, 0.8] }}
+                  transition={{ duration: 2, delay: i * 0.15, ease: 'easeOut', repeat: Infinity, repeatDelay: 1 }}
+                >{emoji}</motion.span>
               ))}
             </div>
           )}
 
-          {/* 主卡片 */}
           <motion.div
             className={`w-full max-w-[340px] md:max-w-[380px] rounded-[2rem] relative overflow-hidden shadow-2xl ${
-              isCorrect
-                ? 'bg-gradient-to-b from-white via-white to-indigo-50'
-                : 'bg-gradient-to-b from-white via-white to-amber-50'
+              isCorrect ? 'bg-gradient-to-b from-white via-white to-indigo-50' : 'bg-gradient-to-b from-white via-white to-amber-50'
             }`}
             initial={{ scale: 0.5, y: 40, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -101,127 +132,36 @@ export default function MathFeedbackOverlay({
             transition={{ type: 'spring', damping: 22, stiffness: 400 }}
             onClick={e => e.stopPropagation()}
           >
-            {/* 顶部渐变条 */}
-            <motion.div
-              className={`h-2 ${
-                isCorrect
-                  ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'
-                  : 'bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400'
-              }`}
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
-            />
+            <motion.div className={`h-2 ${isCorrect ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400' : 'bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400'}`}
+              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.2, duration: 0.4 }} />
 
-            {/* 发光外圈 */}
-            <div className={`absolute -inset-1 rounded-[2rem] -z-10 blur-md opacity-40 ${
-              isCorrect
-                ? 'bg-gradient-to-r from-indigo-300 to-purple-300'
-                : 'bg-gradient-to-r from-amber-300 to-orange-300'
-            }`} />
+            <div className={`absolute -inset-1 rounded-[2rem] -z-10 blur-md opacity-40 ${isCorrect ? 'bg-gradient-to-r from-indigo-300 to-purple-300' : 'bg-gradient-to-r from-amber-300 to-orange-300'}`} />
 
             <div className="px-7 pt-7 pb-7">
-              {/* 吉祥物 + 轨道 */}
-              <div className="relative w-24 h-24 mx-auto mb-4">
-                {isCorrect && ORBIT_ITEMS.map((item, i) => (
-                  <motion.span
-                    key={i}
-                    className="absolute text-lg"
-                    style={{
-                      left: '50%', top: '50%',
-                      marginLeft: '-10px', marginTop: '-10px',
-                    }}
-                    animate={{
-                      x: [
-                        Math.cos((i * Math.PI * 2) / 4) * 42,
-                        Math.cos((i * Math.PI * 2) / 4 + Math.PI * 2) * 42,
-                      ],
-                      y: [
-                        Math.sin((i * Math.PI * 2) / 4) * 42,
-                        Math.sin((i * Math.PI * 2) / 4 + Math.PI * 2) * 42,
-                      ],
-                    }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-                  >
-                    {item}
-                  </motion.span>
-                ))}
+              {isCorrect ? <CheckIcon /> : <BulbIcon />}
 
-                <motion.div
-                  className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center shadow-lg ${
-                    isCorrect
-                      ? 'bg-gradient-to-br from-indigo-200 to-purple-100'
-                      : 'bg-gradient-to-br from-amber-200 to-orange-100'
-                  }`}
-                  initial={{ scale: 0, rotate: -30 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: 'spring', damping: 15, stiffness: 300, delay: 0.1 }}
-                >
-                  <motion.span
-                    className="text-5xl"
-                    animate={
-                      isCorrect
-                        ? { scale: [1, 1.15, 1], rotate: [0, -8, 8, 0] }
-                        : { scale: [1, 1.05, 1] }
-                    }
-                    transition={{
-                      duration: isCorrect ? 0.8 : 1.5,
-                      repeat: Infinity,
-                      repeatDelay: isCorrect ? 0.5 : 0,
-                    }}
-                  >
-                    {isCorrect ? '🥳' : '🤗'}
-                  </motion.span>
-                </motion.div>
-              </div>
-
-              {/* 鼓励消息 */}
-              <motion.p
-                className={`text-xl font-extrabold mb-2 ${
-                  isCorrect ? 'text-indigo-600' : 'text-amber-600'
-                }`}
-                initial={{ y: 10, opacity: 0, scale: 0.9 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                transition={{ delay: 0.25, type: 'spring', damping: 20 }}
-              >
+              <motion.p className={`text-xl font-extrabold mb-2 ${isCorrect ? 'text-indigo-600' : 'text-amber-600'}`}
+                initial={{ y: 10, opacity: 0, scale: 0.9 }} animate={{ y: 0, opacity: 1, scale: 1 }}
+                transition={{ delay: 0.25, type: 'spring', damping: 20 }}>
                 {message}
               </motion.p>
 
-              {/* 错误时显示正确答案 */}
               {!isCorrect && correctAnswer && (
-                <motion.div
-                  className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-4 py-2 mb-4"
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.32 }}
-                >
+                <motion.div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-full px-4 py-2 mb-4"
+                  initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.32 }}>
                   <span className="text-sm text-amber-500">正确答案是</span>
                   <span className="text-2xl font-bold text-amber-700">{correctAnswer}</span>
                 </motion.div>
               )}
 
-              {/* 继续按钮 */}
-              <motion.button
-                type="button"
-                className={`w-full px-6 py-4 rounded-2xl text-white font-extrabold text-lg min-h-[56px]
-                  shadow-lg active:shadow-sm transition-shadow touch-manipulation ${
-                  isCorrect
-                    ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400'
-                    : 'bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400'
+              <motion.button type="button"
+                className={`w-full px-6 py-4 rounded-2xl text-white font-extrabold text-lg min-h-[56px] shadow-lg active:shadow-sm transition-shadow touch-manipulation ${
+                  isCorrect ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400' : 'bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400'
                 }`}
-                initial={{ y: 15, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
+                initial={{ y: 15, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.38, type: 'spring', damping: 20 }}
-                whileTap={{ scale: 0.93 }}
-                onClick={onContinue}
-              >
-                <motion.span
-                  animate={{ scale: [1, 1.03, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="inline-block"
-                >
-                  {isCorrect ? '继续冒险 →' : '再试一次！'}
-                </motion.span>
+                whileTap={{ scale: 0.93 }} onClick={onContinue}>
+                {isCorrect ? '继续冒险 →' : '再试一次！'}
               </motion.button>
             </div>
           </motion.div>

@@ -8,18 +8,101 @@ interface FeedbackOverlayProps {
   onContinue: () => void
 }
 
-/** 正确时的撒花 emoji */
 const CONFETTI_EMOJIS = ['⭐', '🌟', '✨', '🎉', '🎊', '🎈', '💖', '🌈', '🦋', '🎵', '🍭', '🧁']
 
-/** 答对时的旋转装饰 */
-const ORBIT_ITEMS = ['⭐', '💫', '✨', '🌟']
+/** SVG 打勾图标 — 答对时使用，路径动画绘制 */
+function CheckIcon() {
+  return (
+    <div className="relative w-24 h-24 mx-auto mb-4">
+      <motion.div
+        className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-300 to-teal-200 flex items-center justify-center shadow-lg"
+        initial={{ scale: 0, rotate: -30 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: 'spring', damping: 12, stiffness: 300, delay: 0.1 }}
+      >
+        <svg viewBox="0 0 80 80" className="w-14 h-14">
+          <motion.path
+            d="M22 42 L34 56 L58 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ delay: 0.3, duration: 0.5, ease: 'easeOut' }}
+          />
+        </svg>
+      </motion.div>
+      {/* 脉冲光环 */}
+      <motion.div
+        className="absolute inset-0 rounded-full border-4 border-emerald-300/50"
+        initial={{ scale: 1, opacity: 0.8 }}
+        animate={{ scale: 1.4, opacity: 0 }}
+        transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 0.5 }}
+      />
+    </div>
+  )
+}
+
+/** SVG 灯泡图标 — 答错时使用，温暖鼓励 */
+function BulbIcon() {
+  return (
+    <div className="relative w-24 h-24 mx-auto mb-4">
+      <motion.div
+        className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-200 to-orange-100 flex items-center justify-center shadow-lg"
+        initial={{ scale: 0, rotate: 15 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: 'spring', damping: 12, stiffness: 300, delay: 0.1 }}
+      >
+        <svg viewBox="0 0 80 80" className="w-14 h-14">
+          {/* 灯泡玻璃 */}
+          <motion.path
+            d="M30 38 C30 24, 50 24, 50 38 C50 44, 46 48, 46 52 L34 52 C34 48, 30 44, 30 38Z"
+            fill="#FBBF24"
+            stroke="#F59E0B"
+            strokeWidth="2"
+            initial={{ opacity: 0.5 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.4 }}
+          />
+          {/* 灯泡底座 */}
+          <rect x="35" y="53" width="10" height="4" rx="2" fill="#F59E0B" />
+          <rect x="36" y="58" width="8" height="3" rx="1.5" fill="#D97706" />
+          {/* 发光光线 */}
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+            const rad = (angle * Math.PI) / 180
+            const x1 = 40 + Math.cos(rad) * 22
+            const y1 = 35 + Math.sin(rad) * 22
+            const x2 = 40 + Math.cos(rad) * 28
+            const y2 = 35 + Math.sin(rad) * 28
+            return (
+              <motion.line
+                key={i}
+                x1={x1} y1={y1} x2={x2} y2={y2}
+                stroke="#FCD34D"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.8, 0.4] }}
+                transition={{ delay: 0.4 + i * 0.05, duration: 1.5, repeat: Infinity }}
+              />
+            )
+          })}
+        </svg>
+      </motion.div>
+      {/* 柔和脉冲 */}
+      <motion.div
+        className="absolute inset-0 rounded-full border-4 border-amber-300/40"
+        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      />
+    </div>
+  )
+}
 
 export default function FeedbackOverlay({
-  isVisible,
-  isCorrect,
-  message,
-  correctAnswer,
-  onContinue,
+  isVisible, isCorrect, message, correctAnswer, onContinue,
 }: FeedbackOverlayProps) {
   return (
     <AnimatePresence>
@@ -39,7 +122,7 @@ export default function FeedbackOverlay({
               : 'bg-gradient-to-b from-amber-500/15 via-orange-400/10 to-yellow-500/15'
           } backdrop-blur-sm`} />
 
-          {/* ═══ 正确：满屏撒花 ═══ */}
+          {/* 正确：满屏撒花 */}
           {isCorrect && (
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               {CONFETTI_EMOJIS.map((emoji, i) => (
@@ -70,17 +153,14 @@ export default function FeedbackOverlay({
             </div>
           )}
 
-          {/* ═══ 错误：温柔浮动爱心 ═══ */}
+          {/* 错误：浮动爱心 */}
           {!isCorrect && (
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
               {['💛', '🧡', '💕', '🌸', '🌻'].map((emoji, i) => (
                 <motion.span
                   key={i}
                   className="absolute text-xl"
-                  style={{
-                    left: `${15 + i * 16}%`,
-                    top: '60%',
-                  }}
+                  style={{ left: `${15 + i * 16}%`, top: '60%' }}
                   initial={{ y: 0, opacity: 0, scale: 0.5 }}
                   animate={{
                     y: [0, -60 - Math.random() * 40],
@@ -88,11 +168,8 @@ export default function FeedbackOverlay({
                     scale: [0.5, 1, 0.8],
                   }}
                   transition={{
-                    duration: 2,
-                    delay: i * 0.15,
-                    ease: 'easeOut',
-                    repeat: Infinity,
-                    repeatDelay: 1,
+                    duration: 2, delay: i * 0.15, ease: 'easeOut',
+                    repeat: Infinity, repeatDelay: 1,
                   }}
                 >
                   {emoji}
@@ -101,7 +178,7 @@ export default function FeedbackOverlay({
             </div>
           )}
 
-          {/* ═══ 主卡片 ═══ */}
+          {/* 主卡片 */}
           <motion.div
             className={`w-full max-w-[340px] md:max-w-[380px] rounded-[2rem] relative overflow-hidden shadow-2xl ${
               isCorrect
@@ -134,72 +211,7 @@ export default function FeedbackOverlay({
             }`} />
 
             <div className="px-7 pt-7 pb-7">
-              {/* ── 吉祥物 + 轨道星星 ── */}
-              <div className="relative w-24 h-24 mx-auto mb-4">
-                {/* 轨道装饰 */}
-                {isCorrect && ORBIT_ITEMS.map((item, i) => (
-                  <motion.span
-                    key={i}
-                    className="absolute text-lg"
-                    style={{
-                      left: '50%',
-                      top: '50%',
-                      marginLeft: '-10px',
-                      marginTop: '-10px',
-                    }}
-                    animate={{
-                      x: [
-                        Math.cos((i * Math.PI * 2) / 4) * 42,
-                        Math.cos((i * Math.PI * 2) / 4 + Math.PI * 2) * 42,
-                      ],
-                      y: [
-                        Math.sin((i * Math.PI * 2) / 4) * 42,
-                        Math.sin((i * Math.PI * 2) / 4 + Math.PI * 2) * 42,
-                      ],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: 'linear',
-                    }}
-                  >
-                    {item}
-                  </motion.span>
-                ))}
-
-                {/* 中心圆形背景 */}
-                <motion.div
-                  className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center shadow-lg ${
-                    isCorrect
-                      ? 'bg-gradient-to-br from-emerald-200 to-teal-100'
-                      : 'bg-gradient-to-br from-amber-200 to-orange-100'
-                  }`}
-                  initial={{ scale: 0, rotate: -30 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{
-                    type: 'spring',
-                    damping: 15,
-                    stiffness: 300,
-                    delay: 0.1,
-                  }}
-                >
-                  <motion.span
-                    className="text-5xl"
-                    animate={
-                      isCorrect
-                        ? { scale: [1, 1.15, 1], rotate: [0, -8, 8, 0] }
-                        : { scale: [1, 1.05, 1] }
-                    }
-                    transition={{
-                      duration: isCorrect ? 0.8 : 1.5,
-                      repeat: Infinity,
-                      repeatDelay: isCorrect ? 0.5 : 0,
-                    }}
-                  >
-                    {isCorrect ? '🥳' : '🤗'}
-                  </motion.span>
-                </motion.div>
-              </div>
+              {isCorrect ? <CheckIcon /> : <BulbIcon />}
 
               {/* 鼓励消息 */}
               <motion.p
@@ -241,13 +253,7 @@ export default function FeedbackOverlay({
                 whileTap={{ scale: 0.93 }}
                 onClick={onContinue}
               >
-                <motion.span
-                  animate={{ scale: [1, 1.03, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="inline-block"
-                >
-                  {isCorrect ? '继续冒险 →' : '再试一次！'}
-                </motion.span>
+                {isCorrect ? '继续冒险 →' : '再试一次！'}
               </motion.button>
             </div>
           </motion.div>
