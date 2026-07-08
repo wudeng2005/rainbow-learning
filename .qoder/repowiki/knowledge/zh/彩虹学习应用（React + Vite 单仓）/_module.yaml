@@ -1,0 +1,19 @@
+schema_version: 1
+module_path: ""
+title: 彩虹学习应用（React + Vite 单仓）
+scope:
+    - README.md
+    - AGENTS.md
+    - .gitignore
+    - package.json
+    - package-lock.json
+    - index.html
+    - vite.config.ts
+    - tsconfig.json
+    - tsconfig.app.json
+    - tsconfig.node.json
+    - eslint.config.js
+    - vercel.json
+source_files: []
+depends_on: []
+related_to: []

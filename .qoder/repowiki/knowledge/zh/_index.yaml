@@ -3,7 +3,7 @@ schema_version: 1
 locale: zh-CN
 branch: main
 nodes_managed: true
-exported_at: "2026-07-08T07:35:56Z"
+exported_at: "2026-07-08T08:05:32Z"
 modules:
     "":
         dir_name: 儿童学习应用（数学+英语双模块）
@@ -12,6 +12,15 @@ modules:
         source_files: []
         children:
             - scripts
+        depends_on: []
+        related_to: []
+    app_source:
+        dir_name: 彩虹学习应用前端源码（React + Zustand）
+        title: 彩虹学习应用前端源码（React + Zustand）
+        scope:
+            - src/
+        source_files: []
+        children: []
         depends_on: []
         related_to: []
     scripts:
