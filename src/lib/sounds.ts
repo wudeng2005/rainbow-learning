@@ -137,6 +137,37 @@ export function playWrongSound() {
   setTimeout(() => speakWrongEncouragement(), 400)
 }
 
+/** 播放汉字读音音频（返回 Promise，音频播完时 resolve） */
+export function playCharAudio(audioPath: string | null | undefined): Promise<void> {
+  return new Promise((resolve) => {
+    if (!audioPath) { resolve(); return }
+    try {
+      const audio = new Audio(audioPath)
+      audio.volume = 0.85
+      audio.onended = () => resolve()
+      audio.onerror = () => resolve()
+      audio.play().catch(() => resolve())
+    } catch {
+      resolve()
+    }
+  })
+}
+
+/** 播放故事句子语音（返回 Promise，音频播完时 resolve） */
+export function playStoryAudio(storyId: string, sentenceIndex: number): Promise<void> {
+  return new Promise((resolve) => {
+    try {
+      const audio = new Audio(`/audio/stories/${storyId}_s${sentenceIndex}.mp3`)
+      audio.volume = 1
+      audio.onended = () => resolve()
+      audio.onerror = () => resolve()
+      audio.play().catch(() => resolve())
+    } catch {
+      resolve()
+    }
+  })
+}
+
 /** 获得宝石音效：清脆叮铃 */
 export function playGemSound() {
   try {

@@ -208,3 +208,33 @@ export interface AnswerResult {
   isCorrect: boolean
   selectedIndex: number
 }
+
+/** 故事句子 */
+export interface StorySentence {
+  text: string
+  /** 本句引入的新字 */
+  newChars: string[]
+  /** 场景 emoji（用作插图占位） */
+  scene: string
+}
+
+/** 故事课文 */
+export interface Story {
+  id: string
+  /** 对应天数 (1-90) */
+  day: number
+  title: string
+  /** 封面 emoji */
+  coverEmoji: string
+  sentences: StorySentence[]
+  /** 本课新字列表（所有 sentences 中 newChars 的并集） */
+  newCharacters: string[]
+}
+
+/** 汉字信息（拼音/含义/组词/emoji） */
+export interface CharacterInfo {
+  pinyin: string
+  meaning: string
+  words: string[]
+  emoji: string | null
+}

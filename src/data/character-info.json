@@ -1,0 +1,2459 @@
+{
+  "一": {
+    "pinyin": "yī",
+    "meaning": "数词，表示1",
+    "words": [
+      "一个",
+      "一起"
+    ],
+    "emoji": "1️⃣"
+  },
+  "二": {
+    "pinyin": "èr",
+    "meaning": "数词，表示2",
+    "words": [
+      "二月",
+      "第二"
+    ],
+    "emoji": "2️⃣"
+  },
+  "三": {
+    "pinyin": "sān",
+    "meaning": "数词，表示3",
+    "words": [
+      "三月",
+      "三个"
+    ],
+    "emoji": "3️⃣"
+  },
+  "四": {
+    "pinyin": "sì",
+    "meaning": "数词，表示4",
+    "words": [
+      "四个",
+      "四方"
+    ],
+    "emoji": "4️⃣"
+  },
+  "五": {
+    "pinyin": "wǔ",
+    "meaning": "数词，表示5",
+    "words": [
+      "五个",
+      "五天"
+    ],
+    "emoji": "5️⃣"
+  },
+  "六": {
+    "pinyin": "liù",
+    "meaning": "数词，表示6",
+    "words": [
+      "六月",
+      "六一"
+    ],
+    "emoji": null
+  },
+  "七": {
+    "pinyin": "qī",
+    "meaning": "数词，表示7",
+    "words": [
+      "七天",
+      "七月"
+    ],
+    "emoji": null
+  },
+  "八": {
+    "pinyin": "bā",
+    "meaning": "数词，表示8",
+    "words": [
+      "八个",
+      "八月"
+    ],
+    "emoji": null
+  },
+  "九": {
+    "pinyin": "jiǔ",
+    "meaning": "数词，表示9",
+    "words": [
+      "九天",
+      "九月"
+    ],
+    "emoji": null
+  },
+  "十": {
+    "pinyin": "shí",
+    "meaning": "数词，表示10",
+    "words": [
+      "十个",
+      "十月"
+    ],
+    "emoji": null
+  },
+  "百": {
+    "pinyin": "bǎi",
+    "meaning": "数词，表示100",
+    "words": [
+      "一百",
+      "百花"
+    ],
+    "emoji": null
+  },
+  "上": {
+    "pinyin": "shàng",
+    "meaning": "位置在高处",
+    "words": [
+      "上面",
+      "上学"
+    ],
+    "emoji": "⬆️"
+  },
+  "下": {
+    "pinyin": "xià",
+    "meaning": "位置在低处",
+    "words": [
+      "下面",
+      "下雨"
+    ],
+    "emoji": "⬇️"
+  },
+  "左": {
+    "pinyin": "zuǒ",
+    "meaning": "面向前时的左边",
+    "words": [
+      "左右",
+      "左边"
+    ],
+    "emoji": null
+  },
+  "右": {
+    "pinyin": "yòu",
+    "meaning": "面向前时的右边",
+    "words": [
+      "右边",
+      "左右"
+    ],
+    "emoji": null
+  },
+  "前": {
+    "pinyin": "qián",
+    "meaning": "面朝的方向",
+    "words": [
+      "前面",
+      "前后"
+    ],
+    "emoji": null
+  },
+  "后": {
+    "pinyin": "hòu",
+    "meaning": "背对的方向",
+    "words": [
+      "后面",
+      "前后"
+    ],
+    "emoji": null
+  },
+  "里": {
+    "pinyin": "lǐ",
+    "meaning": "内部",
+    "words": [
+      "里面",
+      "这里"
+    ],
+    "emoji": null
+  },
+  "外": {
+    "pinyin": "wài",
+    "meaning": "外部",
+    "words": [
+      "外面",
+      "外公"
+    ],
+    "emoji": null
+  },
+  "中": {
+    "pinyin": "zhōng",
+    "meaning": "中间",
+    "words": [
+      "中国",
+      "中间"
+    ],
+    "emoji": null
+  },
+  "大": {
+    "pinyin": "dà",
+    "meaning": "体积或面积广",
+    "words": [
+      "大家",
+      "大小"
+    ],
+    "emoji": "🐘"
+  },
+  "小": {
+    "pinyin": "xiǎo",
+    "meaning": "体积或面积窄",
+    "words": [
+      "小鸟",
+      "大小"
+    ],
+    "emoji": "🐜"
+  },
+  "多": {
+    "pinyin": "duō",
+    "meaning": "数量大",
+    "words": [
+      "多少",
+      "许多"
+    ],
+    "emoji": null
+  },
+  "少": {
+    "pinyin": "shǎo",
+    "meaning": "数量小",
+    "words": [
+      "多少",
+      "很少"
+    ],
+    "emoji": null
+  },
+  "长": {
+    "pinyin": "cháng",
+    "meaning": "两端距离大",
+    "words": [
+      "长大",
+      "长短"
+    ],
+    "emoji": null
+  },
+  "高": {
+    "pinyin": "gāo",
+    "meaning": "从下到上距离大",
+    "words": [
+      "高兴",
+      "高山"
+    ],
+    "emoji": null
+  },
+  "好": {
+    "pinyin": "hǎo",
+    "meaning": "优点多的",
+    "words": [
+      "好人",
+      "好看"
+    ],
+    "emoji": null
+  },
+  "白": {
+    "pinyin": "bái",
+    "meaning": "像雪的颜色",
+    "words": [
+      "白天",
+      "白云"
+    ],
+    "emoji": "⬜"
+  },
+  "红": {
+    "pinyin": "hóng",
+    "meaning": "像血的颜色",
+    "words": [
+      "红色",
+      "红花"
+    ],
+    "emoji": "🔴"
+  },
+  "绿": {
+    "pinyin": "lǜ",
+    "meaning": "像草的颜色",
+    "words": [
+      "绿色",
+      "绿草"
+    ],
+    "emoji": "🟢"
+  },
+  "黄": {
+    "pinyin": "huáng",
+    "meaning": "像金子的颜色",
+    "words": [
+      "黄色",
+      "黄牛"
+    ],
+    "emoji": "🟡"
+  },
+  "冷": {
+    "pinyin": "lěng",
+    "meaning": "温度低",
+    "words": [
+      "冷热",
+      "冷水"
+    ],
+    "emoji": null
+  },
+  "热": {
+    "pinyin": "rè",
+    "meaning": "温度高",
+    "words": [
+      "冷热",
+      "热水"
+    ],
+    "emoji": null
+  },
+  "天": {
+    "pinyin": "tiān",
+    "meaning": "天空",
+    "words": [
+      "天上",
+      "今天"
+    ],
+    "emoji": "🌤️"
+  },
+  "地": {
+    "pinyin": "dì",
+    "meaning": "大地",
+    "words": [
+      "地方",
+      "天地"
+    ],
+    "emoji": "🌍"
+  },
+  "日": {
+    "pinyin": "rì",
+    "meaning": "太阳",
+    "words": [
+      "日出",
+      "生日"
+    ],
+    "emoji": "☀️"
+  },
+  "月": {
+    "pinyin": "yuè",
+    "meaning": "月亮",
+    "words": [
+      "月亮",
+      "日月"
+    ],
+    "emoji": "🌙"
+  },
+  "星": {
+    "pinyin": "xīng",
+    "meaning": "天上的发光体",
+    "words": [
+      "星星",
+      "明星"
+    ],
+    "emoji": "⭐"
+  },
+  "云": {
+    "pinyin": "yún",
+    "meaning": "天空中的水汽",
+    "words": [
+      "白云",
+      "云朵"
+    ],
+    "emoji": "☁️"
+  },
+  "风": {
+    "pinyin": "fēng",
+    "meaning": "流动的空气",
+    "words": [
+      "大风",
+      "风雨"
+    ],
+    "emoji": null
+  },
+  "雨": {
+    "pinyin": "yǔ",
+    "meaning": "从天空落下的水滴",
+    "words": [
+      "下雨",
+      "雨水"
+    ],
+    "emoji": "🌧️"
+  },
+  "雪": {
+    "pinyin": "xuě",
+    "meaning": "天空落下的冰晶",
+    "words": [
+      "下雪",
+      "雪花"
+    ],
+    "emoji": "❄️"
+  },
+  "花": {
+    "pinyin": "huā",
+    "meaning": "植物的繁殖器官",
+    "words": [
+      "花朵",
+      "花园"
+    ],
+    "emoji": "🌸"
+  },
+  "草": {
+    "pinyin": "cǎo",
+    "meaning": "地上长的绿色植物",
+    "words": [
+      "小草",
+      "草地"
+    ],
+    "emoji": "🌿"
+  },
+  "树": {
+    "pinyin": "shù",
+    "meaning": "高大的植物",
+    "words": [
+      "树木",
+      "大树"
+    ],
+    "emoji": "🌳"
+  },
+  "木": {
+    "pinyin": "mù",
+    "meaning": "树木",
+    "words": [
+      "木头",
+      "树木"
+    ],
+    "emoji": "🪵"
+  },
+  "山": {
+    "pinyin": "shān",
+    "meaning": "地面上高耸的部分",
+    "words": [
+      "山上",
+      "高山"
+    ],
+    "emoji": "⛰️"
+  },
+  "水": {
+    "pinyin": "shuǐ",
+    "meaning": "一种透明液体",
+    "words": [
+      "水果",
+      "雨水"
+    ],
+    "emoji": "💧"
+  },
+  "火": {
+    "pinyin": "huǒ",
+    "meaning": "燃烧时发出的光和热",
+    "words": [
+      "火车",
+      "大火"
+    ],
+    "emoji": "🔥"
+  },
+  "土": {
+    "pinyin": "tǔ",
+    "meaning": "地面上的泥沙",
+    "words": [
+      "土地",
+      "泥土"
+    ],
+    "emoji": "🟫"
+  },
+  "石": {
+    "pinyin": "shí",
+    "meaning": "坚硬的矿物",
+    "words": [
+      "石头",
+      "石子"
+    ],
+    "emoji": "🪨"
+  },
+  "人": {
+    "pinyin": "rén",
+    "meaning": "人类",
+    "words": [
+      "人民",
+      "大人"
+    ],
+    "emoji": "🧑"
+  },
+  "口": {
+    "pinyin": "kǒu",
+    "meaning": "嘴巴",
+    "words": [
+      "开口",
+      "口水"
+    ],
+    "emoji": "👄"
+  },
+  "手": {
+    "pinyin": "shǒu",
+    "meaning": "人体上肢",
+    "words": [
+      "手心",
+      "小手"
+    ],
+    "emoji": "✋"
+  },
+  "目": {
+    "pinyin": "mù",
+    "meaning": "眼睛",
+    "words": [
+      "目光",
+      "目前"
+    ],
+    "emoji": "👁️"
+  },
+  "耳": {
+    "pinyin": "ěr",
+    "meaning": "耳朵",
+    "words": [
+      "耳朵",
+      "耳机"
+    ],
+    "emoji": "👂"
+  },
+  "头": {
+    "pinyin": "tóu",
+    "meaning": "身体最上部",
+    "words": [
+      "头发",
+      "开头"
+    ],
+    "emoji": null
+  },
+  "心": {
+    "pinyin": "xīn",
+    "meaning": "心脏",
+    "words": [
+      "心里",
+      "开心"
+    ],
+    "emoji": null
+  },
+  "牛": {
+    "pinyin": "niú",
+    "meaning": "一种家畜",
+    "words": [
+      "水牛",
+      "牛奶"
+    ],
+    "emoji": "🐄"
+  },
+  "马": {
+    "pinyin": "mǎ",
+    "meaning": "一种动物",
+    "words": [
+      "小马",
+      "马上"
+    ],
+    "emoji": "🐴"
+  },
+  "羊": {
+    "pinyin": "yáng",
+    "meaning": "一种家畜",
+    "words": [
+      "山羊",
+      "小羊"
+    ],
+    "emoji": "🐑"
+  },
+  "鸟": {
+    "pinyin": "niǎo",
+    "meaning": "有翅膀会飞的动物",
+    "words": [
+      "小鸟",
+      "飞鸟"
+    ],
+    "emoji": "🐦"
+  },
+  "鱼": {
+    "pinyin": "yú",
+    "meaning": "生活在水中的动物",
+    "words": [
+      "小鱼",
+      "金鱼"
+    ],
+    "emoji": "🐟"
+  },
+  "虫": {
+    "pinyin": "chóng",
+    "meaning": "昆虫",
+    "words": [
+      "小虫",
+      "虫子"
+    ],
+    "emoji": "🐛"
+  },
+  "爸": {
+    "pinyin": "bà",
+    "meaning": "父亲",
+    "words": [
+      "爸爸",
+      "爸妈"
+    ],
+    "emoji": null
+  },
+  "妈": {
+    "pinyin": "mā",
+    "meaning": "母亲",
+    "words": [
+      "妈妈",
+      "爸妈"
+    ],
+    "emoji": null
+  },
+  "我": {
+    "pinyin": "wǒ",
+    "meaning": "第一人称代词",
+    "words": [
+      "我们",
+      "自我"
+    ],
+    "emoji": null
+  },
+  "你": {
+    "pinyin": "nǐ",
+    "meaning": "第二人称代词",
+    "words": [
+      "你好",
+      "你们"
+    ],
+    "emoji": null
+  },
+  "他": {
+    "pinyin": "tā",
+    "meaning": "第三人称代词",
+    "words": [
+      "他们",
+      "其他"
+    ],
+    "emoji": null
+  },
+  "去": {
+    "pinyin": "qù",
+    "meaning": "从所在地到别处",
+    "words": [
+      "回去",
+      "去年"
+    ],
+    "emoji": null
+  },
+  "来": {
+    "pinyin": "lái",
+    "meaning": "从别处到这里",
+    "words": [
+      "回来",
+      "过来"
+    ],
+    "emoji": null
+  },
+  "走": {
+    "pinyin": "zǒu",
+    "meaning": "用脚移动",
+    "words": [
+      "走路",
+      "行走"
+    ],
+    "emoji": null
+  },
+  "跑": {
+    "pinyin": "pǎo",
+    "meaning": "快速地走",
+    "words": [
+      "跑步",
+      "快跑"
+    ],
+    "emoji": null
+  },
+  "飞": {
+    "pinyin": "fēi",
+    "meaning": "在空中移动",
+    "words": [
+      "飞机",
+      "飞鸟飞"
+    ],
+    "emoji": null
+  },
+  "看": {
+    "pinyin": "kàn",
+    "meaning": "用眼睛观察",
+    "words": [
+      "看见",
+      "看书"
+    ],
+    "emoji": null
+  },
+  "见": {
+    "pinyin": "jiàn",
+    "meaning": "看到",
+    "words": [
+      "看见",
+      "再见"
+    ],
+    "emoji": null
+  },
+  "说": {
+    "pinyin": "shuō",
+    "meaning": "用嘴表达",
+    "words": [
+      "说话",
+      "小说"
+    ],
+    "emoji": null
+  },
+  "叫": {
+    "pinyin": "jiào",
+    "meaning": "大声喊",
+    "words": [
+      "大叫",
+      "叫声"
+    ],
+    "emoji": null
+  },
+  "笑": {
+    "pinyin": "xiào",
+    "meaning": "露出愉快的表情",
+    "words": [
+      "大笑",
+      "笑容"
+    ],
+    "emoji": null
+  },
+  "哭": {
+    "pinyin": "kū",
+    "meaning": "流泪",
+    "words": [
+      "大哭",
+      "哭声"
+    ],
+    "emoji": null
+  },
+  "坐": {
+    "pinyin": "zuò",
+    "meaning": "把臀部放在椅子上",
+    "words": [
+      "坐下",
+      "请坐"
+    ],
+    "emoji": null
+  },
+  "站": {
+    "pinyin": "zhàn",
+    "meaning": "直立不动",
+    "words": [
+      "站立",
+      "站住"
+    ],
+    "emoji": null
+  },
+  "打": {
+    "pinyin": "dǎ",
+    "meaning": "用手或器具撞击",
+    "words": [
+      "打开",
+      "打球"
+    ],
+    "emoji": null
+  },
+  "画": {
+    "pinyin": "huà",
+    "meaning": "用笔描出图形",
+    "words": [
+      "画画",
+      "画家"
+    ],
+    "emoji": null
+  },
+  "写": {
+    "pinyin": "xiě",
+    "meaning": "用笔记文字",
+    "words": [
+      "写字",
+      "写作业"
+    ],
+    "emoji": null
+  },
+  "读": {
+    "pinyin": "dú",
+    "meaning": "看着文字念出声",
+    "words": [
+      "读书",
+      "朗读"
+    ],
+    "emoji": null
+  },
+  "玩": {
+    "pinyin": "wán",
+    "meaning": "做游戏",
+    "words": [
+      "玩耍",
+      "好玩"
+    ],
+    "emoji": null
+  },
+  "的": {
+    "pinyin": "de",
+    "meaning": "结构助词",
+    "words": [
+      "好的",
+      "我的"
+    ],
+    "emoji": null
+  },
+  "了": {
+    "pinyin": "le",
+    "meaning": "表示动作完成",
+    "words": [
+      "好了",
+      "来了"
+    ],
+    "emoji": null
+  },
+  "不": {
+    "pinyin": "bù",
+    "meaning": "表示否定",
+    "words": [
+      "不好",
+      "不去"
+    ],
+    "emoji": null
+  },
+  "在": {
+    "pinyin": "zài",
+    "meaning": "存在",
+    "words": [
+      "在家",
+      "正在"
+    ],
+    "emoji": null
+  },
+  "有": {
+    "pinyin": "yǒu",
+    "meaning": "存在",
+    "words": [
+      "有关",
+      "没有"
+    ],
+    "emoji": null
+  },
+  "没": {
+    "pinyin": "méi",
+    "meaning": "无",
+    "words": [
+      "没有",
+      "没事"
+    ],
+    "emoji": null
+  },
+  "和": {
+    "pinyin": "hé",
+    "meaning": "与",
+    "words": [
+      "和平",
+      "我和你"
+    ],
+    "emoji": null
+  },
+  "是": {
+    "pinyin": "shì",
+    "meaning": "表示肯定",
+    "words": [
+      "不是",
+      "可是"
+    ],
+    "emoji": null
+  },
+  "年": {
+    "pinyin": "nián",
+    "meaning": "一年",
+    "words": [
+      "过年",
+      "新年"
+    ],
+    "emoji": null
+  },
+  "今": {
+    "pinyin": "jīn",
+    "meaning": "现在",
+    "words": [
+      "今天",
+      "今年"
+    ],
+    "emoji": null
+  },
+  "春": {
+    "pinyin": "chūn",
+    "meaning": "一年中的第一季",
+    "words": [
+      "春天",
+      "春风"
+    ],
+    "emoji": null
+  },
+  "夏": {
+    "pinyin": "xià",
+    "meaning": "一年中的第二季",
+    "words": [
+      "夏天",
+      "夏日"
+    ],
+    "emoji": null
+  },
+  "秋": {
+    "pinyin": "qiū",
+    "meaning": "一年中的第三季",
+    "words": [
+      "秋天",
+      "秋风"
+    ],
+    "emoji": null
+  },
+  "冬": {
+    "pinyin": "dōng",
+    "meaning": "一年中的第四季",
+    "words": [
+      "冬天",
+      "冬日"
+    ],
+    "emoji": null
+  },
+  "河": {
+    "pinyin": "hé",
+    "meaning": "天然的水道",
+    "words": [
+      "小河",
+      "河水"
+    ],
+    "emoji": null
+  },
+  "海": {
+    "pinyin": "hǎi",
+    "meaning": "大洋的边缘",
+    "words": [
+      "大海",
+      "海水"
+    ],
+    "emoji": null
+  },
+  "湖": {
+    "pinyin": "hú",
+    "meaning": "陆地上的大水洼",
+    "words": [
+      "湖水",
+      "西湖"
+    ],
+    "emoji": null
+  },
+  "田": {
+    "pinyin": "tián",
+    "meaning": "种庄稼的土地",
+    "words": [
+      "水田",
+      "田地"
+    ],
+    "emoji": null
+  },
+  "路": {
+    "pinyin": "lù",
+    "meaning": "供人行走的道",
+    "words": [
+      "马路",
+      "走路"
+    ],
+    "emoji": null
+  },
+  "桥": {
+    "pinyin": "qiáo",
+    "meaning": "架在水上或路上的建筑",
+    "words": [
+      "小桥",
+      "石桥"
+    ],
+    "emoji": null
+  },
+  "门": {
+    "pinyin": "mén",
+    "meaning": "出入口",
+    "words": [
+      "大门",
+      "门口"
+    ],
+    "emoji": null
+  },
+  "窗": {
+    "pinyin": "chuāng",
+    "meaning": "墙上透光的洞",
+    "words": [
+      "窗户",
+      "开窗"
+    ],
+    "emoji": null
+  },
+  "竹": {
+    "pinyin": "zhú",
+    "meaning": "一种植物",
+    "words": [
+      "竹子",
+      "竹林"
+    ],
+    "emoji": null
+  },
+  "林": {
+    "pinyin": "lín",
+    "meaning": "成片的树木",
+    "words": [
+      "竹林",
+      "树林"
+    ],
+    "emoji": null
+  },
+  "狗": {
+    "pinyin": "gǒu",
+    "meaning": "一种家畜",
+    "words": [
+      "小狗",
+      "黄狗"
+    ],
+    "emoji": "🐕"
+  },
+  "猫": {
+    "pinyin": "māo",
+    "meaning": "一种家畜",
+    "words": [
+      "小猫",
+      "猫咪"
+    ],
+    "emoji": "🐈"
+  },
+  "鸡": {
+    "pinyin": "jī",
+    "meaning": "一种家禽",
+    "words": [
+      "小鸡",
+      "母鸡"
+    ],
+    "emoji": "🐔"
+  },
+  "鸭": {
+    "pinyin": "yā",
+    "meaning": "一种水禽",
+    "words": [
+      "小鸭",
+      "鸭子"
+    ],
+    "emoji": "🦆"
+  },
+  "兔": {
+    "pinyin": "tù",
+    "meaning": "一种小动物",
+    "words": [
+      "小兔",
+      "白兔"
+    ],
+    "emoji": "🐰"
+  },
+  "蛇": {
+    "pinyin": "shé",
+    "meaning": "一种爬行动物",
+    "words": [
+      "蛇皮",
+      "小蛇"
+    ],
+    "emoji": null
+  },
+  "眼": {
+    "pinyin": "yǎn",
+    "meaning": "眼睛",
+    "words": [
+      "眼睛",
+      "大眼"
+    ],
+    "emoji": null
+  },
+  "脸": {
+    "pinyin": "liǎn",
+    "meaning": "面部",
+    "words": [
+      "笑脸",
+      "洗脸"
+    ],
+    "emoji": null
+  },
+  "牙": {
+    "pinyin": "yá",
+    "meaning": "嘴里的硬骨",
+    "words": [
+      "刷牙",
+      "大牙"
+    ],
+    "emoji": null
+  },
+  "足": {
+    "pinyin": "zú",
+    "meaning": "脚",
+    "words": [
+      "足球",
+      "手足"
+    ],
+    "emoji": null
+  },
+  "身": {
+    "pinyin": "shēn",
+    "meaning": "躯体",
+    "words": [
+      "身体",
+      "身上"
+    ],
+    "emoji": null
+  },
+  "米": {
+    "pinyin": "mǐ",
+    "meaning": "稻谷去壳后的粒",
+    "words": [
+      "大米",
+      "米饭"
+    ],
+    "emoji": null
+  },
+  "面": {
+    "pinyin": "miàn",
+    "meaning": "面粉做的食物",
+    "words": [
+      "面条",
+      "上面"
+    ],
+    "emoji": null
+  },
+  "果": {
+    "pinyin": "guǒ",
+    "meaning": "植物的果实",
+    "words": [
+      "水果",
+      "果子"
+    ],
+    "emoji": "🍎"
+  },
+  "瓜": {
+    "pinyin": "guā",
+    "meaning": "蔓生植物的果实",
+    "words": [
+      "西瓜",
+      "瓜果"
+    ],
+    "emoji": null
+  },
+  "奶": {
+    "pinyin": "nǎi",
+    "meaning": "乳汁",
+    "words": [
+      "牛奶",
+      "奶奶"
+    ],
+    "emoji": null
+  },
+  "茶": {
+    "pinyin": "chá",
+    "meaning": "一种饮料",
+    "words": [
+      "茶叶",
+      "喝茶"
+    ],
+    "emoji": null
+  },
+  "饭": {
+    "pinyin": "fàn",
+    "meaning": "煮熟的米食",
+    "words": [
+      "吃饭",
+      "午饭"
+    ],
+    "emoji": null
+  },
+  "菜": {
+    "pinyin": "cài",
+    "meaning": "蔬菜",
+    "words": [
+      "种菜",
+      "白菜"
+    ],
+    "emoji": null
+  },
+  "书": {
+    "pinyin": "shū",
+    "meaning": "装订成册的著作",
+    "words": [
+      "书本",
+      "读书"
+    ],
+    "emoji": null
+  },
+  "笔": {
+    "pinyin": "bǐ",
+    "meaning": "写字的工具",
+    "words": [
+      "铅笔",
+      "毛笔"
+    ],
+    "emoji": null
+  },
+  "纸": {
+    "pinyin": "zhǐ",
+    "meaning": "写字画画用的薄片",
+    "words": [
+      "白纸",
+      "纸巾"
+    ],
+    "emoji": null
+  },
+  "字": {
+    "pinyin": "zì",
+    "meaning": "文字",
+    "words": [
+      "写字",
+      "汉字"
+    ],
+    "emoji": null
+  },
+  "课": {
+    "pinyin": "kè",
+    "meaning": "教学的科目",
+    "words": [
+      "上课",
+      "课文"
+    ],
+    "emoji": null
+  },
+  "学": {
+    "pinyin": "xué",
+    "meaning": "学习",
+    "words": [
+      "学习",
+      "上学"
+    ],
+    "emoji": null
+  },
+  "校": {
+    "pinyin": "xiào",
+    "meaning": "教学的场所",
+    "words": [
+      "学校",
+      "校园"
+    ],
+    "emoji": null
+  },
+  "师": {
+    "pinyin": "shī",
+    "meaning": "传授知识的人",
+    "words": [
+      "老师",
+      "师长"
+    ],
+    "emoji": null
+  },
+  "包": {
+    "pinyin": "bāo",
+    "meaning": "装东西的容器",
+    "words": [
+      "书包",
+      "面包"
+    ],
+    "emoji": null
+  },
+  "衣": {
+    "pinyin": "yī",
+    "meaning": "穿在身上的",
+    "words": [
+      "衣服",
+      "大衣"
+    ],
+    "emoji": null
+  },
+  "帽": {
+    "pinyin": "mào",
+    "meaning": "戴在头上的",
+    "words": [
+      "帽子",
+      "草帽"
+    ],
+    "emoji": null
+  },
+  "鞋": {
+    "pinyin": "xié",
+    "meaning": "穿在脚上的",
+    "words": [
+      "鞋子",
+      "皮鞋"
+    ],
+    "emoji": null
+  },
+  "吃": {
+    "pinyin": "chī",
+    "meaning": "把食物送入口中",
+    "words": [
+      "吃饭",
+      "好吃"
+    ],
+    "emoji": null
+  },
+  "喝": {
+    "pinyin": "hē",
+    "meaning": "把液体送入口中",
+    "words": [
+      "喝水",
+      "喝茶"
+    ],
+    "emoji": null
+  },
+  "穿": {
+    "pinyin": "chuān",
+    "meaning": "把衣物套在身上",
+    "words": [
+      "穿衣",
+      "穿上"
+    ],
+    "emoji": null
+  },
+  "洗": {
+    "pinyin": "xǐ",
+    "meaning": "用水使干净",
+    "words": [
+      "洗手",
+      "洗脸"
+    ],
+    "emoji": null
+  },
+  "听": {
+    "pinyin": "tīng",
+    "meaning": "用耳朵感受声音",
+    "words": [
+      "听话",
+      "听见"
+    ],
+    "emoji": null
+  },
+  "做": {
+    "pinyin": "zuò",
+    "meaning": "制造",
+    "words": [
+      "做工",
+      "做事"
+    ],
+    "emoji": null
+  },
+  "问": {
+    "pinyin": "wèn",
+    "meaning": "向人打听",
+    "words": [
+      "问好",
+      "学问"
+    ],
+    "emoji": null
+  },
+  "答": {
+    "pinyin": "dá",
+    "meaning": "回答",
+    "words": [
+      "回答",
+      "答案"
+    ],
+    "emoji": null
+  },
+  "想": {
+    "pinyin": "xiǎng",
+    "meaning": "思考",
+    "words": [
+      "想要",
+      "想象"
+    ],
+    "emoji": null
+  },
+  "拿": {
+    "pinyin": "ná",
+    "meaning": "用手取",
+    "words": [
+      "拿起",
+      "拿来"
+    ],
+    "emoji": null
+  },
+  "放": {
+    "pinyin": "fàng",
+    "meaning": "搁置",
+    "words": [
+      "放下",
+      "放心"
+    ],
+    "emoji": null
+  },
+  "开": {
+    "pinyin": "kāi",
+    "meaning": "使关闭的不再关闭",
+    "words": [
+      "打开",
+      "开心"
+    ],
+    "emoji": null
+  },
+  "关": {
+    "pinyin": "guān",
+    "meaning": "使打开的不再打开",
+    "words": [
+      "关心",
+      "关上"
+    ],
+    "emoji": null
+  },
+  "找": {
+    "pinyin": "zhǎo",
+    "meaning": "寻找",
+    "words": [
+      "找到",
+      "寻找"
+    ],
+    "emoji": null
+  },
+  "给": {
+    "pinyin": "gěi",
+    "meaning": "交付",
+    "words": [
+      "给我",
+      "送给"
+    ],
+    "emoji": null
+  },
+  "让": {
+    "pinyin": "ràng",
+    "meaning": "允许",
+    "words": [
+      "让人",
+      "不让"
+    ],
+    "emoji": null
+  },
+  "回": {
+    "pinyin": "huí",
+    "meaning": "从别处到原来的地方",
+    "words": [
+      "回来",
+      "回家"
+    ],
+    "emoji": null
+  },
+  "过": {
+    "pinyin": "guò",
+    "meaning": "经过",
+    "words": [
+      "过来",
+      "过去"
+    ],
+    "emoji": null
+  },
+  "种": {
+    "pinyin": "zhòng",
+    "meaning": "把种子放入土中",
+    "words": [
+      "种花",
+      "种树"
+    ],
+    "emoji": null
+  },
+  "送": {
+    "pinyin": "sòng",
+    "meaning": "把东西给人",
+    "words": [
+      "送给",
+      "送人"
+    ],
+    "emoji": null
+  },
+  "很": {
+    "pinyin": "hěn",
+    "meaning": "非常",
+    "words": [
+      "很好",
+      "很大"
+    ],
+    "emoji": null
+  },
+  "都": {
+    "pinyin": "dōu",
+    "meaning": "全部",
+    "words": [
+      "都是",
+      "全都"
+    ],
+    "emoji": null
+  },
+  "也": {
+    "pinyin": "yě",
+    "meaning": "同样",
+    "words": [
+      "也是",
+      "也好"
+    ],
+    "emoji": null
+  },
+  "真": {
+    "pinyin": "zhēn",
+    "meaning": "的确",
+    "words": [
+      "真好",
+      "真的"
+    ],
+    "emoji": null
+  },
+  "最": {
+    "pinyin": "zuì",
+    "meaning": "极",
+    "words": [
+      "最好",
+      "最大"
+    ],
+    "emoji": null
+  },
+  "美": {
+    "pinyin": "měi",
+    "meaning": "好看",
+    "words": [
+      "美丽",
+      "美好"
+    ],
+    "emoji": null
+  },
+  "亮": {
+    "pinyin": "liàng",
+    "meaning": "光线强",
+    "words": [
+      "月亮",
+      "明亮"
+    ],
+    "emoji": null
+  },
+  "黑": {
+    "pinyin": "hēi",
+    "meaning": "像墨的颜色",
+    "words": [
+      "黑色",
+      "天黑"
+    ],
+    "emoji": null
+  },
+  "快": {
+    "pinyin": "kuài",
+    "meaning": "速度大",
+    "words": [
+      "快乐",
+      "快车"
+    ],
+    "emoji": null
+  },
+  "乐": {
+    "pinyin": "lè",
+    "meaning": "欢喜",
+    "words": [
+      "快乐",
+      "可乐"
+    ],
+    "emoji": null
+  },
+  "早": {
+    "pinyin": "zǎo",
+    "meaning": "天刚亮的时候",
+    "words": [
+      "早上",
+      "早晨"
+    ],
+    "emoji": null
+  },
+  "午": {
+    "pinyin": "wǔ",
+    "meaning": "白天十二点",
+    "words": [
+      "中午",
+      "下午"
+    ],
+    "emoji": null
+  },
+  "晚": {
+    "pinyin": "wǎn",
+    "meaning": "太阳落了以后",
+    "words": [
+      "晚上",
+      "夜晚"
+    ],
+    "emoji": null
+  },
+  "东": {
+    "pinyin": "dōng",
+    "meaning": "太阳升起的方向",
+    "words": [
+      "东方",
+      "东西"
+    ],
+    "emoji": null
+  },
+  "西": {
+    "pinyin": "xī",
+    "meaning": "太阳落的方向",
+    "words": [
+      "西方",
+      "东西"
+    ],
+    "emoji": null
+  },
+  "南": {
+    "pinyin": "nán",
+    "meaning": "面向东时的右边",
+    "words": [
+      "南方",
+      "南瓜"
+    ],
+    "emoji": null
+  },
+  "北": {
+    "pinyin": "běi",
+    "meaning": "面向东时的左边",
+    "words": [
+      "北方",
+      "北风"
+    ],
+    "emoji": null
+  },
+  "家": {
+    "pinyin": "jiā",
+    "meaning": "住所",
+    "words": [
+      "大家",
+      "回家"
+    ],
+    "emoji": null
+  },
+  "公": {
+    "pinyin": "gōng",
+    "meaning": "属于大家的",
+    "words": [
+      "公园",
+      "公开"
+    ],
+    "emoji": null
+  },
+  "车": {
+    "pinyin": "chē",
+    "meaning": "有轮子的交通工具",
+    "words": [
+      "汽车",
+      "火车"
+    ],
+    "emoji": null
+  },
+  "船": {
+    "pinyin": "chuán",
+    "meaning": "水上交通工具",
+    "words": [
+      "小船",
+      "大船"
+    ],
+    "emoji": null
+  },
+  "电": {
+    "pinyin": "diàn",
+    "meaning": "一种能量",
+    "words": [
+      "电话",
+      "电视"
+    ],
+    "emoji": null
+  },
+  "话": {
+    "pinyin": "huà",
+    "meaning": "说出来的内容",
+    "words": [
+      "说话",
+      "电话"
+    ],
+    "emoji": null
+  },
+  "光": {
+    "pinyin": "guāng",
+    "meaning": "明亮的",
+    "words": [
+      "月光",
+      "阳光"
+    ],
+    "emoji": null
+  },
+  "色": {
+    "pinyin": "sè",
+    "meaning": "颜色",
+    "words": [
+      "颜色",
+      "红色"
+    ],
+    "emoji": null
+  },
+  "点": {
+    "pinyin": "diǎn",
+    "meaning": "小的痕迹",
+    "words": [
+      "雨点",
+      "一点"
+    ],
+    "emoji": null
+  },
+  "样": {
+    "pinyin": "yàng",
+    "meaning": "形状",
+    "words": [
+      "一样",
+      "样子"
+    ],
+    "emoji": null
+  },
+  "方": {
+    "pinyin": "fāng",
+    "meaning": "四个角都是直角",
+    "words": [
+      "方向",
+      "四方"
+    ],
+    "emoji": null
+  },
+  "可": {
+    "pinyin": "kě",
+    "meaning": "能够",
+    "words": [
+      "可是",
+      "可以"
+    ],
+    "emoji": null
+  },
+  "拉": {
+    "pinyin": "lā",
+    "meaning": "用力使向自己方向移动",
+    "words": [
+      "拉开",
+      "拉手"
+    ],
+    "emoji": null
+  },
+  "推": {
+    "pinyin": "tuī",
+    "meaning": "用力使向前移动",
+    "words": [
+      "推开",
+      "推门"
+    ],
+    "emoji": null
+  },
+  "抱": {
+    "pinyin": "bào",
+    "meaning": "用手臂围住",
+    "words": [
+      "抱住",
+      "拥抱"
+    ],
+    "emoji": null
+  },
+  "拍": {
+    "pinyin": "pāi",
+    "meaning": "用手掌打",
+    "words": [
+      "拍手",
+      "拍球"
+    ],
+    "emoji": null
+  },
+  "跳": {
+    "pinyin": "tiào",
+    "meaning": "两脚用力离开地面",
+    "words": [
+      "跳高",
+      "跳绳"
+    ],
+    "emoji": null
+  },
+  "爬": {
+    "pinyin": "pá",
+    "meaning": "伏地移动",
+    "words": [
+      "爬山",
+      "爬行"
+    ],
+    "emoji": null
+  },
+  "停": {
+    "pinyin": "tíng",
+    "meaning": "不再前进",
+    "words": [
+      "停下",
+      "停止"
+    ],
+    "emoji": null
+  },
+  "带": {
+    "pinyin": "dài",
+    "meaning": "随身拿着",
+    "words": [
+      "带来",
+      "皮带"
+    ],
+    "emoji": null
+  },
+  "掉": {
+    "pinyin": "diào",
+    "meaning": "落下",
+    "words": [
+      "掉下",
+      "丢掉"
+    ],
+    "emoji": null
+  },
+  "借": {
+    "pinyin": "jiè",
+    "meaning": "暂时使用别人的",
+    "words": [
+      "借书",
+      "借用"
+    ],
+    "emoji": null
+  },
+  "还": {
+    "pinyin": "huán",
+    "meaning": "归还",
+    "words": [
+      "还给",
+      "还有"
+    ],
+    "emoji": null
+  },
+  "讲": {
+    "pinyin": "jiǎng",
+    "meaning": "把事情说出来",
+    "words": [
+      "讲话",
+      "讲故事"
+    ],
+    "emoji": null
+  },
+  "告": {
+    "pinyin": "gào",
+    "meaning": "说给人知道",
+    "words": [
+      "告诉",
+      "广告"
+    ],
+    "emoji": null
+  },
+  "忘": {
+    "pinyin": "wàng",
+    "meaning": "不记得",
+    "words": [
+      "忘记",
+      "忘了"
+    ],
+    "emoji": null
+  },
+  "记": {
+    "pinyin": "jì",
+    "meaning": "不忘记",
+    "words": [
+      "记住",
+      "日记"
+    ],
+    "emoji": null
+  },
+  "数": {
+    "pinyin": "shǔ",
+    "meaning": "逐个地计算",
+    "words": [
+      "数数",
+      "数学"
+    ],
+    "emoji": null
+  },
+  "变": {
+    "pinyin": "biàn",
+    "meaning": "和原来不同",
+    "words": [
+      "变化",
+      "变成"
+    ],
+    "emoji": null
+  },
+  "换": {
+    "pinyin": "huàn",
+    "meaning": "把原来的换成别的",
+    "words": [
+      "换衣",
+      "交换"
+    ],
+    "emoji": null
+  },
+  "选": {
+    "pinyin": "xuǎn",
+    "meaning": "从中间挑",
+    "words": [
+      "选择",
+      "选出"
+    ],
+    "emoji": null
+  },
+  "搬": {
+    "pinyin": "bān",
+    "meaning": "移动东西的位置",
+    "words": [
+      "搬家",
+      "搬走"
+    ],
+    "emoji": null
+  },
+  "远": {
+    "pinyin": "yuǎn",
+    "meaning": "距离大",
+    "words": [
+      "远近",
+      "远方"
+    ],
+    "emoji": null
+  },
+  "近": {
+    "pinyin": "jìn",
+    "meaning": "距离小",
+    "words": [
+      "远近",
+      "最近"
+    ],
+    "emoji": null
+  },
+  "新": {
+    "pinyin": "xīn",
+    "meaning": "刚有的",
+    "words": [
+      "新书",
+      "新年"
+    ],
+    "emoji": null
+  },
+  "旧": {
+    "pinyin": "jiù",
+    "meaning": "过去的",
+    "words": [
+      "旧的",
+      "旧书"
+    ],
+    "emoji": null
+  },
+  "轻": {
+    "pinyin": "qīng",
+    "meaning": "重量小",
+    "words": [
+      "年轻",
+      "轻重"
+    ],
+    "emoji": null
+  },
+  "重": {
+    "pinyin": "zhòng",
+    "meaning": "分量大",
+    "words": [
+      "轻重",
+      "重要"
+    ],
+    "emoji": null
+  },
+  "胖": {
+    "pinyin": "pàng",
+    "meaning": "脂肪多",
+    "words": [
+      "胖子",
+      "胖瘦"
+    ],
+    "emoji": null
+  },
+  "瘦": {
+    "pinyin": "shòu",
+    "meaning": "脂肪少",
+    "words": [
+      "胖瘦",
+      "瘦小"
+    ],
+    "emoji": null
+  },
+  "干": {
+    "pinyin": "gān",
+    "meaning": "没有水分",
+    "words": [
+      "干净",
+      "干草"
+    ],
+    "emoji": null
+  },
+  "净": {
+    "pinyin": "jìng",
+    "meaning": "清洁",
+    "words": [
+      "干净",
+      "清净"
+    ],
+    "emoji": null
+  },
+  "安": {
+    "pinyin": "ān",
+    "meaning": "平静",
+    "words": [
+      "平安",
+      "安心"
+    ],
+    "emoji": null
+  },
+  "全": {
+    "pinyin": "quán",
+    "meaning": "完备",
+    "words": [
+      "安全",
+      "全部"
+    ],
+    "emoji": null
+  },
+  "先": {
+    "pinyin": "xiān",
+    "meaning": "时间在前的",
+    "words": [
+      "先后",
+      "先生"
+    ],
+    "emoji": null
+  },
+  "第": {
+    "pinyin": "dì",
+    "meaning": "表次序",
+    "words": [
+      "第一",
+      "第二"
+    ],
+    "emoji": null
+  },
+  "常": {
+    "pinyin": "cháng",
+    "meaning": "经常",
+    "words": [
+      "非常",
+      "常常"
+    ],
+    "emoji": null
+  },
+  "朋": {
+    "pinyin": "péng",
+    "meaning": "朋友",
+    "words": [
+      "朋友",
+      "亲朋"
+    ],
+    "emoji": null
+  },
+  "友": {
+    "pinyin": "yǒu",
+    "meaning": "好朋友",
+    "words": [
+      "朋友",
+      "友好"
+    ],
+    "emoji": null
+  },
+  "孩": {
+    "pinyin": "hái",
+    "meaning": "儿童",
+    "words": [
+      "小孩",
+      "孩子"
+    ],
+    "emoji": null
+  },
+  "姐": {
+    "pinyin": "jiě",
+    "meaning": "比自己大的女性同辈",
+    "words": [
+      "姐姐",
+      "大姐"
+    ],
+    "emoji": null
+  },
+  "哥": {
+    "pinyin": "gē",
+    "meaning": "比自己大的男性同辈",
+    "words": [
+      "哥哥",
+      "大哥"
+    ],
+    "emoji": null
+  },
+  "弟": {
+    "pinyin": "dì",
+    "meaning": "比自己小的男性同辈",
+    "words": [
+      "弟弟",
+      "兄弟"
+    ],
+    "emoji": null
+  },
+  "妹": {
+    "pinyin": "mèi",
+    "meaning": "比自己小的女性同辈",
+    "words": [
+      "妹妹",
+      "姐妹"
+    ],
+    "emoji": null
+  },
+  "爷": {
+    "pinyin": "yé",
+    "meaning": "祖父",
+    "words": [
+      "爷爷",
+      "老爷"
+    ],
+    "emoji": null
+  },
+  "村": {
+    "pinyin": "cūn",
+    "meaning": "乡下人聚居的地方",
+    "words": [
+      "农村",
+      "小村"
+    ],
+    "emoji": null
+  },
+  "城": {
+    "pinyin": "chéng",
+    "meaning": "人口密集的大地方",
+    "words": [
+      "城市",
+      "小城"
+    ],
+    "emoji": null
+  },
+  "楼": {
+    "pinyin": "lóu",
+    "meaning": "两层以上的房屋",
+    "words": [
+      "楼房",
+      "上楼"
+    ],
+    "emoji": null
+  },
+  "房": {
+    "pinyin": "fáng",
+    "meaning": "住人的建筑物",
+    "words": [
+      "房子",
+      "房间"
+    ],
+    "emoji": null
+  },
+  "院": {
+    "pinyin": "yuàn",
+    "meaning": "房屋前后的空地",
+    "words": [
+      "医院",
+      "院子"
+    ],
+    "emoji": null
+  },
+  "床": {
+    "pinyin": "chuáng",
+    "meaning": "睡觉的家具",
+    "words": [
+      "起床",
+      "小床"
+    ],
+    "emoji": null
+  },
+  "桌": {
+    "pinyin": "zhuō",
+    "meaning": "一种家具",
+    "words": [
+      "桌子",
+      "课桌"
+    ],
+    "emoji": null
+  },
+  "椅": {
+    "pinyin": "yǐ",
+    "meaning": "坐的家具",
+    "words": [
+      "椅子",
+      "桌椅"
+    ],
+    "emoji": null
+  },
+  "灯": {
+    "pinyin": "dēng",
+    "meaning": "照明的器具",
+    "words": [
+      "电灯",
+      "开灯"
+    ],
+    "emoji": null
+  },
+  "钟": {
+    "pinyin": "zhōng",
+    "meaning": "计时的器具",
+    "words": [
+      "时钟",
+      "钟声"
+    ],
+    "emoji": null
+  },
+  "球": {
+    "pinyin": "qiú",
+    "meaning": "圆形的物体",
+    "words": [
+      "足球",
+      "皮球"
+    ],
+    "emoji": null
+  },
+  "歌": {
+    "pinyin": "gē",
+    "meaning": "能唱的文词",
+    "words": [
+      "唱歌",
+      "歌曲"
+    ],
+    "emoji": null
+  },
+  "舞": {
+    "pinyin": "wǔ",
+    "meaning": "舞蹈",
+    "words": [
+      "跳舞",
+      "舞蹈"
+    ],
+    "emoji": null
+  },
+  "事": {
+    "pinyin": "shì",
+    "meaning": "事情",
+    "words": [
+      "好事",
+      "事情"
+    ],
+    "emoji": null
+  },
+  "物": {
+    "pinyin": "wù",
+    "meaning": "东西",
+    "words": [
+      "动物",
+      "植物"
+    ],
+    "emoji": null
+  },
+  "叶": {
+    "pinyin": "yè",
+    "meaning": "植物的叶片",
+    "words": [
+      "叶子",
+      "树叶"
+    ],
+    "emoji": null
+  },
+  "根": {
+    "pinyin": "gēn",
+    "meaning": "植物在土里的部分",
+    "words": [
+      "树根",
+      "根本"
+    ],
+    "emoji": null
+  },
+  "朵": {
+    "pinyin": "duǒ",
+    "meaning": "花的量词",
+    "words": [
+      "花朵",
+      "几朵"
+    ],
+    "emoji": null
+  },
+  "连": {
+    "pinyin": "lián",
+    "meaning": "连接",
+    "words": [
+      "连接",
+      "连忙"
+    ],
+    "emoji": null
+  },
+  "对": {
+    "pinyin": "duì",
+    "meaning": "正确",
+    "words": [
+      "对的",
+      "不对"
+    ],
+    "emoji": null
+  },
+  "错": {
+    "pinyin": "cuò",
+    "meaning": "不正确",
+    "words": [
+      "不错",
+      "错了"
+    ],
+    "emoji": null
+  },
+  "正": {
+    "pinyin": "zhèng",
+    "meaning": "不偏斜",
+    "words": [
+      "正在",
+      "正面"
+    ],
+    "emoji": null
+  },
+  "反": {
+    "pinyin": "fǎn",
+    "meaning": "与正相反",
+    "words": [
+      "反面",
+      "正反"
+    ],
+    "emoji": null
+  },
+  "像": {
+    "pinyin": "xiàng",
+    "meaning": "相似",
+    "words": [
+      "好像",
+      "画像"
+    ],
+    "emoji": null
+  },
+  "比": {
+    "pinyin": "bǐ",
+    "meaning": "比较",
+    "words": [
+      "对比",
+      "比一比"
+    ],
+    "emoji": null
+  },
+  "更": {
+    "pinyin": "gèng",
+    "meaning": "越发",
+    "words": [
+      "更好",
+      "更大"
+    ],
+    "emoji": null
+  },
+  "把": {
+    "pinyin": "bǎ",
+    "meaning": "拿",
+    "words": [
+      "把手",
+      "一把"
+    ],
+    "emoji": null
+  },
+  "被": {
+    "pinyin": "bèi",
+    "meaning": "表示被动",
+    "words": [
+      "被子",
+      "被动"
+    ],
+    "emoji": null
+  },
+  "所": {
+    "pinyin": "suǒ",
+    "meaning": "处所",
+    "words": [
+      "所以",
+      "所有"
+    ],
+    "emoji": null
+  },
+  "以": {
+    "pinyin": "yǐ",
+    "meaning": "用",
+    "words": [
+      "所以",
+      "以后"
+    ],
+    "emoji": null
+  },
+  "为": {
+    "pinyin": "wèi",
+    "meaning": "因为",
+    "words": [
+      "因为",
+      "为了"
+    ],
+    "emoji": null
+  },
+  "每": {
+    "pinyin": "měi",
+    "meaning": "逐一",
+    "words": [
+      "每天",
+      "每个"
+    ],
+    "emoji": null
+  },
+  "些": {
+    "pinyin": "xiē",
+    "meaning": "表示不定的数量",
+    "words": [
+      "一些",
+      "那些"
+    ],
+    "emoji": null
+  },
+  "两": {
+    "pinyin": "liǎng",
+    "meaning": "二",
+    "words": [
+      "两个",
+      "两天"
+    ],
+    "emoji": null
+  },
+  "几": {
+    "pinyin": "jǐ",
+    "meaning": "询问数量",
+    "words": [
+      "几个",
+      "几天"
+    ],
+    "emoji": null
+  },
+  "又": {
+    "pinyin": "yòu",
+    "meaning": "再",
+    "words": [
+      "又是",
+      "又大又圆"
+    ],
+    "emoji": null
+  },
+  "就": {
+    "pinyin": "jiù",
+    "meaning": "立刻",
+    "words": [
+      "就是",
+      "就要"
+    ],
+    "emoji": null
+  },
+  "那": {
+    "pinyin": "nà",
+    "meaning": "指示代词",
+    "words": [
+      "那里",
+      "那个"
+    ],
+    "emoji": null
+  },
+  "这": {
+    "pinyin": "zhè",
+    "meaning": "指示代词",
+    "words": [
+      "这里",
+      "这个"
+    ],
+    "emoji": null
+  }
+}

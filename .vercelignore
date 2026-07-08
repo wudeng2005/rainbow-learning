@@ -1,0 +1,23 @@
+# Development files
+.vscode/
+.idea/
+
+# Test files
+test/
+tests/
+__tests__/
+coverage/
+
+# Python scripts (not needed for build)
+scripts/
+*.py
+
+# Node modules (let Vercel install)
+node_modules/
+
+# Temporary files
+.vercel-tmp/
+*.log
+
+# Documentation
+docs/

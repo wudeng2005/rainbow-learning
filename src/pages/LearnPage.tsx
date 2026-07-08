@@ -8,13 +8,21 @@ import ProgressBar from '@/components/ProgressBar'
 import FeedbackOverlay from '@/components/FeedbackOverlay'
 import DailyComplete from '@/components/DailyComplete'
 import FloatingDecorations from '@/components/FloatingDecorations'
+import StoryPlayer from '@/components/chinese/StoryPlayer'
+import CharacterTeach from '@/components/chinese/CharacterTeach'
 import { correctMessages, wrongMessages, getRandomMessage } from '@/data/encouragements'
 import { playCorrectSound, playWrongSound, playGemSound } from '@/lib/sounds'
-import type { Question, QuestionType } from '@/types'
+import type { Question, QuestionType, Story, CharacterInfo } from '@/types'
 import questionsData from '@/data/questions.json'
+import storiesData from '@/data/stories.json'
+import characterInfoData from '@/data/character-info.json'
 
 const ALL_QUESTIONS = questionsData as Question[]
+const ALL_STORIES = storiesData as Story[]
+const CHARACTER_INFO = characterInfoData as Record<string, CharacterInfo>
 const DAILY_QUESTION_COUNT = 10
+
+type LearnPhase = 'story' | 'teach' | 'practice' | 'complete'
 
 type OptionState = 'idle' | 'correct' | 'wrong' | 'disabled' | 'reveal'
 
@@ -78,12 +86,17 @@ export default function LearnPage() {
   const [practiceIndex, setPracticeIndex] = useState(0)
   const [practiceComplete, setPracticeComplete] = useState(false)
 
+  // 三段式学习流程状态
+  const [learnPhase, setLearnPhase] = useState<LearnPhase>('practice')
+  const [todayStory, setTodayStory] = useState<Story | null>(null)
+
   // 初始化或恢复学习会话
   useEffect(() => {
     resetIfNewDay()
 
     if (dailyProgress.completed) {
       setIsSessionComplete(true)
+      setLearnPhase('complete')
       return
     }
 
@@ -91,7 +104,27 @@ export default function LearnPage() {
       const reviewIds = getReviewQuestionIds()
       startDailySession(reviewIds)
     }
+
+    // 检查当天是否有故事数据
+    const currentDay = useLearningStore.getState().chineseDayIndex
+    const story = ALL_STORIES.find(s => s.day === currentDay)
+    if (story && !dailyProgress.completed) {
+      setTodayStory(story)
+      setLearnPhase('story')
+    } else {
+      setLearnPhase('practice')
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 故事完成 → 进入认字阶段
+  const handleStoryComplete = () => {
+    setLearnPhase('teach')
+  }
+
+  // 认字完成 → 进入练习阶段
+  const handleTeachComplete = () => {
+    setLearnPhase('practice')
+  }
 
   const question = isPracticeMode
     ? (practiceQuestions[practiceIndex] ?? null)
@@ -231,6 +264,22 @@ export default function LearnPage() {
         totalQuestions={todayQuestions.length || 10}
         gemsEarned={0}
         onPlayAgain={handlePlayAgain}
+      />
+    )
+  }
+
+  // 故事阶段
+  if (learnPhase === 'story' && todayStory) {
+    return <StoryPlayer story={todayStory} onComplete={handleStoryComplete} />
+  }
+
+  // 认字阶段
+  if (learnPhase === 'teach' && todayStory) {
+    return (
+      <CharacterTeach
+        characters={todayStory.newCharacters}
+        characterData={CHARACTER_INFO}
+        onComplete={handleTeachComplete}
       />
     )
   }

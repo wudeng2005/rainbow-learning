@@ -1,0 +1,127 @@
+[
+  {
+    "id": "story_d01",
+    "day": 1,
+    "title": "快乐的小兔子",
+    "coverEmoji": "🐰",
+    "sentences": [
+      { "text": "小鸟在树上叫。", "newChars": ["叫"], "scene": "🌳🐦" },
+      { "text": "草地上有四朵花。", "newChars": ["四"], "scene": "🌿🌸" },
+      { "text": "小兔子竖起耳朵听。", "newChars": ["耳"], "scene": "🐰" },
+      { "text": "它在草地上跑来跑去，开心地笑了。", "newChars": ["跑", "笑"], "scene": "🐰💨😊" }
+    ],
+    "newCharacters": ["叫", "四", "耳", "跑", "笑"]
+  },
+  {
+    "id": "story_d02",
+    "day": 2,
+    "title": "妈妈和小树",
+    "coverEmoji": "🌳",
+    "sentences": [
+      { "text": "妈妈有一棵小树。", "newChars": ["妈", "有", "树"], "scene": "👩🌳" },
+      { "text": "小树真好，叶子绿绿的。", "newChars": ["好"], "scene": "🌿✨" },
+      { "text": "小小的火，暖暖的。", "newChars": ["小", "火"], "scene": "🔥🤗" }
+    ],
+    "newCharacters": ["妈", "有", "树", "好", "小", "火"]
+  },
+  {
+    "id": "story_d03",
+    "day": 3,
+    "title": "天上的彩虹",
+    "coverEmoji": "🌈",
+    "sentences": [
+      { "text": "天上有红红的太阳。", "newChars": ["天", "红"], "scene": "☀️🌤️" },
+      { "text": "云中有黄色的光。", "newChars": ["中", "黄"], "scene": "☁️✨" },
+      { "text": "天上有五道彩虹，真好看！", "newChars": ["五"], "scene": "🌈" },
+      { "text": "小鸟叫了九声，好好听！", "newChars": ["九"], "scene": "🐦🎵" }
+    ],
+    "newCharacters": ["天", "红", "中", "黄", "五", "九"]
+  },
+  {
+    "id": "story_d04",
+    "day": 4,
+    "title": "水里的小鱼",
+    "coverEmoji": "🐟",
+    "sentences": [
+      { "text": "小鱼在水里游。", "newChars": ["水"], "scene": "🐟💧" },
+      { "text": "小鱼有小小的口。", "newChars": ["口"], "scene": "🐟👄" },
+      { "text": "小鱼跳上又跳下，好开心！", "newChars": ["上", "下"], "scene": "🐟⬆️⬇️" },
+      { "text": "小鱼和小虾和好了。", "newChars": ["和"], "scene": "🐟🦐🤝" }
+    ],
+    "newCharacters": ["水", "口", "上", "下", "和"]
+  },
+  {
+    "id": "story_d05",
+    "day": 5,
+    "title": "快乐的一天",
+    "coverEmoji": "☀️",
+    "sentences": [
+      { "text": "太阳出来了，新的一天！", "newChars": ["日"], "scene": "☀️🌅" },
+      { "text": "我和妈妈去玩。", "newChars": ["玩"], "scene": "👧👩🎈" },
+      { "text": "我写了一个大字。", "newChars": ["写"], "scene": "✏️📝" },
+      { "text": "二只小鸟，六朵花，真好看！", "newChars": ["二", "六"], "scene": "🐦🐦🌸" }
+    ],
+    "newCharacters": ["日", "玩", "写", "二", "六"]
+  },
+  {
+    "id": "story_d06",
+    "day": 6,
+    "title": "草地上的秘密",
+    "coverEmoji": "🌿",
+    "sentences": [
+      { "text": "草地好大呀！", "newChars": ["草", "大"], "scene": "🌿🏞️" },
+      { "text": "天热了，小草笑了。", "newChars": ["热", "了"], "scene": "☀️🌿😊" },
+      { "text": "我的心里好开心！", "newChars": ["心"], "scene": "💖😊" }
+    ],
+    "newCharacters": ["草", "大", "热", "了", "心"]
+  },
+  {
+    "id": "story_d07",
+    "day": 7,
+    "title": "小羊和花",
+    "coverEmoji": "🐑",
+    "sentences": [
+      { "text": "前面有一只小羊。", "newChars": ["前", "一", "羊"], "scene": "🐑👉" },
+      { "text": "小羊在花丛中走。", "newChars": ["花"], "scene": "🐑🌸🌿" },
+      { "text": "我看见了小羊，好开心！", "newChars": ["见"], "scene": "👧🐑💕" },
+      { "text": "小羊在草地上跑，我在草地上笑。", "newChars": [], "scene": "🐑👧🌈" }
+    ],
+    "newCharacters": ["前", "一", "羊", "花", "见"]
+  },
+  {
+    "id": "story_d08",
+    "day": 8,
+    "title": "下雨了",
+    "coverEmoji": "🌧️",
+    "sentences": [
+      { "text": "天上下雨了，地上有水。", "newChars": ["雨", "地"], "scene": "🌧️💧" },
+      { "text": "小宝宝哭了。", "newChars": ["哭"], "scene": "👶😢" },
+      { "text": "爸爸来了，打了一把伞。", "newChars": ["爸", "打"], "scene": "👨☂️" }
+    ],
+    "newCharacters": ["雨", "地", "哭", "爸", "打"]
+  },
+  {
+    "id": "story_d09",
+    "day": 9,
+    "title": "一起读书",
+    "coverEmoji": "📚",
+    "sentences": [
+      { "text": "爸爸在读书。", "newChars": ["读"], "scene": "👨📖" },
+      { "text": "你也在读，他也在读。", "newChars": ["你", "他"], "scene": "👧👦📖" },
+      { "text": "书上有白云，有八只小鸟。", "newChars": ["白", "八"], "scene": "☁️🐦📖" }
+    ],
+    "newCharacters": ["读", "你", "他", "白", "八"]
+  },
+  {
+    "id": "story_d10",
+    "day": 10,
+    "title": "下雪了",
+    "coverEmoji": "❄️",
+    "sentences": [
+      { "text": "今天下雪了，地上白白的。", "newChars": ["今", "雪"], "scene": "❄️🤍" },
+      { "text": "人们在土路上走。", "newChars": ["人", "土"], "scene": "🧑🚶" },
+      { "text": "我坐在左边，你坐在右边。", "newChars": ["坐", "左"], "scene": "👧👦🪑" }
+    ],
+    "newCharacters": ["今", "雪", "人", "土", "坐", "左"]
+  }
+]
