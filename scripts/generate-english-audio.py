@@ -7,7 +7,7 @@ references, so audio always stays in sync with the question bank:
   - letters   -> public/audio/en/letters/{LETTER}.mp3
   - sentences -> public/audio/en/sentences/{slug}.mp3
 
-Voice: en-US-AnaNeural (child voice), slowed down for young learners.
+Voice: en-US-AnaNeural (child voice), slower rate + warmer pitch for young learners.
 """
 import asyncio
 import json
@@ -21,8 +21,9 @@ QUESTIONS_PATH = os.path.join(BASE, '..', 'src', 'data', 'english-questions.json
 AUDIO_ROOT = os.path.join(BASE, '..', 'public', 'audio', 'en')
 
 VOICE = "en-US-AnaNeural"   # young child voice
-RATE = "-10%"               # slower for children to hear clearly
-PITCH = "+0Hz"
+RATE = "-18%"               # significantly slower for 5-year-old children
+PITCH = "+8Hz"              # slightly higher pitch → warmer, more cheerful
+VOLUME = "+12%"             # louder and clearer for young ears
 
 WORD_RE = re.compile(r'^[a-z]+$')
 LETTER_RE = re.compile(r'^[A-Z]$')
@@ -59,7 +60,7 @@ def collect_assets():
 async def synth(text, output_path):
     if os.path.exists(output_path):
         return  # skip if already exists
-    communicate = edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH)
+    communicate = edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH, volume=VOLUME)
     await communicate.save(output_path)
 
 
