@@ -3,12 +3,22 @@ schema_version: 1
 locale: zh-CN
 branch: main
 nodes_managed: true
-exported_at: "2026-07-06T14:38:04Z"
+exported_at: "2026-07-08T07:35:56Z"
 modules:
     "":
-        dir_name: Rainbow 快乐学堂 — 汉字与数学双学科学习应用
-        title: Rainbow 快乐学堂 — 汉字与数学双学科学习应用
+        dir_name: 儿童学习应用（数学+英语双模块）
+        title: 儿童学习应用（数学+英语双模块）
         scope: []
+        source_files: []
+        children:
+            - scripts
+        depends_on: []
+        related_to: []
+    scripts:
+        dir_name: scripts
+        title: scripts
+        scope:
+            - scripts/
         source_files: []
         children: []
         depends_on: []

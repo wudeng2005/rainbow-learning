@@ -57,7 +57,7 @@ export default function FeedbackOverlay({
           )}
 
           <motion.div
-            className={`w-full max-w-[320px] rounded-[1.5rem] relative overflow-hidden text-center shadow-2xl bg-white ${
+            className={`w-full max-w-[340px] md:max-w-[400px] rounded-[1.5rem] relative overflow-hidden text-center shadow-2xl bg-white ${
               isCorrect ? 'border-2 border-emerald-300' : 'border-2 border-amber-300'
             }`}
             initial={{ scale: 0.8, y: 20, opacity: 0 }}
@@ -73,12 +73,12 @@ export default function FeedbackOverlay({
                 : 'bg-gradient-to-r from-amber-400 to-orange-400'
             }`} />
 
-            <div className="px-6 pt-5 pb-5">
+            <div className="px-6 pt-6 pb-6">
               {/* 图标圆形背景 */}
-              <div className={`w-14 h-14 mx-auto mb-3 rounded-full flex items-center justify-center ${
+              <div className={`w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center ${
                 isCorrect ? 'bg-emerald-100' : 'bg-amber-100'
               }`}>
-                <span className="text-3xl">
+                <span className="text-4xl">
                   {isCorrect ? '🎉' : '💪'}
                 </span>
               </div>
@@ -111,8 +111,8 @@ export default function FeedbackOverlay({
               {/* 继续按钮 */}
               <motion.button
                 type="button"
-                className={`w-full px-6 py-2.5 rounded-full text-white font-bold text-base min-h-[48px]
-                  shadow-md active:shadow-sm transition-shadow ${
+                className={`w-full px-6 py-3 rounded-full text-white font-bold text-base min-h-[52px]
+                  shadow-md active:shadow-sm transition-shadow touch-manipulation ${
                   isCorrect
                     ? 'bg-gradient-to-r from-emerald-400 to-teal-400'
                     : 'bg-gradient-to-r from-amber-400 to-orange-400'

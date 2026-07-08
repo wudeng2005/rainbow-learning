@@ -234,10 +234,9 @@ export default function MathLearnPage() {
       <div className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-2 safe-top">
         <motion.button
           type="button"
-          className="w-11 h-11 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl"
+          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
           onClick={() => navigate('/')}
           whileTap={{ scale: 0.9 }}
-          whileHover={{ scale: 1.05 }}
         >
           ←
         </motion.button>

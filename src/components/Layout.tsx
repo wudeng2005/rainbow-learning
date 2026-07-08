@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <div className="flex flex-col min-h-dvh bg-bg-warm">
       {/* 顶栏 */}
-      <header className="flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-sm sticky top-0 z-40">
+      <header className="flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-sm sticky top-0 z-40 safe-top">
         <h1 className="text-lg font-bold bg-gradient-to-r from-rainbow-red via-rainbow-yellow to-rainbow-purple bg-clip-text text-transparent">
           🌈 快乐学堂
         </h1>

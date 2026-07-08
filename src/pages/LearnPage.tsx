@@ -346,14 +346,13 @@ export default function LearnPage() {
       {/* 漂浮装饰 */}
       <FloatingDecorations />
 
-      {/* 顶部栏：返回 + 进度星星 */}
+      {/* 顶部栏：返回 + 进度 */}
       <div className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-2 safe-top">
         <motion.button
           type="button"
-          className="w-11 h-11 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl"
+          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
           onClick={() => navigate('/')}
           whileTap={{ scale: 0.9 }}
-          whileHover={{ scale: 1.05 }}
         >
           ←
         </motion.button>
@@ -386,7 +385,7 @@ export default function LearnPage() {
             <div className="w-full text-center">
               {/* 提示文字 */}
               <motion.p
-                className="text-base md:text-lg text-purple-600 font-bold mb-3"
+                className="text-sm md:text-lg text-purple-600 font-bold mb-3"
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
@@ -396,7 +395,7 @@ export default function LearnPage() {
 
               {/* 题目内容卡片 */}
               <motion.div
-                className="relative inline-block bg-white rounded-[2rem] px-8 md:px-10 py-6 md:py-8 shadow-xl border-2 border-purple-100"
+                className="relative inline-block bg-white rounded-[1.5rem] md:rounded-[2rem] px-6 md:px-10 py-5 md:py-8 shadow-xl border-2 border-purple-100"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.15 }}
@@ -422,10 +421,10 @@ export default function LearnPage() {
                 <motion.button
                   key={`${question.id}-${index}`}
                   type="button"
-                  className={`relative rounded-3xl p-4 md:p-5 min-h-[80px] flex items-center justify-center
+                  className={`relative rounded-2xl md:rounded-3xl p-3 md:p-5 min-h-[72px] md:min-h-[80px] flex items-center justify-center
                     border-3 transition-all duration-200 cursor-pointer select-none touch-manipulation
                     ${optionStates[index] === 'idle'
-                      ? `${['bg-pink-50 border-pink-200 hover:border-pink-400','bg-blue-50 border-blue-200 hover:border-blue-400','bg-green-50 border-green-200 hover:border-green-400'][index % 3]} shadow-md hover:shadow-lg`
+                      ? `${['bg-pink-50 border-pink-200 active:border-pink-400','bg-blue-50 border-blue-200 active:border-blue-400','bg-green-50 border-green-200 active:border-green-400'][index % 3]} shadow-md active:shadow-lg`
                       : optionStates[index] === 'correct'
                         ? 'bg-emerald-100 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
                         : optionStates[index] === 'wrong'

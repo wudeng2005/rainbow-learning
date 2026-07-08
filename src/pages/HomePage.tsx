@@ -35,7 +35,7 @@ function SubjectCard({
 }) {
   return (
     <motion.div
-      className={`relative flex-1 min-w-[120px] rounded-[24px] p-4 pb-3 flex flex-col items-center gap-1.5 shadow-lg ${gradient} ${locked ? 'opacity-50 saturate-50' : 'cursor-pointer'}`}
+      className={`relative flex-1 min-w-[100px] rounded-[24px] p-5 pb-4 flex flex-col items-center gap-2 shadow-lg ${gradient} ${locked ? 'opacity-50 saturate-50' : 'cursor-pointer'}`}
       whileTap={locked ? {} : { scale: 0.93 }}
       whileHover={locked ? {} : { y: -4 }}
       onClick={locked ? undefined : onClick}
@@ -86,23 +86,23 @@ export default function HomePage() {
   const chineseBadge = isCompleted
     ? '完成啦 ✅'
     : dailyProgress.questionsDone > 0
-      ? `${dailyProgress.questionsDone}/5`
+      ? `${dailyProgress.questionsDone}/10`
       : '去冒险'
 
   const mathBadge = mathProgress.completed
     ? '完成啦 ✅'
     : mathProgress.questionsDone > 0
-      ? `${mathProgress.questionsDone}/5`
+      ? `${mathProgress.questionsDone}/10`
       : '去冒险'
 
   const englishBadge = englishProgress.completed
     ? '完成啦 ✅'
     : englishProgress.questionsDone > 0
-      ? `${englishProgress.questionsDone}/5`
+      ? `${englishProgress.questionsDone}/10`
       : '去冒险'
 
   return (
-    <div className="relative min-h-[calc(100dvh-140px)] pb-6">
+    <div className="relative min-h-[calc(100dvh-140px)] pb-8">
       {/* Background particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <Particle emoji="⭐" delay={0} x={6} />
@@ -114,7 +114,7 @@ export default function HomePage() {
 
       {/* ─── Hero Greeting ─── */}
       <motion.section
-        className="relative z-10 pt-3 pb-5"
+        className="relative z-10 pt-4 pb-6"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
@@ -141,7 +141,7 @@ export default function HomePage() {
 
       {/* ─── Learning Modules (responsive flex) ─── */}
       <motion.section
-        className="relative z-10 mb-5"
+        className="relative z-10 mb-6"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15, duration: 0.4 }}
@@ -151,7 +151,7 @@ export default function HomePage() {
         </h3>
 
         {/* Flex row — fills width on all screens */}
-        <div className="flex gap-3 justify-center">
+        <div className="flex gap-3 justify-stretch">
           <SubjectCard
             icon="🐼"
             title="汉字天地"
