@@ -6,12 +6,15 @@ import { useUserStore } from '@/store/useUserStore'
 import { useLearningStore } from '@/store/useLearningStore'
 import { useGemStore } from '@/store/useGemStore'
 import { useErrorBankStore } from '@/store/useErrorBankStore'
+import { useMathLearningStore } from '@/store/useMathLearningStore'
+import { useEnglishLearningStore } from '@/store/useEnglishLearningStore'
 import { getTodayStr } from '@/lib/storage'
 import type { Question } from '@/types'
 import questionsData from '@/data/questions.json'
 
 const ALL_QUESTIONS = questionsData as Question[]
 const MIGRATION_KEY = 'rainbow-migration-done'
+const RESET_SKIP_KEY = 'rainbow-skip-hydrate-once'
 
 /**
  * App 初始化 Hook
@@ -20,6 +23,14 @@ const MIGRATION_KEY = 'rainbow-migration-done'
  */
 export function useAppInit() {
   useEffect(() => {
+    // 检查 URL 重置参数: ?reset=2025-07-12
+    const params = new URLSearchParams(window.location.search)
+    const resetDate = params.get('reset')
+    if (resetDate && /^\d{4}-\d{2}-\d{2}$/.test(resetDate)) {
+      performReset(resetDate)
+      return
+    }
+
     // 后台异步同步 Supabase，不阻塞渲染
     backgroundSync()
   }, [])
@@ -30,6 +41,13 @@ export function useAppInit() {
 
 /** 后台同步：迁移 + 拉取云端数据 + 注册监听 */
 async function backgroundSync() {
+  // 重置后跳过一次 Supabase 同步，避免云端旧数据覆盖
+  if (sessionStorage.getItem(RESET_SKIP_KEY)) {
+    sessionStorage.removeItem(RESET_SKIP_KEY)
+    registerVisibilitySync()
+    return
+  }
+
   try {
     await migrateLocalStorageToSupabase()
     await hydrateFromSupabase()
@@ -173,4 +191,52 @@ async function migrateLocalStorageToSupabase() {
     console.error('[Migration] Failed:', error)
     // 失败不阻塞，下次重试
   }
+}
+
+/** 重置所有学习进度，将起始日期设为指定日期 */
+function performReset(firstDay: string) {
+  console.log(`[Reset] 重置所有数据，起始日期: ${firstDay}`)
+
+  // 1. 设置起始日期
+  localStorage.setItem('rainbow-first-day', firstDay)
+
+  // 2. 重置汉字学习进度
+  useLearningStore.setState({
+    dailyProgress: { date: '', questionsDone: 0, questionsCorrect: 0, completed: false },
+    todayQuestions: [],
+    currentIndex: 0,
+    sessionAnswers: [],
+    chineseDayIndex: 1,
+  })
+
+  // 3. 重置数学学习进度
+  useMathLearningStore.setState({
+    dailyProgress: { date: '', questionsDone: 0, questionsCorrect: 0, completed: false },
+    todayQuestions: [],
+    currentIndex: 0,
+    sessionAnswers: [],
+    mathDayIndex: 1,
+  })
+
+  // 4. 重置英语学习进度
+  useEnglishLearningStore.setState({
+    dailyProgress: { date: '', questionsDone: 0, questionsCorrect: 0, completed: false },
+    todayQuestions: [],
+    currentIndex: 0,
+    sessionAnswers: [],
+    englishDayIndex: 1,
+  })
+
+  // 5. 重置宝石
+  useGemStore.setState({ total: 0, records: [] })
+
+  // 6. 重置错题本
+  useErrorBankStore.setState({ errors: {} })
+
+  // 7. 标记跳过下次 Supabase 同步
+  sessionStorage.setItem(RESET_SKIP_KEY, '1')
+
+  // 8. 清除 URL 参数并刷新
+  window.history.replaceState({}, '', window.location.pathname)
+  window.location.reload()
 }
