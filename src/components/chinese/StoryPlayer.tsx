@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Story } from '@/types'
 import { playStoryAudio } from '@/lib/sounds'
@@ -46,6 +47,7 @@ function HighlightedSentence({ text, newChars }: { text: string; newChars: strin
 }
 
 export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
+  const navigate = useNavigate()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [hasPlayedCurrent, setHasPlayedCurrent] = useState(false)
@@ -103,12 +105,21 @@ export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
         ✨
       </motion.span>
 
-      {/* 顶部：标题 */}
-      <div className="relative z-10 px-4 pt-6 pb-3 safe-top">
-        <div className="flex items-center justify-center gap-2">
+      {/* 顶部：返回 + 标题 */}
+      <div className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-3 safe-top">
+        <motion.button
+          type="button"
+          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
+          onClick={() => navigate('/')}
+          whileTap={{ scale: 0.9 }}
+        >
+          ←
+        </motion.button>
+        <div className="flex-1 flex items-center justify-center gap-2">
           <span className="text-2xl">{story.coverEmoji}</span>
           <h1 className="text-lg font-bold text-amber-700">{story.title}</h1>
         </div>
+        <div className="w-12" />
       </div>
 
       {/* 主内容区 */}

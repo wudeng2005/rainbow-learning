@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { CharacterInfo } from '@/types'
 import { playCharAudio } from '@/lib/sounds'
@@ -10,6 +11,7 @@ interface CharacterTeachProps {
 }
 
 export default function CharacterTeach({ characters, characterData, onComplete }: CharacterTeachProps) {
+  const navigate = useNavigate()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
 
@@ -67,15 +69,26 @@ export default function CharacterTeach({ characters, characterData, onComplete }
         ✨
       </motion.span>
 
-      {/* 顶部：标题 + 进度 */}
-      <div className="relative z-10 px-4 pt-6 pb-3 safe-top">
-        <div className="flex items-center justify-center gap-2">
-          <span className="text-2xl">📖</span>
-          <h1 className="text-lg font-bold text-purple-700">认识新字</h1>
+      {/* 顶部：返回 + 标题 + 进度 */}
+      <div className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-3 safe-top">
+        <motion.button
+          type="button"
+          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
+          onClick={() => navigate('/')}
+          whileTap={{ scale: 0.9 }}
+        >
+          ←
+        </motion.button>
+        <div className="flex-1 text-center">
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-2xl">📖</span>
+            <h1 className="text-lg font-bold text-purple-700">认识新字</h1>
+          </div>
+          <div className="text-sm text-purple-400 font-medium mt-0.5">
+            {currentIndex + 1} / {total}
+          </div>
         </div>
-        <div className="text-center text-sm text-purple-400 font-medium mt-1">
-          {currentIndex + 1} / {total}
-        </div>
+        <div className="w-12" />
       </div>
 
       {/* 主内容区 */}
