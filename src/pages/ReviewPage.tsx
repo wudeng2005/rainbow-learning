@@ -34,7 +34,7 @@ const ALL_MATH = mathQuestionsData as MathQuestion[]
 type ReviewQuestion = Question | EnglishQuestion | MathQuestion
 type OptionState = 'idle' | 'correct' | 'wrong' | 'disabled' | 'reveal'
 
-function isChinese(q: ReviewQuestion): q is Question { return q.id.startsWith('c_') }
+function isChinese(q: ReviewQuestion): q is Question { return q.id.startsWith('ch_') }
 function isEnglish(q: ReviewQuestion): q is EnglishQuestion { return q.id.startsWith('e_') }
 function isMath(q: ReviewQuestion): q is MathQuestion { return q.id.startsWith('m_') }
 
@@ -80,7 +80,7 @@ export default function ReviewPage() {
 
   const allErrors = getAllErrors()
   const totalErrors = allErrors.filter(e => e.masteryLevel < 3).length
-  const cnErrors = allErrors.filter(e => e.masteryLevel < 3 && e.questionId.startsWith('c_')).length
+  const cnErrors = allErrors.filter(e => e.masteryLevel < 3 && e.questionId.startsWith('ch_')).length
   const mathErrors = allErrors.filter(e => e.masteryLevel < 3 && e.questionId.startsWith('m_')).length
   const enErrors = allErrors.filter(e => e.masteryLevel < 3 && e.questionId.startsWith('e_')).length
 
