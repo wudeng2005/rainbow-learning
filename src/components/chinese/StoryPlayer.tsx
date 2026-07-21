@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Story } from '@/types'
-import { playStoryAudio } from '@/lib/sounds'
+import { playStoryAudio, stopAllAudio } from '@/lib/sounds'
 
 interface StoryPlayerProps {
   story: Story
@@ -86,6 +86,7 @@ export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
   }, [currentIndex]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleNext = () => {
+    stopAllAudio()
     if (isLast) {
       onComplete()
     } else {
@@ -110,7 +111,7 @@ export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
         <motion.button
           type="button"
           className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
-          onClick={() => navigate('/')}
+          onClick={() => { stopAllAudio(); navigate('/') }}
           whileTap={{ scale: 0.9 }}
         >
           ←

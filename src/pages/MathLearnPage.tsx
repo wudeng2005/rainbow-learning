@@ -20,7 +20,7 @@ import {
   mathWrongMessages,
   getRandomMathMessage,
 } from '@/data/math-encouragements'
-import { playCorrectSound, playWrongSound, playGemSound } from '@/lib/sounds'
+import { playCorrectSound, playWrongSound, playGemSound, stopAllAudio } from '@/lib/sounds'
 import type { MathQuestion, PatternData, CountingData, ComparisonData, ShapeData, ArithmeticData, WordProblemData, NumberSequenceData } from '@/types'
 import mathQuestionsData from '@/data/math-questions.json'
 
@@ -136,6 +136,7 @@ export default function MathLearnPage() {
   }, [question, isPracticeMode, submitAnswer, recordCorrect, recordError, optionStates])
 
   const handleContinue = useCallback(() => {
+    stopAllAudio()
     setShowFeedback(false)
 
     if (isPracticeMode) {

@@ -17,7 +17,7 @@ import WordProblemRenderer from '@/components/math/WordProblemRenderer'
 import NumberSequenceRenderer from '@/components/math/NumberSequenceRenderer'
 import MathFeedbackOverlay from '@/components/math/MathFeedbackOverlay'
 import { correctMessages, wrongMessages, reviewCompleteMessages, getRandomMessage } from '@/data/encouragements'
-import { playCorrectSound, playWrongSound, playGemSound, speakEnglish } from '@/lib/sounds'
+import { playCorrectSound, playWrongSound, playGemSound, speakEnglish, stopAllAudio } from '@/lib/sounds'
 import questionsData from '@/data/questions.json'
 import englishQuestionsData from '@/data/english-questions.json'
 import mathQuestionsData from '@/data/math-questions.json'
@@ -129,6 +129,7 @@ export default function ReviewPage() {
   }, [question, recordCorrect, recordError])
 
   const handleContinue = useCallback(() => {
+    stopAllAudio()
     setShowFeedback(false)
     if (currentIndex >= reviewQuestions.length - 1) {
       addGems(1, 'review_complete')

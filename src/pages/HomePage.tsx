@@ -6,70 +6,48 @@ import { useMathLearningStore } from '@/store/useMathLearningStore'
 import { useEnglishLearningStore } from '@/store/useEnglishLearningStore'
 import { useErrorBankStore } from '@/store/useErrorBankStore'
 import { useUserStore } from '@/store/useUserStore'
+import { playTapSound } from '@/lib/sounds'
 
-/* ─── Floating particles ─── */
-function Particle({ emoji, delay, x }: { emoji: string; delay: number; x: number }) {
+/* ─── 星星进度条：点亮的小星星，比百分比更懂孩子 ─── */
+function StarProgress({ progress, litColor = '#FFC93C' }: { progress: number; litColor?: string }) {
+  const total = 5
+  const lit = Math.round(progress * total)
+  return (
+    <div className="flex items-center gap-1">
+      {Array.from({ length: total }, (_, i) => (
+        <motion.span
+          key={i}
+          className="text-sm leading-none"
+          style={{
+            color: i < lit ? litColor : 'rgba(255,255,255,0.35)',
+            filter: i < lit ? 'drop-shadow(0 1px 2px rgba(0,0,0,0.2))' : 'none',
+          }}
+          initial={{ scale: 0, rotate: -90 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 0.4 + i * 0.08, type: 'spring', stiffness: 300, damping: 15 }}
+        >
+          ★
+        </motion.span>
+      ))}
+    </div>
+  )
+}
+
+/* ─── 完成徽章：今天完成啦 ─── */
+function DoneBadge() {
   return (
     <motion.span
-      className="absolute text-lg pointer-events-none select-none"
-      style={{ left: `${x}%` }}
-      initial={{ opacity: 0, y: 60 }}
-      animate={{ opacity: [0, 0.5, 0.5, 0], y: [60, 10, -30, -80] }}
-      transition={{ duration: 8, delay, repeat: Infinity, repeatDelay: 4, ease: 'easeOut' }}
+      className="inline-flex items-center gap-1 bg-white/90 rounded-full px-2.5 py-1 text-[11px] font-bold text-emerald-600 toy-shadow-sm"
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ delay: 0.6, type: 'spring', stiffness: 300, damping: 12 }}
     >
-      {emoji}
+      🎉 今天完成啦
     </motion.span>
   )
 }
 
-/* ─── Subject card (responsive) ─── */
-function SubjectCard({
-  icon, title, gradient, locked, badge, onClick,
-}: {
-  icon: string
-  title: string
-  gradient: string
-  locked?: boolean
-  badge?: string
-  onClick?: () => void
-}) {
-  return (
-    <motion.div
-      className={`relative flex-1 min-w-[100px] rounded-[24px] p-5 pb-4 flex flex-col items-center gap-2 shadow-lg ${gradient} ${locked ? 'opacity-50 saturate-50' : 'cursor-pointer'}`}
-      whileTap={locked ? {} : { scale: 0.93 }}
-      whileHover={locked ? {} : { y: -4 }}
-      onClick={locked ? undefined : onClick}
-    >
-      {/* 装饰光圈 */}
-      <div className="absolute -top-3 -right-3 w-14 h-14 rounded-full bg-white/10 blur-[2px]" />
-
-      {/* 大图标 — 视觉主体 */}
-      <motion.div
-        className="w-[60px] h-[60px] md:w-[72px] md:h-[72px] rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
-        animate={locked ? {} : { y: [0, -4, 0], rotate: [0, -2, 2, 0] }}
-        transition={{ duration: 3, repeat: Infinity, repeatDelay: 0.5 }}
-      >
-        <span className="text-[36px] md:text-[44px] leading-none">{icon}</span>
-      </motion.div>
-
-      {/* 标题 */}
-      <h3 className="text-white font-bold text-sm text-center leading-tight mt-1">{title}</h3>
-
-      {/* 标签 */}
-      {locked ? (
-        <span className="text-[10px] bg-white/15 text-white/80 px-2 py-0.5 rounded-full">
-          🔒 敬请期待
-        </span>
-      ) : badge ? (
-        <span className="text-[10px] bg-white/25 text-white font-medium px-2 py-0.5 rounded-full">
-          {badge}
-        </span>
-      ) : null}
-    </motion.div>
-  )
-}
-
-/* ─── Main Page ─── */
+/* ─── 主页面 ─── */
 export default function HomePage() {
   const navigate = useNavigate()
   const { dailyProgress, resetIfNewDay } = useLearningStore()
@@ -82,150 +60,265 @@ export default function HomePage() {
 
   useEffect(() => { resetIfNewDay(); mathResetIfNewDay(); englishResetIfNewDay() }, [resetIfNewDay, mathResetIfNewDay, englishResetIfNewDay])
 
-  const isCompleted = dailyProgress.completed
-  const chineseBadge = isCompleted
-    ? '完成啦 ✅'
+  const chineseProgress = dailyProgress.completed ? 1 : dailyProgress.questionsDone / 10
+  const mathProgressRatio = mathProgress.completed ? 1 : mathProgress.questionsDone / 10
+  const englishProgressRatio = englishProgress.completed ? 1 : englishProgress.questionsDone / 10
+
+  const chineseSubtitle = dailyProgress.completed
+    ? '真棒，明天再来！'
     : dailyProgress.questionsDone > 0
-      ? `${dailyProgress.questionsDone}/10`
-      : '去冒险'
+      ? `已闯关 ${dailyProgress.questionsDone}/10`
+      : '听故事 · 认新字'
 
-  const mathBadge = mathProgress.completed
-    ? '完成啦 ✅'
+  const mathSubtitle = mathProgress.completed
+    ? '真棒，明天再来！'
     : mathProgress.questionsDone > 0
-      ? `${mathProgress.questionsDone}/10`
-      : '去冒险'
+      ? `已闯关 ${mathProgress.questionsDone}/10`
+      : '数一数 · 算一算'
 
-  const englishBadge = englishProgress.completed
-    ? '完成啦 ✅'
+  const englishSubtitle = englishProgress.completed
+    ? '真棒，明天再来！'
     : englishProgress.questionsDone > 0
-      ? `${englishProgress.questionsDone}/10`
-      : '去冒险'
+      ? `已闯关 ${englishProgress.questionsDone}/10`
+      : 'ABC · 小单词'
+
+  // 根据时间段选择问候语
+  const hour = new Date().getHours()
+  const greeting = hour < 11 ? '早上好' : hour < 14 ? '中午好' : hour < 18 ? '下午好' : '晚上好'
 
   return (
-    <div className="relative min-h-[calc(100dvh-140px)] pb-8">
-      {/* Background particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <Particle emoji="⭐" delay={0} x={6} />
-        <Particle emoji="🌟" delay={2.5} x={80} />
-        <Particle emoji="✨" delay={4.5} x={45} />
-        <Particle emoji="🦋" delay={1.5} x={92} />
-        <Particle emoji="🌸" delay={3.5} x={22} />
-      </div>
-
-      {/* ─── Hero Greeting ─── */}
+    <div className="relative pb-6">
+      {/* ─── 吉祥物问候：独角兽坐在云朵上 ─── */}
       <motion.section
-        className="relative z-10 pt-4 pb-6"
-        initial={{ opacity: 0, y: -8 }}
+        className="relative z-10 pt-2 pb-5"
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <div className="flex justify-center mb-3">
-          <div className="inline-flex items-center gap-1.5 bg-white/60 backdrop-blur-sm rounded-full px-3 py-1 shadow-sm text-xs text-text-secondary font-medium">
-            <motion.span
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+        <div className="flex items-end gap-3">
+          {/* 独角兽 + 云朵底座 */}
+          <div className="relative shrink-0">
+            <motion.div
+              className="relative z-10 flex items-center justify-center"
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             >
-              🤝
-            </motion.span>
-            <span>我们一起走过了第 {getDayStreak()} 天</span>
+              <span className="text-[44px] leading-none drop-shadow-sm">🦄</span>
+            </motion.div>
+            {/* 云朵底座 */}
+            <div className="relative -mt-2.5">
+              <div className="w-20 h-6 bg-white rounded-full shadow-[0_4px_10px_rgba(120,100,180,0.15)]" />
+              <div className="absolute -top-2.5 left-3 w-7 h-7 bg-white rounded-full" />
+              <div className="absolute -top-1.5 left-9 w-5 h-5 bg-white rounded-full" />
+            </div>
+          </div>
+
+          {/* 对话气泡 */}
+          <div className="relative flex-1 bg-white rounded-3xl rounded-bl-lg px-4 py-3 toy-shadow-sm border-2 border-white">
+            <p className="font-display text-lg text-ink leading-tight">
+              {greeting}，{currentUser.name}！
+            </p>
+            <p className="text-xs text-ink-soft mt-0.5">
+              今天想去哪个世界冒险呀 ✨
+            </p>
+            {/* 同行天数徽章 */}
+            <div className="absolute -top-3 right-3 inline-flex items-center gap-1 bg-gradient-to-r from-rainbow-yellow to-rainbow-orange rounded-full px-2.5 py-1 toy-shadow-sm border-2 border-white">
+              <span className="text-[11px]">🌟</span>
+              <span className="font-num text-[11px] font-bold text-white">第 {getDayStreak()} 天</span>
+            </div>
           </div>
         </div>
-
-        <div className="text-center">
-          <h2 className="text-xl md:text-2xl font-bold text-text-primary">
-            {currentUser.name}，今天想学什么？
-          </h2>
-          <p className="text-text-secondary text-sm mt-1">每天进步一点点 ✨</p>
-        </div>
       </motion.section>
 
-      {/* ─── Learning Modules (responsive flex) ─── */}
+      {/* ─── 汉字天地：竹林熊猫大场景卡 ─── */}
       <motion.section
-        className="relative z-10 mb-6"
-        initial={{ opacity: 0, y: 16 }}
+        className="relative z-10 mb-4"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, duration: 0.4 }}
+        transition={{ delay: 0.1, duration: 0.45 }}
       >
-        <h3 className="text-xs font-semibold text-text-secondary tracking-widest uppercase mb-3">
-          📚 学习乐园
-        </h3>
+        <motion.button
+          type="button"
+          className="relative w-full overflow-hidden rounded-[32px] text-left cursor-pointer touch-manipulation border-[3px] border-white toy-shadow"
+          style={{ background: 'linear-gradient(135deg, #FFB25E 0%, #FF8E53 55%, #FF7B6B 100%)' }}
+          whileTap={{ scale: 0.97 }}
+          whileHover={{ y: -3 }}
+          onClick={() => { playTapSound(); navigate('/learn') }}
+        >
+          {/* 场景装饰：远山 + 竹子 + 灯笼 */}
+          <div className="absolute -bottom-6 -left-4 w-40 h-24 bg-white/10 rounded-[50%]" />
+          <div className="absolute -bottom-8 right-10 w-48 h-24 bg-white/10 rounded-[50%]" />
+          <span className="absolute top-3 right-4 text-2xl animate-float-slow select-none">🏮</span>
+          <span className="absolute bottom-14 right-8 text-3xl animate-drift-slow select-none">🎋</span>
+          <span className="absolute top-12 right-16 text-lg animate-float-medium select-none opacity-80">🍃</span>
 
-        {/* Flex row — fills width on all screens */}
-        <div className="flex gap-3 justify-stretch">
-          <SubjectCard
-            icon="🐼"
-            title="汉字天地"
-            gradient="bg-gradient-to-b from-rainbow-orange to-amber-500"
-            badge={chineseBadge}
-            onClick={() => navigate('/learn')}
-          />
-          <SubjectCard
-            icon="🎲"
-            title="数学王国"
-            gradient="bg-gradient-to-b from-pink-400 to-emerald-400"
-            badge={mathBadge}
-            onClick={() => navigate('/math-learn')}
-          />
-          <SubjectCard
-            icon="🦜"
-            title="英语乐园"
-            gradient="bg-gradient-to-b from-rainbow-blue to-sky-500"
-            badge={englishBadge}
-            onClick={() => navigate('/english-learn')}
-          />
-        </div>
+          <div className="relative z-10 flex items-center gap-4 p-5 pr-4">
+            {/* 大熊猫 */}
+            <motion.div
+              className="w-[84px] h-[84px] rounded-[28px] bg-white/25 backdrop-blur-sm flex items-center justify-center shrink-0 border-2 border-white/60"
+              animate={{ rotate: [0, -3, 3, 0], y: [0, -3, 0] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <span className="text-[52px] leading-none">🐼</span>
+            </motion.div>
+
+            {/* 文字 + 进度 */}
+            <div className="flex-1 min-w-0 pb-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-display text-[26px] text-white leading-none drop-shadow-sm">汉字天地</h3>
+              </div>
+              <p className="text-white/85 text-xs mt-1.5">{chineseSubtitle}</p>
+              <div className="mt-2.5">
+                {dailyProgress.completed ? (
+                  <DoneBadge />
+                ) : (
+                  <StarProgress progress={chineseProgress} />
+                )}
+              </div>
+            </div>
+
+            {/* 进入箭头 */}
+            <motion.div
+              className="w-11 h-11 rounded-full bg-white flex items-center justify-center shrink-0 toy-shadow-sm"
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <span className="text-rainbow-orange text-xl font-bold leading-none">›</span>
+            </motion.div>
+          </div>
+        </motion.button>
       </motion.section>
 
-      {/* ─── Error Challenge ─── */}
+      {/* ─── 数学王国 + 英语乐园：两座小岛并排 ─── */}
+      <div className="relative z-10 grid grid-cols-2 gap-3 mb-4">
+        {/* 数学王国：糖果粉 */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.45 }}
+        >
+          <motion.button
+            type="button"
+            className="relative w-full overflow-hidden rounded-[28px] text-left cursor-pointer touch-manipulation border-[3px] border-white toy-shadow pb-4"
+            style={{ background: 'linear-gradient(150deg, #FF9EC7 0%, #FF7BAC 60%, #F968A8 100%)' }}
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ y: -3 }}
+            onClick={() => { playTapSound(); navigate('/math-learn') }}
+          >
+            {/* 装饰：糖果 + 几何 */}
+            <span className="absolute top-2.5 right-3 text-xl animate-candy-fall select-none">🍭</span>
+            <span className="absolute bottom-12 right-5 text-sm animate-float-fast select-none opacity-70">🔷</span>
+            <div className="absolute -bottom-5 -left-5 w-24 h-16 bg-white/10 rounded-[50%]" />
+
+            <div className="relative z-10 pt-4 pl-4">
+              <motion.div
+                className="w-14 h-14 rounded-2xl bg-white/25 backdrop-blur-sm flex items-center justify-center border-2 border-white/60"
+                animate={{ rotate: [0, 8, 0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <span className="text-[34px] leading-none">🎲</span>
+              </motion.div>
+              <h3 className="font-display text-xl text-white mt-3 leading-none drop-shadow-sm">数学王国</h3>
+              <p className="text-white/85 text-[11px] mt-1.5">{mathSubtitle}</p>
+              <div className="mt-2">
+                {mathProgress.completed ? (
+                  <DoneBadge />
+                ) : (
+                  <StarProgress progress={mathProgressRatio} />
+                )}
+              </div>
+            </div>
+          </motion.button>
+        </motion.section>
+
+        {/* 英语乐园：海洋蓝 */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.28, duration: 0.45 }}
+        >
+          <motion.button
+            type="button"
+            className="relative w-full overflow-hidden rounded-[28px] text-left cursor-pointer touch-manipulation border-[3px] border-white toy-shadow pb-4"
+            style={{ background: 'linear-gradient(150deg, #6FC0FF 0%, #5BA8FF 60%, #4D8DFF 100%)' }}
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ y: -3 }}
+            onClick={() => { playTapSound(); navigate('/english-learn') }}
+          >
+            {/* 装饰：气泡 + 字母 */}
+            <span className="absolute top-2.5 right-3 text-xl animate-float-medium select-none">🫧</span>
+            <span className="absolute bottom-14 right-6 font-num text-sm font-bold text-white/50 animate-float-fast select-none">Aa</span>
+            <div className="absolute -bottom-5 -right-5 w-24 h-16 bg-white/10 rounded-[50%]" />
+
+            <div className="relative z-10 pt-4 pl-4">
+              <motion.div
+                className="w-14 h-14 rounded-2xl bg-white/25 backdrop-blur-sm flex items-center justify-center border-2 border-white/60"
+                animate={{ y: [0, -4, 0], rotate: [0, -4, 4, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <span className="text-[34px] leading-none">🦜</span>
+              </motion.div>
+              <h3 className="font-display text-xl text-white mt-3 leading-none drop-shadow-sm">英语乐园</h3>
+              <p className="text-white/85 text-[11px] mt-1.5">{englishSubtitle}</p>
+              <div className="mt-2">
+                {englishProgress.completed ? (
+                  <DoneBadge />
+                ) : (
+                  <StarProgress progress={englishProgressRatio} />
+                )}
+              </div>
+            </div>
+          </motion.button>
+        </motion.section>
+      </div>
+
+      {/* ─── 错题大冒险：龙穴入口 ─── */}
       <motion.section
         className="relative z-10"
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.4 }}
+        transition={{ delay: 0.38, duration: 0.45 }}
       >
-        <h3 className="text-xs font-semibold text-text-secondary tracking-widest uppercase mb-3">
-          🏰 挑战关卡
-        </h3>
-
-        <motion.div
-          className="relative overflow-hidden rounded-[20px] bg-gradient-to-r from-violet-500 via-rainbow-purple to-fuchsia-500 p-4 md:p-5 shadow-lg cursor-pointer"
+        <motion.button
+          type="button"
+          className="relative w-full overflow-hidden rounded-[26px] text-left cursor-pointer touch-manipulation border-[3px] border-white toy-shadow"
+          style={{ background: 'linear-gradient(120deg, #B07FE8 0%, #9B6BE0 55%, #8E5BD8 100%)' }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => navigate('/review')}
+          whileHover={{ y: -2 }}
+          onClick={() => { playTapSound(); navigate('/review') }}
         >
           {/* 装饰 */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4" />
-          <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-1/3 -translate-x-1/4" />
+          <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full" />
+          <span className="absolute top-2.5 right-12 text-lg animate-star-pulse select-none">✨</span>
 
-          <div className="relative z-10 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <motion.div
-                className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center"
-                animate={{ y: [0, -3, 0], rotate: [0, 3, -3, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1 }}
-              >
-                <span className="text-[32px] leading-none">🐉</span>
-              </motion.div>
-              <div>
-                <h4 className="text-white font-bold text-base">错题大冒险</h4>
-                <p className="text-white/70 text-xs mt-0.5">
-                  {errorCount > 0
-                    ? `${errorCount} 只小怪兽等你来打败！`
-                    : '小怪兽都被打跑啦，你太厉害了！'}
-                </p>
-              </div>
+          <div className="relative z-10 flex items-center gap-3.5 p-4">
+            <motion.div
+              className="w-14 h-14 rounded-2xl bg-white/25 backdrop-blur-sm flex items-center justify-center shrink-0 border-2 border-white/60"
+              animate={{ y: [0, -3, 0], rotate: [0, 3, -3, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1 }}
+            >
+              <span className="text-[32px] leading-none">🐉</span>
+            </motion.div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-display text-lg text-white leading-none drop-shadow-sm">错题大冒险</h4>
+              <p className="text-white/85 text-[11px] mt-1.5">
+                {errorCount > 0
+                  ? `${errorCount} 只小怪兽等你来打败！`
+                  : '小怪兽都被打跑啦，你太厉害了！'}
+              </p>
             </div>
 
             {errorCount > 0 && (
               <motion.div
-                className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"
+                className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 toy-shadow-sm"
                 animate={{ x: [0, 4, 0] }}
                 transition={{ duration: 1, repeat: Infinity }}
               >
-                <span className="text-white text-xl font-bold">›</span>
+                <span className="text-rainbow-purple text-lg font-bold leading-none">›</span>
               </motion.div>
             )}
           </div>
-        </motion.div>
+        </motion.button>
       </motion.section>
     </div>
   )

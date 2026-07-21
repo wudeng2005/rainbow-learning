@@ -60,3 +60,16 @@ export async function fetchLearningDaysCount(): Promise<number> {
   if (error) throw error
   return count || 0
 }
+
+/** 获取所有已完成学习的日期列表（用于学习日历） */
+export async function fetchLearningCalendar(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('daily_progress')
+    .select('date')
+    .eq('user_id', USER_ID)
+    .eq('completed', true)
+    .order('date', { ascending: false })
+
+  if (error) throw error
+  return (data || []).map((d: { date: string }) => d.date)
+}

@@ -13,13 +13,22 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
     const percent = Math.min(100, Math.round((current / total) * 100))
     return (
       <div className="flex items-center gap-2 w-full">
-        <div className="flex-1 h-3 bg-white/60 rounded-full overflow-hidden shadow-inner">
+        <div className="relative flex-1 h-4 bg-white/60 rounded-full overflow-visible shadow-inner">
           <motion.div
             className="h-full bg-gradient-to-r from-amber-400 to-yellow-300 rounded-full"
             initial={{ width: 0 }}
             animate={{ width: `${percent}%` }}
             transition={{ type: 'spring', stiffness: 200, damping: 25 }}
           />
+          {/* 跑步小人 */}
+          <motion.span
+            className="absolute -top-3 text-base"
+            initial={{ left: '0%' }}
+            animate={{ left: `${Math.max(0, percent - 4)}%` }}
+            transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+          >
+            🐰
+          </motion.span>
         </div>
         <span className="text-xs font-bold text-amber-700 min-w-[36px] text-right">
           {current}/{total}

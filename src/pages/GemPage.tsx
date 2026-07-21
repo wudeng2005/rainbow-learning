@@ -1,15 +1,11 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useGemStore } from '@/store/useGemStore'
-
-const sourceLabels: Record<string, string> = {
-  daily_complete: '完成每日任务',
-  perfect_score: '全部答对奖励',
-  review_complete: '闯关成功',
-  math_daily_complete: '完成数学任务',
-  math_perfect_score: '数学全对奖励',
-  english_daily_complete: '完成英语任务',
-  english_perfect_score: '英语全对奖励',
-}
+import { useLearningStore } from '@/store/useLearningStore'
+import { useMathLearningStore } from '@/store/useMathLearningStore'
+import { useEnglishLearningStore } from '@/store/useEnglishLearningStore'
+import { fetchLearningCalendar } from '@/lib/db'
+import { getTodayStr } from '@/lib/storage'
 
 /* ─── 宝石颜色 ─── */
 const GEM_PALETTE = [
@@ -36,55 +32,34 @@ function Gem({ color, size, x, y, delay }: {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay, type: 'spring', stiffness: 200, damping: 15 }}
     >
-      {/* 地面阴影 */}
-      <ellipse
-        cx={x}
-        cy={y + size * 0.38}
-        rx={size * 0.28}
-        ry={size * 0.08}
-        fill="rgba(0,0,0,0.08)"
-      />
-      {/* 宝石主体 */}
+      <ellipse cx={x} cy={y + size * 0.38} rx={size * 0.28} ry={size * 0.08} fill="rgba(0,0,0,0.08)" />
       <motion.g
         animate={{ y: [0, -0.8, 0] }}
         transition={{ duration: 3 + delay, repeat: Infinity, ease: 'easeInOut' }}
       >
-        {/* 菱形主体 */}
         <path
           d={`M${x} ${y - size * 0.5} L${x + size * 0.38} ${y - size * 0.05} L${x} ${y + size * 0.38} L${x - size * 0.38} ${y - size * 0.05} Z`}
           fill={`url(#${uid})`}
         />
-        {/* 顶部切面 */}
         <path
           d={`M${x} ${y - size * 0.5} L${x - size * 0.18} ${y - size * 0.12} L${x} ${y - size * 0.02} L${x + size * 0.18} ${y - size * 0.12} Z`}
-          fill={color.light}
-          opacity="0.75"
+          fill={color.light} opacity="0.75"
         />
-        {/* 左面 */}
         <path
           d={`M${x - size * 0.38} ${y - size * 0.05} L${x - size * 0.18} ${y - size * 0.12} L${x} ${y - size * 0.5} Z`}
-          fill={color.main}
-          opacity="0.8"
+          fill={color.main} opacity="0.8"
         />
-        {/* 右面 */}
         <path
           d={`M${x + size * 0.38} ${y - size * 0.05} L${x + size * 0.18} ${y - size * 0.12} L${x} ${y - size * 0.5} Z`}
-          fill={color.dark}
-          opacity="0.8"
+          fill={color.dark} opacity="0.8"
         />
-        {/* 高光 */}
         <path
           d={`M${x - size * 0.06} ${y - size * 0.42} L${x - size * 0.14} ${y - size * 0.16} L${x - size * 0.02} ${y - size * 0.2} Z`}
-          fill="white"
-          opacity="0.5"
+          fill="white" opacity="0.5"
         />
       </motion.g>
-      {/* 闪光点 */}
       <motion.circle
-        cx={x - size * 0.08}
-        cy={y - size * 0.38}
-        r={size * 0.06}
-        fill="white"
+        cx={x - size * 0.08} cy={y - size * 0.38} r={size * 0.06} fill="white"
         animate={{ opacity: [0, 1, 0], scale: [0.5, 1.3, 0.5] }}
         transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2.5 + delay * 2 }}
       />
@@ -101,11 +76,8 @@ function Gem({ color, size, x, y, delay }: {
 
 /* ─── 根据数量生成宝石布局 ─── */
 function getGemLayout(count: number): Array<{ x: number; y: number; size: number; colorIdx: number }> {
-  // 最多展示 15 颗（堆成小山的视觉上限）
   const display = Math.min(count, 15)
-
   if (display <= 3) {
-    // 1-3颗：一排平铺在地上
     const layouts = [
       [{ x: 140, y: 130, size: 38, colorIdx: 0 }],
       [{ x: 118, y: 130, size: 36, colorIdx: 0 }, { x: 162, y: 128, size: 34, colorIdx: 1 }],
@@ -113,53 +85,32 @@ function getGemLayout(count: number): Array<{ x: number; y: number; size: number
     ]
     return layouts[display - 1]
   }
-
   if (display <= 6) {
-    // 4-6颗：两层小堆
     const base = [
-      { x: 100, y: 140, size: 30, colorIdx: 0 },
-      { x: 135, y: 138, size: 32, colorIdx: 1 },
-      { x: 170, y: 141, size: 30, colorIdx: 2 },
-      { x: 118, y: 118, size: 28, colorIdx: 3 },
-      { x: 152, y: 116, size: 28, colorIdx: 4 },
-      { x: 135, y: 100, size: 26, colorIdx: 5 },
+      { x: 100, y: 140, size: 30, colorIdx: 0 }, { x: 135, y: 138, size: 32, colorIdx: 1 },
+      { x: 170, y: 141, size: 30, colorIdx: 2 }, { x: 118, y: 118, size: 28, colorIdx: 3 },
+      { x: 152, y: 116, size: 28, colorIdx: 4 }, { x: 135, y: 100, size: 26, colorIdx: 5 },
     ]
     return base.slice(0, display)
   }
-
   if (display <= 10) {
-    // 7-10颗：三层小山
     const base = [
-      { x: 90, y: 148, size: 28, colorIdx: 0 },
-      { x: 120, y: 146, size: 30, colorIdx: 1 },
-      { x: 150, y: 148, size: 28, colorIdx: 2 },
-      { x: 180, y: 147, size: 27, colorIdx: 3 },
-      { x: 105, y: 126, size: 26, colorIdx: 4 },
-      { x: 135, y: 124, size: 28, colorIdx: 5 },
-      { x: 165, y: 125, size: 26, colorIdx: 6 },
-      { x: 120, y: 105, size: 24, colorIdx: 7 },
-      { x: 150, y: 103, size: 24, colorIdx: 0 },
-      { x: 135, y: 86, size: 22, colorIdx: 1 },
+      { x: 90, y: 148, size: 28, colorIdx: 0 }, { x: 120, y: 146, size: 30, colorIdx: 1 },
+      { x: 150, y: 148, size: 28, colorIdx: 2 }, { x: 180, y: 147, size: 27, colorIdx: 3 },
+      { x: 105, y: 126, size: 26, colorIdx: 4 }, { x: 135, y: 124, size: 28, colorIdx: 5 },
+      { x: 165, y: 125, size: 26, colorIdx: 6 }, { x: 120, y: 105, size: 24, colorIdx: 7 },
+      { x: 150, y: 103, size: 24, colorIdx: 0 }, { x: 135, y: 86, size: 22, colorIdx: 1 },
     ]
     return base.slice(0, display)
   }
-
-  // 11-15颗：满满的小山
   return [
-    { x: 82, y: 152, size: 26, colorIdx: 0 },
-    { x: 110, y: 150, size: 28, colorIdx: 1 },
-    { x: 140, y: 152, size: 27, colorIdx: 2 },
-    { x: 168, y: 150, size: 28, colorIdx: 3 },
-    { x: 196, y: 152, size: 26, colorIdx: 4 },
-    { x: 96, y: 130, size: 25, colorIdx: 5 },
-    { x: 125, y: 128, size: 27, colorIdx: 6 },
-    { x: 155, y: 129, size: 26, colorIdx: 7 },
-    { x: 182, y: 130, size: 25, colorIdx: 0 },
-    { x: 110, y: 108, size: 24, colorIdx: 1 },
-    { x: 140, y: 106, size: 25, colorIdx: 2 },
-    { x: 168, y: 108, size: 24, colorIdx: 3 },
-    { x: 125, y: 88, size: 22, colorIdx: 4 },
-    { x: 155, y: 87, size: 22, colorIdx: 5 },
+    { x: 82, y: 152, size: 26, colorIdx: 0 }, { x: 110, y: 150, size: 28, colorIdx: 1 },
+    { x: 140, y: 152, size: 27, colorIdx: 2 }, { x: 168, y: 150, size: 28, colorIdx: 3 },
+    { x: 196, y: 152, size: 26, colorIdx: 4 }, { x: 96, y: 130, size: 25, colorIdx: 5 },
+    { x: 125, y: 128, size: 27, colorIdx: 6 }, { x: 155, y: 129, size: 26, colorIdx: 7 },
+    { x: 182, y: 130, size: 25, colorIdx: 0 }, { x: 110, y: 108, size: 24, colorIdx: 1 },
+    { x: 140, y: 106, size: 25, colorIdx: 2 }, { x: 168, y: 108, size: 24, colorIdx: 3 },
+    { x: 125, y: 88, size: 22, colorIdx: 4 }, { x: 155, y: 87, size: 22, colorIdx: 5 },
     { x: 140, y: 70, size: 20, colorIdx: 6 },
   ].slice(0, display)
 }
@@ -167,60 +118,30 @@ function getGemLayout(count: number): Array<{ x: number; y: number; size: number
 /* ─── 宝石堆场景 ─── */
 function GemPile({ count }: { count: number }) {
   const layout = getGemLayout(count)
-  // 画布高度根据数量调整
   const svgHeight = count <= 3 ? 160 : count <= 6 ? 170 : count <= 10 ? 180 : 190
 
   return (
     <motion.svg
-      width="280"
-      height={svgHeight}
-      viewBox={`0 0 280 ${svgHeight}`}
-      fill="none"
-      className="mx-auto"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
+      width="280" height={svgHeight} viewBox={`0 0 280 ${svgHeight}`}
+      fill="none" className="mx-auto"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
     >
-      {/* 地面渐变 */}
-      <ellipse
-        cx="140"
-        cy={svgHeight - 20}
-        rx="100"
-        ry="12"
-        fill="url(#ground-shadow)"
-      />
-
-      {/* 宝石们 - 从底层往上画 */}
+      <ellipse cx="140" cy={svgHeight - 20} rx="100" ry="12" fill="url(#ground-shadow)" />
       {layout.map((gem, i) => (
-        <Gem
-          key={i}
-          color={GEM_PALETTE[gem.colorIdx]}
-          size={gem.size}
-          x={gem.x}
-          y={gem.y}
-          delay={i * 0.08}
-        />
+        <Gem key={i} color={GEM_PALETTE[gem.colorIdx]} size={gem.size} x={gem.x} y={gem.y} delay={i * 0.08} />
       ))}
-
-      {/* 顶部星星闪烁 */}
       {count > 3 && (
         <>
           {[0, 1, 2].map(i => (
             <motion.text
-              key={i}
-              x={115 + i * 25}
-              y={count <= 6 ? 75 : count <= 10 ? 65 : 50}
-              fontSize="10"
-              fill="#FFD700"
+              key={i} x={115 + i * 25} y={count <= 6 ? 75 : count <= 10 ? 65 : 50}
+              fontSize="10" fill="#FFD700"
               animate={{ opacity: [0, 0.7, 0], y: [0, -8] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 + i * 0.8, ease: 'easeOut' }}
-            >
-              ✦
-            </motion.text>
+            >✦</motion.text>
           ))}
         </>
       )}
-
       <defs>
         <radialGradient id="ground-shadow" cx="140" cy={svgHeight - 20} rx="100" ry="12" gradientUnits="userSpaceOnUse">
           <stop stopColor="#D4A574" stopOpacity="0.15" />
@@ -231,26 +152,189 @@ function GemPile({ count }: { count: number }) {
   )
 }
 
+/* ─── 学习日历 ─── */
+const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
+
+function LearningCalendar({ learnedDates }: { learnedDates: Set<string> }) {
+  const today = getTodayStr()
+  const [viewDate, setViewDate] = useState(() => {
+    const d = new Date()
+    return { year: d.getFullYear(), month: d.getMonth() }
+  })
+
+  const { year, month } = viewDate
+  const firstDay = new Date(year, month, 1).getDay() // 0=周日
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+
+  // 判断今天是否已学习（本地状态）
+  const chineseCompleted = useLearningStore(s => s.dailyProgress.completed)
+  const mathCompleted = useMathLearningStore(s => s.dailyProgress.completed)
+  const englishCompleted = useEnglishLearningStore(s => s.dailyProgress.completed)
+  const todayLearned = chineseCompleted || mathCompleted || englishCompleted
+
+  const prevMonth = () => {
+    setViewDate(d => d.month === 0 ? { year: d.year - 1, month: 11 } : { ...d, month: d.month - 1 })
+  }
+  const nextMonth = () => {
+    setViewDate(d => d.month === 11 ? { year: d.year + 1, month: 0 } : { ...d, month: d.month + 1 })
+  }
+
+  // 本月学习天数
+  const monthLearnedCount = Array.from({ length: daysInMonth }, (_, i) => {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`
+    return learnedDates.has(dateStr) || (dateStr === today && todayLearned)
+  }).filter(Boolean).length
+
+  const isCurrentMonth = new Date().getFullYear() === year && new Date().getMonth() === month
+
+  return (
+    <div className="toy-card p-5">
+      {/* 月份导航 */}
+      <div className="flex items-center justify-between mb-4">
+        <motion.button
+          type="button"
+          className="w-10 h-10 rounded-full bg-bg-warm border-2 border-white flex items-center justify-center text-ink-soft touch-manipulation toy-shadow-sm"
+          whileTap={{ scale: 0.9 }}
+          onClick={prevMonth}
+        >
+          <span className="text-lg leading-none">‹</span>
+        </motion.button>
+        <div className="text-center">
+          <h3 className="font-display text-lg text-ink leading-none">{year}年{month + 1}月</h3>
+          <p className="text-[11px] text-ink-soft mt-1">
+            本月学习 <span className="font-num font-bold text-rainbow-green">{monthLearnedCount}</span> 天
+          </p>
+        </div>
+        <motion.button
+          type="button"
+          className={`w-10 h-10 rounded-full border-2 border-white flex items-center justify-center touch-manipulation ${
+            isCurrentMonth ? 'bg-gray-50 text-gray-300' : 'bg-bg-warm text-ink-soft toy-shadow-sm'
+          }`}
+          whileTap={isCurrentMonth ? {} : { scale: 0.9 }}
+          onClick={isCurrentMonth ? undefined : nextMonth}
+          disabled={isCurrentMonth}
+        >
+          <span className="text-lg leading-none">›</span>
+        </motion.button>
+      </div>
+
+      {/* 星期头 */}
+      <div className="grid grid-cols-7 mb-2">
+        {WEEKDAYS.map(d => (
+          <div key={d} className="text-center text-[11px] font-medium text-ink-soft py-1">
+            {d}
+          </div>
+        ))}
+      </div>
+
+      {/* 日期格子 */}
+      <div className="grid grid-cols-7 gap-y-1">
+        {/* 前置空白 */}
+        {Array.from({ length: firstDay }, (_, i) => (
+          <div key={`empty-${i}`} />
+        ))}
+
+        {/* 每天 */}
+        {Array.from({ length: daysInMonth }, (_, i) => {
+          const day = i + 1
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+          const isLearned = learnedDates.has(dateStr) || (dateStr === today && todayLearned)
+          const isToday = dateStr === today
+          const isFuture = new Date(dateStr) > new Date()
+
+          return (
+            <div key={day} className="flex items-center justify-center py-0.5">
+              <motion.div
+                className={`relative w-9 h-9 rounded-full flex items-center justify-center font-num text-sm ${
+                  isLearned
+                    ? 'bg-gradient-to-br from-rainbow-green to-emerald-400 text-white font-bold toy-shadow-sm'
+                    : isToday
+                      ? 'bg-rainbow-yellow/20 text-amber-700 font-bold ring-2 ring-rainbow-yellow'
+                      : isFuture
+                        ? 'text-gray-300'
+                        : 'text-ink-soft'
+                }`}
+                initial={isLearned ? { scale: 0.5, opacity: 0 } : false}
+                animate={isLearned ? { scale: 1, opacity: 1 } : undefined}
+                transition={{ type: 'spring', stiffness: 300, damping: 20, delay: day * 0.01 }}
+              >
+                {day}
+                {/* 学习完成标记 */}
+                {isLearned && (
+                  <motion.span
+                    className="absolute -top-1 -right-1 text-[11px]"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2 + day * 0.01, type: 'spring' }}
+                  >
+                    ⭐
+                  </motion.span>
+                )}
+              </motion.div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* 图例 */}
+      <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t-2 border-bg-warm">
+        <div className="flex items-center gap-1">
+          <span className="w-3 h-3 rounded-full bg-gradient-to-br from-rainbow-green to-emerald-400" />
+          <span className="text-[10px] text-ink-soft">已学习</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="w-3 h-3 rounded-full ring-2 ring-rainbow-yellow bg-rainbow-yellow/20" />
+          <span className="text-[10px] text-ink-soft">今天</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /* ─── 主页面 ─── */
 export default function GemPage() {
-  const { total, records } = useGemStore()
+  const { total } = useGemStore()
+  const [learnedDates, setLearnedDates] = useState<Set<string>>(new Set())
+
+  // 从 Supabase 获取学习日历数据
+  useEffect(() => {
+    fetchLearningCalendar()
+      .then(dates => setLearnedDates(new Set(dates)))
+      .catch(() => {
+        // 离线时从本地 gem records 推断学习日期
+        const records = useGemStore.getState().records
+        const dates = new Set(records.map(r => r.date))
+        setLearnedDates(dates)
+      })
+  }, [])
 
   return (
     <motion.div
-      className="flex flex-col gap-5 py-2"
+      className="flex flex-col gap-4 py-2"
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      {/* 宝石堆主视觉 */}
-      <div className="relative rounded-3xl pt-6 pb-4 px-4">
+      {/* ─── 页面标题 ─── */}
+      <div className="flex items-center gap-2 px-1">
+        <span className="text-xl leading-none">🎁</span>
+        <h2 className="font-display text-xl text-ink leading-none">我的宝箱</h2>
+      </div>
+
+      {/* ─── 宝石展示区 ─── */}
+      <div className="relative toy-card pt-6 pb-5 px-4 overflow-hidden">
+        {/* 背景装饰 */}
+        <div className="absolute top-3 left-6 text-2xl opacity-25 animate-float-slow">✨</div>
+        <div className="absolute top-8 right-8 text-xl opacity-20 animate-float-medium">💫</div>
+        <div className="absolute bottom-4 left-10 text-lg opacity-15 animate-float-fast">⭐</div>
+
         {total > 0 ? (
           <GemPile count={total} />
         ) : (
           <div className="flex justify-center py-8">
             <motion.span
-              className="text-5xl"
-              animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
+              className="text-6xl"
+              animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.08, 1], y: [0, -5, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
               💎
@@ -258,63 +342,33 @@ export default function GemPage() {
           </div>
         )}
 
-        {/* 数量 */}
+        {/* 数量 + 描述 */}
         <motion.div
-          className="text-center mt-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          className="text-center mt-3"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <p className="text-xl font-bold text-amber-800">
-            {total > 0 ? `${total} 颗宝石` : '等你来收集！'}
+          <p className="font-display text-2xl text-ink leading-none">
+            {total > 0 ? (
+              <>
+                <span className="font-num text-3xl font-bold text-rainbow-orange">{total}</span>
+                <span className="text-base ml-1">颗宝石</span>
+              </>
+            ) : '等你来收集！'}
           </p>
-          <p className="text-text-secondary text-xs mt-0.5">
-            {total === 0 ? '完成学习就能获得闪亮宝石哦' : '每一颗都是努力的奖励 ✨'}
+          <p className="text-ink-soft text-xs mt-2">
+            {total === 0 ? '完成学习就能获得闪亮宝石哦 ✨' : '每一颗都是你努力的奖励 🌟'}
           </p>
         </motion.div>
       </div>
 
-      {/* 获得记录 */}
-      <div>
-        <h3 className="text-base font-bold text-text-primary mb-3">获得记录</h3>
-
-        {records.length === 0 ? (
-          <div className="text-center py-10 bg-white rounded-2xl shadow-sm">
-            <motion.span
-              className="text-4xl block mb-2"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              ✨
-            </motion.span>
-            <p className="text-text-secondary text-sm">还没有宝石呢</p>
-            <p className="text-text-secondary text-xs mt-1">去冒险就能赚到哦！</p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {records.slice(0, 20).map((record, i) => (
-              <motion.div
-                key={`${record.date}-${i}`}
-                className="flex items-center gap-3 py-3 px-4 bg-white rounded-xl shadow-sm"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.04 }}
-              >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-100 to-yellow-50 flex items-center justify-center">
-                  <span className="text-sm">💎</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-text-primary truncate">
-                    {sourceLabels[record.source] || record.source}
-                  </p>
-                  <p className="text-xs text-text-secondary">{record.date}</p>
-                </div>
-                <span className="text-sm font-bold text-amber-600">+{record.amount}</span>
-              </motion.div>
-            ))}
-          </div>
-        )}
+      {/* ─── 学习日历 ─── */}
+      <div className="flex items-center gap-2 px-1 mt-1">
+        <span className="text-xl leading-none">📅</span>
+        <h2 className="font-display text-xl text-ink leading-none">学习日历</h2>
       </div>
+      <LearningCalendar learnedDates={learnedDates} />
     </motion.div>
   )
 }

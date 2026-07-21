@@ -7,30 +7,29 @@ scope:
 source_files:
     - package.json
     - package-lock.json
-    - vite.config.ts
 ---
 
-本项目采用标准的 npm 生态进行依赖管理，核心机制如下：
+本项目采用标准的 npm 包管理方案，通过 package.json 声明依赖、package-lock.json 锁定版本，并配合企业私有镜像源进行安装。
 
-**包管理器与锁文件**
-- 使用 npm 作为包管理器，通过 `package.json` 声明运行时与开发时依赖。
-- 提交 `package-lock.json`（lockfileVersion: 3）以锁定所有子依赖的精确版本，确保团队与 CI 环境安装结果一致。
-- 未使用 pnpm、yarn、bun 等替代工具；`.gitignore` 中仅保留对它们的日志忽略规则，表明项目不强制要求特定包管理器。
+## 使用的系统与工具
+- 包管理器：npm（由 package-lock.json 的 lockfileVersion 3 确认）
+- 构建与脚本：Vite 8 + TypeScript 6，通过 package.json 中 scripts 暴露 dev/build/lint/preview 四个命令
+- 私有镜像源：从 package-lock.json 中所有 resolved 字段可见，项目实际拉取自阿里云 NPM 镜像 registry.anpm.alibaba-inc.com，而非默认官方源。该配置应来自全局 .npmrc 或 CI 环境，仓库内未包含本地 .npmrc 文件。
+- 无 vendoring：项目中不存在 node_modules 提交记录，也未使用 pnpm/yarn workspace 或子模块方式管理依赖。
 
-**私有镜像源**
-- 从 `package-lock.json` 中的 `resolved` 字段可见，所有包均通过阿里云 NPM 镜像 `registry.anpm.alibaba-inc.com` 下载，说明开发者本地或全局配置了 `.npmrc` 指向该镜像。仓库内未包含 `.npmrc` 文件，属于本地/环境变量层面的配置。
+## 关键文件
+- package.json：唯一依赖声明入口，区分 dependencies 与 devDependencies
+- package-lock.json：完整依赖树与精确版本锁定，已纳入版本控制
+- .gitignore：忽略 yarn-debug.log*、yarn-error.log*、pnpm-debug.log* 等日志，间接表明团队可能同时接触过 yarn/pnpm，但当前仅用 npm
 
-**依赖分类与版本策略**
-- 运行时依赖（dependencies）：React 19、react-router-dom 7、zustand 5、framer-motion 12、@supabase/supabase-js 2、Tailwind CSS v4 及其 Vite 插件。
-- 开发依赖（devDependencies）：Vite 8、TypeScript ~6.0.2、ESLint 10 + typescript-eslint、@vitejs/plugin-react、globals 等。
-- 版本范围统一使用 `^`（主版本兼容），除 TypeScript 使用 `~`（次版本兼容）。未引入 `workspace:` 协议，不存在 monorepo 结构。
+## 架构与约定
+1. 版本范围策略：生产依赖统一使用 ^ 前缀（如 react: ^19.2.6），允许小版本/补丁升级；开发依赖中的 TypeScript 使用 ~（typescript: ~6.0.2），更严格地限制大版本变更。
+2. 依赖分层清晰：运行时依赖（React、Zustand、Supabase、Tailwind、Framer Motion、Router）与构建/类型/校验工具（ESLint、TypeScript、Vite、@types/*）严格分离。
+3. 锁文件即真相：package-lock.json 被提交到仓库，确保团队成员与 CI 获得完全一致的依赖解析结果。
+4. 无私有包注册表配置在仓库内：未发现 .npmrc、.yarnrc、pnpm-workspace.yaml 等配置文件，说明私有镜像源通过全局 npm 配置或 CI 环境变量注入。
 
-**构建与打包**
-- 通过 Vite 构建，无 vendoring 或源码级依赖复制；`node_modules/` 未被提交，依赖在构建阶段动态解析。
-- 部署目标为 Vercel（见 `vercel.json`），CI 将基于 `package-lock.json` 还原依赖树。
-
-**开发者应遵循的规则**
-1. 新增依赖后必须运行 `npm install` 并检查 `package-lock.json` 变更，禁止手动编辑 lock 文件。
-2. 升级依赖时使用 `npm update <pkg>` 或 `npm install <pkg>@latest --save-exact`，避免随意放宽版本范围导致破坏性更新。
-3. 若需切换镜像源，应在团队共享的 `.npmrc` 或 CI 环境变量中集中配置，而非写入仓库。
-4. 保持 `type: "module"` 与 ESM 风格导入一致，避免混用 CommonJS 依赖引发解析问题。
+## 开发者应遵循的规则
+- 新增依赖时只修改 package.json，不要手动编辑 package-lock.json；运行 npm install 后提交更新后的锁文件。
+- 保持 ^ 与 ~ 的版本策略一致：运行时库用 ^，编译期工具用 ~。
+- 如需切换镜像源或添加私有包认证，应在团队级 .npmrc 或 CI 环境中配置，而非写入仓库。
+- 避免将 node_modules 提交进 Git；若需共享二进制原生模块，优先考虑预构建产物或 Docker 镜像缓存。

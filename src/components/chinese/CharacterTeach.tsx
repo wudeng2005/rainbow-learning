@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { CharacterInfo } from '@/types'
-import { playCharAudio } from '@/lib/sounds'
+import { playCharAudio, stopAllAudio } from '@/lib/sounds'
 
 interface CharacterTeachProps {
   characters: string[]
@@ -42,6 +42,7 @@ export default function CharacterTeach({ characters, characterData, onComplete }
   }
 
   const handleNext = () => {
+    stopAllAudio()
     if (isLast) {
       onComplete()
     } else {
@@ -74,7 +75,7 @@ export default function CharacterTeach({ characters, characterData, onComplete }
         <motion.button
           type="button"
           className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
-          onClick={() => navigate('/')}
+          onClick={() => { stopAllAudio(); navigate('/') }}
           whileTap={{ scale: 0.9 }}
         >
           ←

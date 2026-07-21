@@ -2,6 +2,36 @@
 
 let audioCtx: AudioContext | null = null
 
+// ─── 全局音频管理器：跟踪所有活动音频实例，支持一键停止 ───
+const activeAudios = new Set<HTMLAudioElement>()
+const pendingTimers = new Set<ReturnType<typeof setTimeout>>()
+
+function trackAudio(audio: HTMLAudioElement) {
+  activeAudios.add(audio)
+  const cleanup = () => activeAudios.delete(audio)
+  audio.addEventListener('ended', cleanup, { once: true })
+  audio.addEventListener('error', cleanup, { once: true })
+}
+
+function trackTimer(id: ReturnType<typeof setTimeout>) {
+  pendingTimers.add(id)
+}
+
+/** 停止所有正在播放的音频和待执行的语音定时器 */
+export function stopAllAudio() {
+  // 停止所有 HTML Audio
+  activeAudios.forEach(audio => {
+    audio.pause()
+    audio.currentTime = 0
+  })
+  activeAudios.clear()
+  // 取消待执行的 setTimeout（如延迟播放的鼓励语音）
+  pendingTimers.forEach(id => clearTimeout(id))
+  pendingTimers.clear()
+  // 停止浏览器语音合成
+  try { window.speechSynthesis?.cancel() } catch { /* 静默 */ }
+}
+
 /** 答对语音文件列表 */
 const CORRECT_AUDIO_FILES = [
   '/audio/correct/correct1.mp3',
@@ -32,6 +62,7 @@ function playVoice(files: string[]) {
     const file = files[Math.floor(Math.random() * files.length)]
     const audio = new Audio(file)
     audio.volume = 0.85
+    trackAudio(audio)
     audio.play().catch(() => {
       // 静默处理（用户未交互时无法自动播放）
     })
@@ -73,6 +104,7 @@ export function speakEnglish(text: string, src?: string) {
   try {
     const audio = new Audio(src)
     audio.volume = 1
+    trackAudio(audio)
     audio.play().catch(() => speakEnglishFallback(text))
   } catch {
     speakEnglishFallback(text)
@@ -110,7 +142,8 @@ export function playCorrectSound() {
   }
 
   // 音效结束后播放语音鼓励
-  setTimeout(() => speakCorrectEncouragement(), 350)
+  const t = setTimeout(() => { pendingTimers.delete(t); speakCorrectEncouragement() }, 350)
+  trackTimer(t)
 }
 
 /** 答错音效：柔和低音 */
@@ -134,7 +167,8 @@ export function playWrongSound() {
   }
 
   // 音效结束后播放温柔语音
-  setTimeout(() => speakWrongEncouragement(), 400)
+  const t = setTimeout(() => { pendingTimers.delete(t); speakWrongEncouragement() }, 400)
+  trackTimer(t)
 }
 
 /** 播放汉字读音音频（返回 Promise，音频播完时 resolve） */
@@ -144,6 +178,7 @@ export function playCharAudio(audioPath: string | null | undefined): Promise<voi
     try {
       const audio = new Audio(audioPath)
       audio.volume = 0.85
+      trackAudio(audio)
       audio.onended = () => resolve()
       audio.onerror = () => resolve()
       audio.play().catch(() => resolve())
@@ -159,6 +194,7 @@ export function playStoryAudio(storyId: string, sentenceIndex: number): Promise<
     try {
       const audio = new Audio(`/audio/stories/${storyId}_s${sentenceIndex}.mp3`)
       audio.volume = 1
+      trackAudio(audio)
       audio.onended = () => resolve()
       audio.onerror = () => resolve()
       audio.play().catch(() => resolve())
@@ -189,6 +225,28 @@ export function playGemSound() {
       gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.25)
       osc.stop(startTime + 0.25)
     })
+  } catch {
+    // 静默处理
+  }
+}
+
+/** 点击音效：轻柔的“pop”声，提供即时反馈 */
+export function playTapSound() {
+  try {
+    const ctx = getAudioContext()
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(600, ctx.currentTime)
+    osc.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.06)
+    gain.gain.setValueAtTime(0.08, ctx.currentTime)
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1)
+
+    osc.start(ctx.currentTime)
+    osc.stop(ctx.currentTime + 0.1)
   } catch {
     // 静默处理
   }

@@ -11,7 +11,7 @@ import FloatingDecorations from '@/components/FloatingDecorations'
 import StoryPlayer from '@/components/chinese/StoryPlayer'
 import CharacterTeach from '@/components/chinese/CharacterTeach'
 import { correctMessages, wrongMessages, getRandomMessage } from '@/data/encouragements'
-import { playCorrectSound, playWrongSound, playGemSound } from '@/lib/sounds'
+import { playCorrectSound, playWrongSound, playGemSound, stopAllAudio } from '@/lib/sounds'
 import type { Question, QuestionType, Story, CharacterInfo } from '@/types'
 import questionsData from '@/data/questions.json'
 import storiesData from '@/data/stories.json'
@@ -194,6 +194,7 @@ export default function LearnPage() {
   }, [question, isPracticeMode, submitAnswer, recordCorrect, recordError, optionStates])
 
   const handleContinue = useCallback(() => {
+    stopAllAudio()
     setShowFeedback(false)
 
     if (isPracticeMode) {

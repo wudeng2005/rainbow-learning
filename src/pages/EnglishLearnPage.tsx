@@ -17,7 +17,7 @@ import {
   englishWrongMessages,
   getRandomEnglishMessage,
 } from '@/data/english-encouragements'
-import { playCorrectSound, playWrongSound, playGemSound, speakEnglish } from '@/lib/sounds'
+import { playCorrectSound, playWrongSound, playGemSound, speakEnglish, stopAllAudio } from '@/lib/sounds'
 import type { EnglishQuestion } from '@/types'
 import englishQuestionsData from '@/data/english-questions.json'
 
@@ -147,6 +147,7 @@ export default function EnglishLearnPage() {
   }, [question, isPracticeMode, submitAnswer, recordCorrect, recordError, optionStates])
 
   const handleContinue = useCallback(() => {
+    stopAllAudio()
     setShowFeedback(false)
 
     if (isPracticeMode) {

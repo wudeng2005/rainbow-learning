@@ -1,19 +1,33 @@
 @import "tailwindcss";
 
 @theme {
-  --color-rainbow-red: #FF6B6B;
-  --color-rainbow-orange: #FFA94D;
-  --color-rainbow-yellow: #FFD93D;
-  --color-rainbow-green: #6BCB77;
-  --color-rainbow-blue: #4D96FF;
-  --color-rainbow-purple: #9B59B6;
-  --color-gem-gold: #FFD700;
-  --color-bg-warm: #FFFBF5;
+  /* ─── 云上梦乐园调色板 ─── */
+  --color-rainbow-red: #FF7B6B;
+  --color-rainbow-orange: #FFA45C;
+  --color-rainbow-yellow: #FFC93C;
+  --color-rainbow-green: #5FD68B;
+  --color-rainbow-blue: #5BA8FF;
+  --color-rainbow-purple: #B07FE8;
+  --color-gem-gold: #FFC93C;
+
+  /* 天空三层渐变 */
+  --color-sky-top: #A8DDFF;
+  --color-sky-mid: #FFD9EC;
+  --color-sky-bottom: #FFF3E0;
+
+  /* 基底与文字 */
+  --color-bg-warm: #FFF6E9;
   --color-bg-card: #FFFFFF;
-  --color-text-primary: #2D2D2D;
-  --color-text-secondary: #6B7280;
-  --color-correct: #10B981;
-  --color-wrong-soft: #A78BFA;
+  --color-ink: #4A3B5C;
+  --color-ink-soft: #8B7FA3;
+  --color-text-primary: #4A3B5C;
+  --color-text-secondary: #8B7FA3;
+  --color-correct: #34C77B;
+  --color-wrong-soft: #C9A6F5;
+
+  /* 字体 */
+  --font-display: "ZCOOL KuaiLe", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-num: "Baloo 2", "PingFang SC", sans-serif;
 }
 
 * {
@@ -22,8 +36,9 @@
 
 html {
   font-size: 16px;
-  /* 防止移动端过度滚动 */
-  overscroll-behavior: none;
+  /* iPad Safari 兼容：确保使用设备宽度 */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 @media (min-width: 768px) {
@@ -34,12 +49,14 @@ html {
 
 body {
   margin: 0;
-  background-color: #FFFBF5;
-  color: #2D2D2D;
+  background-color: #FFF6E9;
+  color: #4A3B5C;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "Noto Sans SC", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* iPad Safari 兼容：vh 回退 + dvh 增强 */
+  min-height: 100vh;
   min-height: 100dvh;
   /* 防止移动端橡皮筋效果 */
   overscroll-behavior-y: none;
@@ -47,7 +64,33 @@ body {
   touch-action: manipulation;
 }
 
+/* ─── 字体工具类 ─── */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+.font-num {
+  font-family: var(--font-num);
+}
+
+/* ─── 玩具质感卡片：厚边框 + 硬阴影，像积木/贴纸 ─── */
+.toy-card {
+  background: #fff;
+  border: 3px solid #4A3B5C;
+  border-radius: 24px;
+  box-shadow: 0 6px 0 rgba(74, 59, 92, 0.18);
+}
+.toy-shadow {
+  box-shadow: 0 6px 0 rgba(74, 59, 92, 0.16);
+}
+.toy-shadow-sm {
+  box-shadow: 0 4px 0 rgba(74, 59, 92, 0.14);
+}
+
 #root {
+  /* iPad Safari 兼容：vh 回退 + dvh 增强 */
+  min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -60,6 +103,13 @@ body {
 
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* iPad Safari dvh 兼容工具类 */
+@supports not (min-height: 100dvh) {
+  .min-h-dvh {
+    min-height: 100vh !important;
+  }
 }
 
 /* 漂浮装饰动画 */
@@ -121,5 +171,41 @@ body {
 }
 .animate-candy-fall-slow {
   animation: candy-fall-slow 4.5s ease-in-out infinite;
+}
+
+/* ─── 云上梦乐园：氛围背景动画 ─── */
+/* 云朵横向漂移 */
+@keyframes cloud-drift {
+  from { transform: translateX(-15vw); }
+  to { transform: translateX(115vw); }
+}
+.cloud-drift {
+  animation: cloud-drift linear infinite;
+}
+/* 星星闪烁 */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50% { opacity: 0.9; transform: scale(1.15); }
+}
+.twinkle {
+  animation: twinkle ease-in-out infinite;
+}
+/* 热气球缓缓上浮 */
+@keyframes balloon-rise {
+  0% { transform: translateY(105vh) rotate(-3deg); opacity: 0; }
+  8% { opacity: 0.9; }
+  92% { opacity: 0.9; }
+  100% { transform: translateY(-12vh) rotate(3deg); opacity: 0; }
+}
+.balloon-rise {
+  animation: balloon-rise linear infinite;
+}
+/* 太阳光晕呼吸 */
+@keyframes sun-glow {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50% { transform: scale(1.12); opacity: 0.8; }
+}
+.sun-glow {
+  animation: sun-glow 5s ease-in-out infinite;
 }
 

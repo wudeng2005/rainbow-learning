@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { playTapSound } from '@/lib/sounds'
 
 interface MathOptionCardProps {
   option: string
@@ -39,7 +40,7 @@ export default function MathOptionCard({ option, index, state, onSelect }: MathO
       className={`relative rounded-3xl p-4 min-h-[80px] min-w-[80px] flex items-center justify-center 
         border-3 transition-all duration-200 cursor-pointer select-none touch-manipulation
         ${stateStyles[state]}`}
-      onClick={state === 'idle' ? onSelect : undefined}
+      onClick={state === 'idle' ? () => { playTapSound(); onSelect() } : undefined}
       animate={animations[state]}
       transition={{ type: 'spring', stiffness: 500, damping: 25 }}
       whileTap={state === 'idle' ? { scale: 0.93 } : undefined}
