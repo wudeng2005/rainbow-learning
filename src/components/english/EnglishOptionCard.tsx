@@ -10,21 +10,21 @@ interface EnglishOptionCardProps {
 }
 
 const cardColors = [
-  'bg-sky-100 border-sky-300 hover:border-sky-500',
-  'bg-cyan-100 border-cyan-300 hover:border-cyan-500',
-  'bg-indigo-100 border-indigo-300 hover:border-indigo-500',
-  'bg-teal-100 border-teal-300 hover:border-teal-500',
+  'bg-sky-50 border-sky-200 text-sky-700',
+  'bg-cyan-50 border-cyan-200 text-cyan-700',
+  'bg-indigo-50 border-indigo-200 text-indigo-700',
+  'bg-teal-50 border-teal-200 text-teal-700',
 ]
 
 export default function EnglishOptionCard({ option, index, state, variant, onSelect }: EnglishOptionCardProps) {
   const idleStyle = cardColors[index % cardColors.length]
 
   const stateStyles = {
-    idle: `${idleStyle} shadow-md hover:shadow-lg`,
-    correct: 'bg-emerald-100 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]',
-    wrong: 'bg-indigo-50 border-indigo-300 shadow-md',
-    reveal: 'bg-emerald-50 border-emerald-300 border-dashed',
-    disabled: 'bg-gray-50 border-gray-200 opacity-50',
+    idle: `${idleStyle} shadow-[0_5px_0_rgba(56,130,190,0.15)] active:shadow-none active:translate-y-[5px]`,
+    correct: 'bg-emerald-50 border-emerald-300 text-emerald-700 shadow-[0_0_20px_rgba(16,185,129,0.25)]',
+    wrong: 'bg-slate-50 border-slate-200 text-slate-400 shadow-md',
+    reveal: 'bg-emerald-50 border-emerald-300 border-dashed text-emerald-600',
+    disabled: 'bg-gray-50 border-gray-200 text-gray-400 opacity-50',
   }
 
   const animations = {
@@ -51,8 +51,7 @@ export default function EnglishOptionCard({ option, index, state, variant, onSel
       onClick={state === 'idle' ? onSelect : undefined}
       animate={animations[state]}
       transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-      whileTap={state === 'idle' ? { scale: 0.93 } : undefined}
-      whileHover={state === 'idle' ? { y: -3, scale: 1.02 } : undefined}
+      whileTap={state === 'idle' ? { scale: 0.95 } : undefined}
       disabled={state !== 'idle'}
     >
       {state === 'correct' && (

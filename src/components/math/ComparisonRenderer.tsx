@@ -14,10 +14,10 @@ export default function ComparisonRenderer({ data, options, optionStates, onSele
   const isSameMode = options.some(o => o.includes('一样多'))
 
   const containerStyle = (state: string) => {
-    if (state === 'correct') return 'border-emerald-400 bg-emerald-50 scale-105 shadow-xl'
-    if (state === 'wrong') return 'border-purple-300 bg-purple-50 opacity-60 scale-95'
+    if (state === 'correct') return 'border-emerald-300 bg-emerald-50 scale-105 shadow-[0_0_20px_rgba(16,185,129,0.25)]'
+    if (state === 'wrong') return 'border-rose-200 bg-rose-50 opacity-60 scale-95'
     if (state === 'disabled') return 'border-gray-200 bg-gray-50 opacity-50'
-    return 'border-pink-200 bg-white hover:border-pink-400 hover:shadow-lg'
+    return 'border-pink-200 bg-white shadow-[0_5px_0_rgba(190,80,120,0.12)] active:shadow-none active:translate-y-[5px]'
   }
 
   // ─── "一样多"模式：容器仅展示，下方提供文字选项按钮 ───

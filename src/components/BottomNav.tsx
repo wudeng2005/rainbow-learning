@@ -4,9 +4,9 @@ import { useUserStore } from '@/store/useUserStore'
 import { playTapSound } from '@/lib/sounds'
 
 const tabs = [
-  { path: '/', label: '首页', icon: '🏠', activeBg: 'from-rainbow-blue to-sky-300' },
-  { path: '/gems', label: '宝箱', icon: '🎁', activeBg: 'from-rainbow-yellow to-amber-300' },
-  { path: '/profile', label: '我的', icon: 'avatar', activeBg: 'from-rainbow-green to-emerald-300' },
+  { path: '/', label: '首页', icon: '🏠', activeBg: 'from-rainbow-blue to-sky-300', dotColor: 'bg-rainbow-blue' },
+  { path: '/gems', label: '宝箱', icon: '🎁', activeBg: 'from-rainbow-yellow to-amber-300', dotColor: 'bg-rainbow-yellow' },
+  { path: '/profile', label: '我的', icon: 'avatar', activeBg: 'from-rainbow-green to-emerald-300', dotColor: 'bg-rainbow-green' },
 ]
 
 export default function BottomNav() {
@@ -33,8 +33,11 @@ export default function BottomNav() {
                         ? `bg-gradient-to-br ${tab.activeBg} border-2 border-white toy-shadow-sm`
                         : 'bg-transparent'
                     }`}
-                    animate={isActive ? { scale: [1, 1.18, 1], rotate: [0, -4, 4, 0] } : { scale: 1, rotate: 0 }}
-                    transition={{ duration: 0.4 }}
+                    animate={isActive
+                      ? { scale: [1, 1.2, 1], rotate: [0, -6, 6, 0], y: [0, -3, 0] }
+                      : { scale: 1, rotate: 0, y: 0 }
+                    }
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
                   >
                     {tab.icon === 'avatar' ? (
                       <img
@@ -47,10 +50,16 @@ export default function BottomNav() {
                     )}
                   </motion.div>
                   <span className={`text-[10px] mt-0.5 font-display transition-colors ${
-                    isActive ? 'text-ink' : 'text-ink-soft'
+                    isActive ? 'text-ink font-bold' : 'text-ink-soft'
                   }`}>
                     {tab.label}
                   </span>
+                  {/* 活跃指示点 */}
+                  <motion.div
+                    className={`w-1.5 h-1.5 rounded-full mt-0.5 ${tab.dotColor}`}
+                    animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                  />
                 </>
               )}
             </NavLink>

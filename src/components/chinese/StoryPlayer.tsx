@@ -110,7 +110,7 @@ export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
       <div className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-3 safe-top">
         <motion.button
           type="button"
-          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
+          className="w-12 h-12 rounded-full bg-white shadow-md border-2 border-amber-100 flex items-center justify-center text-xl touch-manipulation"
           onClick={() => { stopAllAudio(); navigate('/') }}
           whileTap={{ scale: 0.9 }}
         >
@@ -124,7 +124,21 @@ export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
       </div>
 
       {/* 主内容区 */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pb-8">
+      <div className="relative z-10 flex-1 flex flex-col items-center px-6 pb-8">
+        {/* 故事精灵陡伴 */}
+        <div className="flex items-end gap-2 w-full max-w-md mb-3">
+          <motion.span className="text-4xl shrink-0" animate={{ y: [0, -4, 0], rotate: [0, 3, -3, 0] }}
+            transition={{ duration: 3, repeat: Infinity }}>🧚</motion.span>
+          <motion.div
+            className="relative bg-white rounded-2xl rounded-bl-md px-4 py-2.5 shadow-md border-2 border-amber-100"
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          >
+            <p className="text-sm md:text-base text-amber-700 font-bold">
+              {isPlaying ? '嘘——认真听故事哦~' : isLast ? '最后一句啦，听完就认识新字！' : '故事精灵给你讲故事啦！'}
+            </p>
+          </motion.div>
+        </div>
+
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -146,7 +160,7 @@ export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
 
             {/* 句子卡片 */}
             <motion.div
-              className="bg-white rounded-3xl px-6 py-8 shadow-lg border-2 border-amber-100 w-full text-center"
+              className="bg-white rounded-[2rem] px-6 py-8 shadow-[0_8px_0_rgba(217,119,6,0.08)] border-[3px] border-amber-100 w-full text-center"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.15 }}
@@ -199,7 +213,7 @@ export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
           {/* 重听按钮 */}
           {hasPlayedCurrent && !isPlaying && (
             <motion.button
-              className="flex items-center gap-1 px-4 py-2 rounded-full bg-white/60 text-amber-500 text-sm font-medium shadow-sm"
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white text-amber-500 text-sm font-bold shadow-[0_3px_0_rgba(217,119,6,0.15)] border-2 border-amber-100 active:shadow-none active:translate-y-[3px] touch-manipulation"
               onClick={() => playCurrentSentence()}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, scale: 0.8 }}
@@ -213,10 +227,9 @@ export default function StoryPlayer({ story, onComplete }: StoryPlayerProps) {
           <AnimatePresence>
             {showNext && (
               <motion.button
-                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-400 text-white font-bold text-lg shadow-lg min-w-[200px]"
+                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-400 text-white font-bold text-lg min-w-[200px] border-[3px] border-white/40 shadow-[0_5px_0_rgba(217,119,6,0.3)] active:shadow-none active:translate-y-1 touch-manipulation"
                 onClick={handleNext}
                 whileTap={{ scale: 0.95 }}
-                whileHover={{ y: -2 }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 20, opacity: 0 }}

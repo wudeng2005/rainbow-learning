@@ -9,10 +9,10 @@ interface ShapeRendererProps {
 
 export default function ShapeRenderer({ data, optionStates, onSelect }: ShapeRendererProps) {
   const cellStyle = (state: string) => {
-    if (state === 'correct') return 'border-emerald-400 bg-emerald-50 shadow-[0_0_16px_rgba(16,185,129,0.3)] scale-110'
-    if (state === 'wrong') return 'border-purple-300 bg-purple-50 opacity-60 scale-95'
+    if (state === 'correct') return 'border-emerald-300 bg-emerald-50 shadow-[0_0_16px_rgba(16,185,129,0.25)] scale-110'
+    if (state === 'wrong') return 'border-rose-200 bg-rose-50 opacity-60 scale-95'
     if (state === 'disabled') return 'border-gray-200 bg-gray-50 opacity-50'
-    return 'border-pink-200 bg-white hover:border-pink-400 hover:shadow-lg'
+    return 'border-pink-200 bg-white shadow-[0_5px_0_rgba(190,80,120,0.12)] active:shadow-none active:translate-y-[5px]'
   }
 
   return (

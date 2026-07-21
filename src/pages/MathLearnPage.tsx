@@ -214,14 +214,21 @@ export default function MathLearnPage() {
   // 加载中
   if (!question) {
     return (
-      <div className="min-h-dvh flex items-center justify-center bg-gradient-to-b from-pink-100 via-rose-50 to-emerald-50">
+      <div className="min-h-dvh flex flex-col items-center justify-center gap-4 bg-gradient-to-b from-pink-100 via-rose-50 to-emerald-50">
         <motion.span
-          className="text-5xl"
-          animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+          className="text-6xl"
+          animate={{ rotate: [0, -10, 10, 0], y: [0, -6, 0] }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          🍭
+          🎲
         </motion.span>
+        <motion.p
+          className="text-sm text-pink-600 font-display"
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          糖果精灵正在出题...
+        </motion.p>
       </div>
     )
   }
@@ -235,7 +242,7 @@ export default function MathLearnPage() {
       <div className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-2 safe-top">
         <motion.button
           type="button"
-          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
+          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation border-2 border-white"
           onClick={() => navigate('/')}
           whileTap={{ scale: 0.9 }}
         >
@@ -248,7 +255,7 @@ export default function MathLearnPage() {
           />
         </div>
         {isPracticeMode && (
-          <span className="px-3 py-1 rounded-full bg-pink-200/60 text-pink-600 text-xs font-bold">
+          <span className="px-3 py-1 rounded-full bg-pink-200/60 text-pink-600 text-xs font-bold border border-pink-300/50">
             练习
           </span>
         )}
@@ -265,15 +272,26 @@ export default function MathLearnPage() {
             exit={{ opacity: 0, x: -30, scale: 0.97 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
           >
-            {/* 提示文字 */}
-            <motion.p
-              className="text-base md:text-lg text-pink-600 font-bold"
-              initial={{ y: -10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              {getPromptEmoji(question)} {question.prompt}
-            </motion.p>
+            {/* 糖果精灵 + 提示气泡 */}
+            <div className="flex items-end gap-2 w-full">
+              <motion.span
+                className="text-4xl shrink-0"
+                animate={{ y: [0, -4, 0], rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                🍭
+              </motion.span>
+              <motion.div
+                className="relative bg-white rounded-2xl rounded-bl-md px-4 py-2.5 shadow-md border-2 border-pink-100"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.1, type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                <p className="text-sm md:text-base text-pink-600 font-bold">
+                  {getPromptEmoji(question)} {question.prompt}
+                </p>
+              </motion.div>
+            </div>
 
             {/* 根据题型渲染 */}
             {renderQuestion(question, optionStates, handleSelectOption)}

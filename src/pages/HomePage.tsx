@@ -82,9 +82,15 @@ export default function HomePage() {
       ? `已闯关 ${englishProgress.questionsDone}/10`
       : 'ABC · 小单词'
 
-  // 根据时间段选择问候语
+  // 根据时间段选择问候语和场景描述
   const hour = new Date().getHours()
   const greeting = hour < 11 ? '早上好' : hour < 14 ? '中午好' : hour < 18 ? '下午好' : '晚上好'
+  const sceneEmoji = hour < 11 ? '☀️' : hour < 14 ? '🌤️' : hour < 18 ? '🌅' : '🌙'
+  const adventureText = hour < 11
+    ? '今天想去哪个世界冒险呀'
+    : hour < 18
+      ? '下午想来点什么好玩的'
+      : '晚上好，来一场小冒险吧'
 
   return (
     <div className="relative pb-6">
@@ -114,19 +120,28 @@ export default function HomePage() {
           </div>
 
           {/* 对话气泡 */}
-          <div className="relative flex-1 bg-white rounded-3xl rounded-bl-lg px-4 py-3 toy-shadow-sm border-2 border-white">
+          <motion.div
+            className="relative flex-1 bg-white rounded-3xl rounded-bl-lg px-4 py-3 toy-shadow-sm border-2 border-white"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 300, damping: 18 }}
+          >
             <p className="font-display text-lg text-ink leading-tight">
-              {greeting}，{currentUser.name}！
+              {greeting}，{currentUser.name}！{sceneEmoji}
             </p>
             <p className="text-xs text-ink-soft mt-0.5">
-              今天想去哪个世界冒险呀 ✨
+              {adventureText} ✨
             </p>
             {/* 同行天数徽章 */}
-            <div className="absolute -top-3 right-3 inline-flex items-center gap-1 bg-gradient-to-r from-rainbow-yellow to-rainbow-orange rounded-full px-2.5 py-1 toy-shadow-sm border-2 border-white">
+            <motion.div
+              className="absolute -top-3 right-3 inline-flex items-center gap-1 bg-gradient-to-r from-rainbow-yellow to-rainbow-orange rounded-full px-2.5 py-1 toy-shadow-sm border-2 border-white"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            >
               <span className="text-[11px]">🌟</span>
               <span className="font-num text-[11px] font-bold text-white">第 {getDayStreak()} 天</span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </motion.section>
 
@@ -274,7 +289,7 @@ export default function HomePage() {
 
       {/* ─── 错题大冒险：龙穴入口 ─── */}
       <motion.section
-        className="relative z-10"
+        className="relative z-10 mb-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.38, duration: 0.45 }}
@@ -320,6 +335,38 @@ export default function HomePage() {
           </div>
         </motion.button>
       </motion.section>
+
+      {/* ─── 全部完成庆祝横幅 ─── */}
+      {dailyProgress.completed && mathProgress.completed && englishProgress.completed && (
+        <motion.section
+          className="relative z-10 mt-4"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, type: 'spring', stiffness: 200, damping: 15 }}
+        >
+          <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-r from-rainbow-yellow/20 via-rainbow-green/20 to-rainbow-blue/20 border-2 border-white toy-shadow-sm px-5 py-4 text-center">
+            <motion.span
+              className="text-3xl block mb-1"
+              animate={{ rotate: [0, -10, 10, 0], scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+            >
+              🏆
+            </motion.span>
+            <p className="font-display text-base text-ink">太厉害了，今天全部完成！</p>
+            <p className="text-xs text-ink-soft mt-1">你是最棒的小冒险家，明天见~ 🌈</p>
+          </div>
+        </motion.section>
+      )}
+
+      {/* ─── 每日鼓励语 ─── */}
+      <motion.p
+        className="relative z-10 text-center text-[11px] text-ink-soft/70 mt-5 font-display"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.7 }}
+      >
+        {getDailyMotto()}
+      </motion.p>
     </div>
   )
 }
@@ -339,4 +386,22 @@ function getDayStreak(): number {
   } catch {
     return 1
   }
+}
+
+/** 每日鼓励语：根据日期轮换 */
+const DAILY_MOTTOS = [
+  '🌟 每天进步一点点，你就是最闪亮的小星星',
+  '🌈 学习就像彩虹，每一种颜色都很美',
+  '🚀 小小的你，有大大的能量',
+  '🌻 坚持就是超能力，你已经在用了',
+  '🎨 每一个新字都是一幅画',
+  '🦄 相信自己，你比想象中更厉害',
+  '🍀 今天的努力，是明天的礼物',
+]
+
+function getDailyMotto(): string {
+  const dayOfYear = Math.floor(
+    (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000
+  )
+  return DAILY_MOTTOS[dayOfYear % DAILY_MOTTOS.length]
 }

@@ -9,21 +9,21 @@ interface MathOptionCardProps {
 }
 
 const cardColors = [
-  'bg-pink-100 border-pink-300 hover:border-pink-500',
-  'bg-yellow-100 border-yellow-300 hover:border-yellow-500',
-  'bg-emerald-100 border-emerald-300 hover:border-emerald-500',
-  'bg-purple-100 border-purple-300 hover:border-purple-500',
+  'bg-pink-50 border-pink-200 text-pink-700',
+  'bg-amber-50 border-amber-200 text-amber-700',
+  'bg-emerald-50 border-emerald-200 text-emerald-700',
+  'bg-violet-50 border-violet-200 text-violet-700',
 ]
 
 export default function MathOptionCard({ option, index, state, onSelect }: MathOptionCardProps) {
   const idleStyle = cardColors[index % cardColors.length]
 
   const stateStyles = {
-    idle: `${idleStyle} shadow-md hover:shadow-lg`,
-    correct: 'bg-emerald-100 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]',
-    wrong: 'bg-purple-50 border-purple-300 shadow-md',
-    reveal: 'bg-emerald-50 border-emerald-300 border-dashed',
-    disabled: 'bg-gray-50 border-gray-200 opacity-50',
+    idle: `${idleStyle} shadow-[0_5px_0_rgba(190,80,120,0.15)] active:shadow-none active:translate-y-[5px]`,
+    correct: 'bg-emerald-50 border-emerald-300 text-emerald-700 shadow-[0_0_20px_rgba(16,185,129,0.25)]',
+    wrong: 'bg-rose-50 border-rose-200 text-rose-400 shadow-md',
+    reveal: 'bg-emerald-50 border-emerald-300 border-dashed text-emerald-600',
+    disabled: 'bg-gray-50 border-gray-200 text-gray-400 opacity-50',
   }
 
   const animations = {
@@ -43,8 +43,7 @@ export default function MathOptionCard({ option, index, state, onSelect }: MathO
       onClick={state === 'idle' ? () => { playTapSound(); onSelect() } : undefined}
       animate={animations[state]}
       transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-      whileTap={state === 'idle' ? { scale: 0.93 } : undefined}
-      whileHover={state === 'idle' ? { y: -3, scale: 1.02 } : undefined}
+      whileTap={state === 'idle' ? { scale: 0.95 } : undefined}
       disabled={state !== 'idle'}
     >
       {state === 'correct' && (

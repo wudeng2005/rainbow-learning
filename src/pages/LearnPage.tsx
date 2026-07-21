@@ -300,14 +300,21 @@ export default function LearnPage() {
   // 加载中
   if (!question) {
     return (
-      <div className="min-h-dvh flex items-center justify-center bg-gradient-to-b from-sky-100 via-purple-50 to-pink-50">
+      <div className="min-h-dvh flex flex-col items-center justify-center gap-4 bg-gradient-to-b from-amber-50 via-orange-50 to-yellow-50">
         <motion.span
-          className="text-5xl"
-          animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+          className="text-6xl"
+          animate={{ rotate: [0, -8, 8, 0], y: [0, -5, 0] }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          🌈
+          🐼
         </motion.span>
+        <motion.p
+          className="text-sm text-amber-600 font-display"
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          熊猫老师正在准备题目...
+        </motion.p>
       </div>
     )
   }
@@ -341,16 +348,15 @@ export default function LearnPage() {
         // 展示拼音 + 播放音频按钮
         return (
           <div className="flex flex-col items-center gap-3">
-            <span className="block text-5xl md:text-6xl font-bold text-purple-700">
+            <span className="block text-5xl md:text-6xl font-bold text-rainbow-orange">
               {question.content}
             </span>
             {question.audio && (
               <motion.button
                 type="button"
-                className="flex items-center gap-2 px-5 py-2 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-600 font-bold text-sm transition-colors"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-50 border-2 border-orange-200 text-orange-600 font-bold text-sm transition-colors"
                 onClick={() => playCharAudio(question.audio)}
                 whileTap={{ scale: 0.9 }}
-                whileHover={{ scale: 1.05 }}
               >
                 🔊 再听一次
               </motion.button>
@@ -392,7 +398,7 @@ export default function LearnPage() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col bg-gradient-to-b from-sky-100 via-purple-50 to-pink-50 relative overflow-hidden">
+    <div className="min-h-dvh flex flex-col bg-gradient-to-b from-amber-50 via-orange-50 to-yellow-50 relative overflow-hidden">
       {/* 漂浮装饰 */}
       <FloatingDecorations />
 
@@ -400,7 +406,7 @@ export default function LearnPage() {
       <div className="relative z-10 flex items-center gap-3 px-4 pt-4 pb-2 safe-top">
         <motion.button
           type="button"
-          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation"
+          className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-md flex items-center justify-center text-xl touch-manipulation border-2 border-white"
           onClick={() => navigate('/')}
           whileTap={{ scale: 0.9 }}
         >
@@ -414,7 +420,7 @@ export default function LearnPage() {
         </div>
         {/* 练习模式标签 */}
         {isPracticeMode && (
-          <span className="px-3 py-1 rounded-full bg-rainbow-purple/20 text-rainbow-purple text-xs font-bold">
+          <span className="px-3 py-1 rounded-full bg-rainbow-orange/20 text-rainbow-orange text-xs font-bold border border-rainbow-orange/30">
             练习
           </span>
         )}
@@ -425,56 +431,64 @@ export default function LearnPage() {
         <AnimatePresence mode="wait">
           <motion.div
             key={question.id}
-            className="flex flex-col items-center gap-6 w-full max-w-md"
+            className="flex flex-col items-center gap-5 w-full max-w-md"
             initial={{ opacity: 0, x: 30, scale: 0.97 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: -30, scale: 0.97 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
           >
-            {/* 题目气泡区域 */}
-            <div className="w-full text-center">
-              {/* 提示文字 */}
-              <motion.p
-                className="text-sm md:text-lg text-purple-600 font-bold mb-3"
-                initial={{ y: -10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1 }}
+            {/* 熊猫陡伴 + 提示气泡 */}
+            <div className="flex items-end gap-2 w-full">
+              <motion.span
+                className="text-4xl shrink-0"
+                animate={{ y: [0, -4, 0], rotate: [0, -3, 3, 0] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
               >
-                {promptText}
-              </motion.p>
-
-              {/* 题目内容卡片 */}
+                🐼
+              </motion.span>
               <motion.div
-                className="relative inline-block bg-white rounded-[1.5rem] md:rounded-[2rem] px-6 md:px-10 py-5 md:py-8 shadow-xl border-2 border-purple-100"
-                initial={{ scale: 0.8, opacity: 0 }}
+                className="relative bg-white rounded-2xl rounded-bl-md px-4 py-2.5 shadow-md border-2 border-orange-100"
+                initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.15 }}
+                transition={{ delay: 0.1, type: 'spring', stiffness: 300, damping: 20 }}
               >
-                {/* 装饰角标 */}
-                <span className="absolute -top-3 -left-3 text-2xl animate-float-fast">✨</span>
-                <span className="absolute -top-2 -right-3 text-xl animate-float-medium">🌟</span>
-                
-                {renderContent()}
+                <p className="text-sm md:text-base text-amber-700 font-bold">
+                  {promptText}
+                </p>
               </motion.div>
             </div>
 
-            {/* 选项区域 */}
+            {/* 题目内容卡片：玩具质感 */}
             <motion.div
-              className={`grid gap-3 md:gap-4 w-full mt-4 ${
+              className="relative w-full bg-white rounded-[2rem] px-6 py-8 text-center border-[3px] border-orange-100 toy-shadow"
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20, delay: 0.12 }}
+            >
+              {/* 装饰角标 */}
+              <span className="absolute -top-3 -left-2 text-xl animate-float-fast select-none">🍃</span>
+              <span className="absolute -top-2 -right-2 text-lg animate-float-medium select-none">✨</span>
+
+              {renderContent()}
+            </motion.div>
+
+            {/* 选项区域：糖果色卡片 */}
+            <motion.div
+              className={`grid gap-3 w-full ${
                 question.options.length > 3 ? 'grid-cols-2' : 'grid-cols-3'
               }`}
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.25, duration: 0.3 }}
+              transition={{ delay: 0.22, duration: 0.3 }}
             >
               {question.options.map((option, index) => (
                 <motion.button
                   key={`${question.id}-${index}`}
                   type="button"
-                  className={`relative rounded-2xl md:rounded-3xl p-3 md:p-5 min-h-[72px] md:min-h-[80px] flex items-center justify-center
-                    border-3 transition-all duration-200 cursor-pointer select-none touch-manipulation
+                  className={`relative rounded-3xl p-3 md:p-4 min-h-[76px] md:min-h-[84px] flex items-center justify-center
+                    border-[3px] transition-all duration-200 cursor-pointer select-none touch-manipulation
                     ${optionStates[index] === 'idle'
-                      ? `${['bg-pink-50 border-pink-200 active:border-pink-400','bg-blue-50 border-blue-200 active:border-blue-400','bg-green-50 border-green-200 active:border-green-400'][index % 3]} shadow-md active:shadow-lg`
+                      ? `${['bg-orange-50 border-orange-200 active:border-orange-400','bg-emerald-50 border-emerald-200 active:border-emerald-400','bg-sky-50 border-sky-200 active:border-sky-400','bg-violet-50 border-violet-200 active:border-violet-400'][index % 4]} shadow-[0_4px_0_rgba(74,59,92,0.1)] active:shadow-none active:translate-y-1`
                       : optionStates[index] === 'correct'
                         ? 'bg-emerald-100 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
                         : optionStates[index] === 'wrong'
@@ -485,14 +499,13 @@ export default function LearnPage() {
                     }`}
                   onClick={optionStates[index] === 'idle' ? () => handleSelectOption(index) : undefined}
                   animate={
-                    optionStates[index] === 'correct' ? { scale: 1.08, y: -4 } :
+                    optionStates[index] === 'correct' ? { scale: 1.06, y: -4 } :
                     optionStates[index] === 'wrong' ? { x: [0, -4, 4, -2, 2, 0], scale: 1 } :
                     optionStates[index] === 'disabled' ? { scale: 0.97, opacity: 0.5 } :
                     { scale: 1, y: 0 }
                   }
                   transition={{ type: 'spring', stiffness: 500, damping: 25 }}
                   whileTap={optionStates[index] === 'idle' ? { scale: 0.93 } : undefined}
-                  whileHover={optionStates[index] === 'idle' ? { y: -4, scale: 1.03 } : undefined}
                   disabled={optionStates[index] !== 'idle'}
                 >
                   {optionStates[index] === 'correct' && (

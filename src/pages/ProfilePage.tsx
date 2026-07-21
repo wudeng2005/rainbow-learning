@@ -79,6 +79,39 @@ export default function ProfilePage() {
         </div>
       </div>
 
+      {/* ─── 成就徽章 ─── */}
+      <div className="toy-card p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-lg leading-none">🏅</span>
+          <h3 className="font-display text-lg text-ink leading-none">我的成就</h3>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          {getAchievements(total).map((badge, i) => (
+            <motion.div
+              key={badge.name}
+              className={`text-center rounded-2xl py-3 px-2 border-2 transition-all ${
+                badge.unlocked
+                  ? 'bg-gradient-to-b from-amber-50 to-orange-50 border-amber-200 toy-shadow-sm'
+                  : 'bg-gray-50 border-gray-100 opacity-45 grayscale'
+              }`}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: badge.unlocked ? 1 : 0.45 }}
+              transition={{ delay: 0.1 + i * 0.08, type: 'spring', stiffness: 300, damping: 18 }}
+            >
+              <motion.span
+                className="text-2xl block"
+                animate={badge.unlocked ? { y: [0, -3, 0] } : {}}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 + i * 0.5 }}
+              >
+                {badge.icon}
+              </motion.span>
+              <p className="text-[10px] font-bold text-ink mt-1 leading-tight">{badge.name}</p>
+              <p className="text-[9px] text-ink-soft mt-0.5">{badge.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
       {/* ─── 设置区域（预留） ─── */}
       <div className="toy-card p-5">
         <div className="flex items-center gap-2 mb-3">
@@ -115,4 +148,24 @@ function getDayStreak(): number {
   } catch {
     return 1
   }
+}
+
+/** 成就徽章定义 */
+interface Achievement {
+  icon: string
+  name: string
+  desc: string
+  unlocked: boolean
+}
+
+function getAchievements(gemTotal: number): Achievement[] {
+  const streak = getDayStreak()
+  return [
+    { icon: '🌱', name: '小萌芽', desc: '开始学习', unlocked: streak >= 1 },
+    { icon: '🌟', name: '小星星', desc: `同行${Math.min(streak, 7)}天`, unlocked: streak >= 7 },
+    { icon: '🔥', name: '小火苗', desc: '同行30天', unlocked: streak >= 30 },
+    { icon: '💎', name: '收藏家', desc: '10颗宝石', unlocked: gemTotal >= 10 },
+    { icon: '👑', name: '宝石女王', desc: '50颗宝石', unlocked: gemTotal >= 50 },
+    { icon: '🌈', name: '大满贯', desc: '100颗宝石', unlocked: gemTotal >= 100 },
+  ]
 }
