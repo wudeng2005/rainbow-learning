@@ -20,7 +20,7 @@ import {
   mathWrongMessages,
   getRandomMathMessage,
 } from '@/data/math-encouragements'
-import { playCorrectSound, playWrongSound, playGemSound, stopAllAudio } from '@/lib/sounds'
+import { playCorrectSound, playWrongSound, playGemSound, stopAllAudio, preloadEncouragementSounds } from '@/lib/sounds'
 import type { MathQuestion, PatternData, CountingData, ComparisonData, ShapeData, ArithmeticData, WordProblemData, NumberSequenceData } from '@/types'
 import mathQuestionsData from '@/data/math-questions.json'
 
@@ -59,6 +59,7 @@ export default function MathLearnPage() {
   // 初始化会话
   useEffect(() => {
     resetIfNewDay()
+    preloadEncouragementSounds()
 
     if (dailyProgress.completed) {
       setIsSessionComplete(true)

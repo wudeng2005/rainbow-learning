@@ -6,6 +6,36 @@ let audioCtx: AudioContext | null = null
 const activeAudios = new Set<HTMLAudioElement>()
 const pendingTimers = new Set<ReturnType<typeof setTimeout>>()
 
+// ─── 音频元素缓存：同一路径复用 Audio 实例，避免重复下载与实例创建 ───
+const audioCache = new Map<string, HTMLAudioElement>()
+
+/** 获取（或创建）指定路径的缓存 Audio 元素 */
+function getCachedAudio(src: string): HTMLAudioElement {
+  let audio = audioCache.get(src)
+  if (!audio) {
+    audio = new Audio(src)
+    audio.preload = 'auto'
+    audioCache.set(src, audio)
+  }
+  return audio
+}
+
+/** 静默预加载音频文件（后台下载进缓存，不打断当前播放） */
+export function preloadAudio(src: string) {
+  try {
+    const audio = getCachedAudio(src)
+    audio.load()
+  } catch {
+    // 静默处理
+  }
+}
+
+/** 预加载答题反馈语音（进入答题页时调用，弱网下提前缓冲） */
+export function preloadEncouragementSounds() {
+  CORRECT_AUDIO_FILES.forEach(preloadAudio)
+  WRONG_AUDIO_FILES.forEach(preloadAudio)
+}
+
 function trackAudio(audio: HTMLAudioElement) {
   activeAudios.add(audio)
   const cleanup = () => activeAudios.delete(audio)
@@ -60,7 +90,8 @@ function getAudioContext(): AudioContext {
 function playVoice(files: string[]) {
   try {
     const file = files[Math.floor(Math.random() * files.length)]
-    const audio = new Audio(file)
+    const audio = getCachedAudio(file)
+    audio.currentTime = 0
     audio.volume = 0.85
     trackAudio(audio)
     audio.play().catch(() => {
@@ -102,7 +133,8 @@ export function speakEnglish(text: string, src?: string) {
     return
   }
   try {
-    const audio = new Audio(src)
+    const audio = getCachedAudio(src)
+    audio.currentTime = 0
     audio.volume = 1
     trackAudio(audio)
     audio.play().catch(() => speakEnglishFallback(text))
@@ -176,7 +208,8 @@ export function playCharAudio(audioPath: string | null | undefined): Promise<voi
   return new Promise((resolve) => {
     if (!audioPath) { resolve(); return }
     try {
-      const audio = new Audio(audioPath)
+      const audio = getCachedAudio(audioPath)
+      audio.currentTime = 0
       audio.volume = 0.85
       trackAudio(audio)
       audio.onended = () => resolve()
@@ -192,12 +225,15 @@ export function playCharAudio(audioPath: string | null | undefined): Promise<voi
 export function playStoryAudio(storyId: string, sentenceIndex: number): Promise<void> {
   return new Promise((resolve) => {
     try {
-      const audio = new Audio(`/audio/stories/${storyId}_s${sentenceIndex}.mp3`)
+      const audio = getCachedAudio(`/audio/stories/${storyId}_s${sentenceIndex}.mp3`)
+      audio.currentTime = 0
       audio.volume = 1
       trackAudio(audio)
       audio.onended = () => resolve()
       audio.onerror = () => resolve()
       audio.play().catch(() => resolve())
+      // 预加载下一句，让故事播放更连贯
+      preloadAudio(`/audio/stories/${storyId}_s${sentenceIndex + 1}.mp3`)
     } catch {
       resolve()
     }

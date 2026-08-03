@@ -5,19 +5,51 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="快乐学堂" />
     <meta name="theme-color" content="#A8DDFF" />
-    <!-- 儿童专属字体：站酷快乐体（中文展示）+ Baloo 2（数字/拉丁） -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Baloo+2:wght@500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="description" content="Rainbow 快乐学堂 —— 为 5 岁孩子打造的趣味学习乐园：汉字天地、数学王国、英语乐园" />
+    <!-- 分享预览 -->
+    <meta property="og:title" content="Rainbow 快乐学堂" />
+    <meta property="og:description" content="汉字天地 · 数学王国 · 英语乐园，每天进步一点点！" />
+    <meta property="og:image" content="/cover.jpg" />
+    <meta property="og:type" content="website" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <!-- 儿童专属字体：站酷快乐体 + Baloo 2（自托管 unicode-range 子集，按需加载） -->
+    <link rel="preload" as="style" href="/fonts/fonts.css" />
+    <link rel="stylesheet" href="/fonts/fonts.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="/fonts/fonts.css" /></noscript>
     <title>Rainbow 快乐学堂</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- 纯 CSS 启动画面：JS 未加载完成前即显示，弱网下无白屏 -->
+      <div class="rl-splash">
+        <div class="rl-rainbow">
+          <div class="rl-rainbow-arc"></div>
+          <div class="rl-unicorn">🦄</div>
+        </div>
+        <div class="rl-title">快乐学堂</div>
+        <div class="rl-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+      <style>
+        .rl-splash{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#A8DDFF 0%,#FFD9EC 55%,#FFF3E0 100%)}
+        .rl-rainbow{position:relative;width:170px;height:85px;margin-bottom:22px}
+        .rl-rainbow-arc{position:absolute;inset:0;border-radius:170px 170px 0 0;background:linear-gradient(90deg,#FF7B6B 0%,#FFA45C 20%,#FFC93C 40%,#5FD68B 60%,#5BA8FF 80%,#B07FE8 100%);opacity:0.9}
+        .rl-unicorn{position:absolute;top:-30px;left:50%;margin-left:-18px;font-size:38px;animation:rl-bounce 1.2s ease-in-out infinite}
+        .rl-title{font-size:26px;color:#4A3B5C;font-weight:700;letter-spacing:0.08em}
+        .rl-dots{display:flex;gap:8px;margin-top:14px}
+        .rl-dots span{width:10px;height:10px;border-radius:50%;background:#B07FE8;animation:rl-dot 0.8s ease-in-out infinite}
+        .rl-dots span:nth-child(2){animation-delay:0.2s}
+        .rl-dots span:nth-child(3){animation-delay:0.4s}
+        @keyframes rl-bounce{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(-6deg)}}
+        @keyframes rl-dot{0%,100%{transform:scale(0.6);opacity:0.4}50%{transform:scale(1.2);opacity:1}}
+      </style>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
