@@ -3,13 +3,147 @@ schema_version: 1
 locale: zh-CN
 branch: main
 nodes_managed: true
-exported_at: "2026-07-14T02:44:34Z"
+exported_at: "2026-08-03T06:03:51Z"
 modules:
     "":
-        dir_name: 彩虹学习应用（汉字_数学_英语三科儿童学习平台）
-        title: 彩虹学习应用（汉字/数学/英语三科儿童学习平台）
+        dir_name: 儿童多学科学习应用（React + Vite + Supabase）
+        title: 儿童多学科学习应用（React + Vite + Supabase）
+        scope: []
+        source_files: []
+        children:
+            - 073eb95b-cb30-4eda-9592-879bc970e1c7
+            - 96180a6e-3dba-4b3d-837f-a5826676bb31
+            - ceb820c3-c40e-4333-a094-75de22b2f97a
+        depends_on: []
+        related_to: []
+    073eb95b-cb30-4eda-9592-879bc970e1c7:
+        dir_name: 儿童学习应用（React + Vite + Supabase）
+        title: 儿童学习应用（React + Vite + Supabase）
+        scope: []
+        source_files: []
+        children:
+            - 073eb95b-cb30-4eda-9592-879bc970e1c7/42dd3770-9ed5-4189-9c24-3f73a7d65b91
+            - 073eb95b-cb30-4eda-9592-879bc970e1c7/5382e2a0-ee5c-40b5-b174-07fa511f2faa
+            - 073eb95b-cb30-4eda-9592-879bc970e1c7/850f3156-2ea2-42e7-ae37-d873a9dae375
+            - 073eb95b-cb30-4eda-9592-879bc970e1c7/dc048bab-7793-47fa-b627-a2c966675344
+            - 073eb95b-cb30-4eda-9592-879bc970e1c7/fabd1ba4-78ab-4509-84b2-cbff0d20a80f
+        depends_on: []
+        related_to:
+            - path: 96180a6e-3dba-4b3d-837f-a5826676bb31
+            - path: ceb820c3-c40e-4333-a094-75de22b2f97a
+    073eb95b-cb30-4eda-9592-879bc970e1c7/42dd3770-9ed5-4189-9c24-3f73a7d65b91:
+        dir_name: 前端动画实现选用 CSS Animation 而非 Framer Motion
+        title: 前端动画实现选用 CSS Animation 而非 Framer Motion
         scope: []
         source_files: []
         children: []
         depends_on: []
         related_to: []
+    073eb95b-cb30-4eda-9592-879bc970e1c7/850f3156-2ea2-42e7-ae37-d873a9dae375:
+        dir_name: 答题页面采用全屏沉浸式布局以优化儿童交互体验
+        title: 答题页面采用全屏沉浸式布局以优化儿童交互体验
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: 073eb95b-cb30-4eda-9592-879bc970e1c7/fabd1ba4-78ab-4509-84b2-cbff0d20a80f
+    073eb95b-cb30-4eda-9592-879bc970e1c7/5382e2a0-ee5c-40b5-b174-07fa511f2faa:
+        dir_name: 采用 Supabase 直连与 localStorage 缓存的混合持久化架构
+        title: 采用 Supabase 直连与 localStorage 缓存的混合持久化架构
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: 073eb95b-cb30-4eda-9592-879bc970e1c7/dc048bab-7793-47fa-b627-a2c966675344
+    073eb95b-cb30-4eda-9592-879bc970e1c7/dc048bab-7793-47fa-b627-a2c966675344:
+        dir_name: 采用 Supabase 直连与本地缓存混合持久化架构
+        title: 采用 Supabase 直连与本地缓存混合持久化架构
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: 073eb95b-cb30-4eda-9592-879bc970e1c7/5382e2a0-ee5c-40b5-b174-07fa511f2faa
+    073eb95b-cb30-4eda-9592-879bc970e1c7/fabd1ba4-78ab-4509-84b2-cbff0d20a80f:
+        dir_name: 答题页采用全屏沉浸式布局并移除通用 Layout 包裹
+        title: 答题页采用全屏沉浸式布局并移除通用 Layout 包裹
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: 073eb95b-cb30-4eda-9592-879bc970e1c7/850f3156-2ea2-42e7-ae37-d873a9dae375
+    96180a6e-3dba-4b3d-837f-a5826676bb31:
+        dir_name: 儿童多学科学习应用组件层
+        title: 儿童多学科学习应用组件层
+        scope:
+            - src/components/
+        source_files: []
+        children:
+            - 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2
+        depends_on: []
+        related_to:
+            - path: 073eb95b-cb30-4eda-9592-879bc970e1c7
+            - path: ceb820c3-c40e-4333-a094-75de22b2f97a
+    96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2:
+        dir_name: 快乐学堂儿童学习应用（React + Vite + PWA）
+        title: 快乐学堂儿童学习应用（React + Vite + PWA）
+        scope:
+            - src/
+        source_files: []
+        children:
+            - 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/14d11153-6170-4184-b779-b5196d9e0998
+            - 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/53979e35-2d62-4c67-b491-77ab0d7386d6
+            - 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/7d7cb82c-c4dd-40b7-b010-8e9fe191a102
+        depends_on: []
+        related_to: []
+    96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/7d7cb82c-c4dd-40b7-b010-8e9fe191a102:
+        dir_name: 儿童数学学习互动系统
+        title: 儿童数学学习互动系统
+        scope:
+            - src/components/math/
+            - src/data/math-encouragements.ts
+            - src/data/math-questions.json
+            - src/pages/MathLearnPage.tsx
+            - src/store/useMathLearningStore.ts
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/53979e35-2d62-4c67-b491-77ab0d7386d6
+    96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/14d11153-6170-4184-b779-b5196d9e0998:
+        dir_name: 儿童学习应用前端（React + Vite）
+        title: 儿童学习应用前端（React + Vite）
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/53979e35-2d62-4c67-b491-77ab0d7386d6
+    96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/53979e35-2d62-4c67-b491-77ab0d7386d6:
+        dir_name: 全局状态与数据同步层（Zustand Store + SyncManager）
+        title: 全局状态与数据同步层（Zustand Store + SyncManager）
+        scope:
+            - src/store/
+            - src/lib/
+            - src/hooks/
+            - src/types/
+            - src/data/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/14d11153-6170-4184-b779-b5196d9e0998
+            - path: 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/7d7cb82c-c4dd-40b7-b010-8e9fe191a102
+    ceb820c3-c40e-4333-a094-75de22b2f97a:
+        dir_name: 儿童学习应用（React + Vite + Supabase）_2
+        title: 儿童学习应用（React + Vite + Supabase）
+        scope: []
+        source_files: []
+        children: []
+        depends_on: []
+        related_to:
+            - path: 073eb95b-cb30-4eda-9592-879bc970e1c7
+            - path: 96180a6e-3dba-4b3d-837f-a5826676bb31

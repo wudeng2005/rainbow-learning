@@ -1,0 +1,506 @@
+{
+  "schemaVersion": 1,
+  "summary": {
+    "evidenceMode": "session-rich",
+    "evidenceBoundary": {
+      "manifest": {
+        "schemaVersion": 2,
+        "sourceFingerprint": "75854b6470180748",
+        "adapterVersion": "qoder-task-loop-source-v2",
+        "platform": "qoder",
+        "selection": {
+          "strategy": "all-eligible",
+          "eligibleCount": 23,
+          "analyzedCount": 23,
+          "confidence": "High"
+        }
+      },
+      "deliveryEvidenceLevels": [],
+      "sourceGaps": []
+    },
+    "semanticFacets": {
+      "schemaVersion": 1,
+      "status": "supplementary",
+      "entries": [
+        {
+          "id": "session-insight:source-coverage",
+          "kind": "redacted-summary",
+          "episodeRef": null,
+          "status": "candidate",
+          "labels": [
+            "source-coverage",
+            "High"
+          ],
+          "summary": "Analyzed 23 of 23 sessions; 2/5 enabled source roots exist. Use this as the current workspace evidence boundary for final insight cards.",
+          "evidenceRefs": [],
+          "modelVersion": "session-insights-v1"
+        },
+        {
+          "id": "session-insight:validation-behavior",
+          "kind": "redacted-summary",
+          "episodeRef": null,
+          "status": "candidate",
+          "labels": [
+            "validation-behavior",
+            "High"
+          ],
+          "summary": "Observed validation command category: typecheck (7). Use observed validation as execution evidence, not just configured command availability.",
+          "evidenceRefs": [
+            {
+              "kind": "audit-jsonl",
+              "id": "session-insight-2-1",
+              "type": "PostToolUse",
+              "line": 3892
+            },
+            {
+              "kind": "audit-jsonl",
+              "id": "session-insight-2-2",
+              "type": "PostToolUse",
+              "line": 3932
+            },
+            {
+              "kind": "audit-jsonl",
+              "id": "session-insight-2-3",
+              "type": "PostToolUse",
+              "line": 4819
+            }
+          ],
+          "modelVersion": "session-insights-v1"
+        },
+        {
+          "id": "session-insight:post-edit-validation",
+          "kind": "rework-correction",
+          "episodeRef": null,
+          "status": "candidate",
+          "labels": [
+            "post-edit-validation",
+            "High"
+          ],
+          "summary": "Observed 47 edit event(s), but no later validation command in the analyzed sample. Route this lead to Harness session-evidence review to inspect the affected Task Episodes and later relevant validation before any finding.",
+          "evidenceRefs": [
+            {
+              "kind": "audit-jsonl",
+              "id": "session-insight-3-1",
+              "type": "PostToolUse",
+              "line": 5320
+            }
+          ],
+          "modelVersion": "session-insights-v1"
+        },
+        {
+          "id": "session-insight:execution-friction",
+          "kind": "friction-taxonomy",
+          "episodeRef": null,
+          "status": "candidate",
+          "labels": [
+            "execution-friction",
+            "High"
+          ],
+          "summary": "Observed friction category: failed-event (27). Open bounded sessions behind this category before turning it into a user-facing recommendation.",
+          "evidenceRefs": [
+            {
+              "kind": "audit-jsonl",
+              "id": "session-insight-4-1",
+              "type": "PostToolUseFailure",
+              "line": 4041
+            },
+            {
+              "kind": "audit-jsonl",
+              "id": "session-insight-4-2",
+              "type": "PostToolUseFailure",
+              "line": 4043
+            },
+            {
+              "kind": "audit-jsonl",
+              "id": "session-insight-4-3",
+              "type": "PostToolUseFailure",
+              "line": 4045
+            }
+          ],
+          "modelVersion": "session-insights-v1"
+        },
+        {
+          "id": "session-insight:tool-mix",
+          "kind": "redacted-summary",
+          "episodeRef": null,
+          "status": "candidate",
+          "labels": [
+            "tool-mix",
+            "High"
+          ],
+          "summary": "Most observed tool: Bash (254). Use this as workflow evidence, then inspect bounded sessions before claiming user intent.",
+          "evidenceRefs": [
+            {
+              "kind": "audit-jsonl",
+              "id": "session-insight-5-1",
+              "type": "PostToolUse",
+              "line": 3842
+            }
+          ],
+          "modelVersion": "session-insights-v1"
+        },
+        {
+          "id": "session-insight:session-complexity",
+          "kind": "redacted-summary",
+          "episodeRef": null,
+          "status": "candidate",
+          "labels": [
+            "session-complexity",
+            "High"
+          ],
+          "summary": "Observed 4 active long session(s); longest active estimate: 5h 11m. Review task family, outcome, and friction before deciding whether this duration reflects a problem or any decomposition, tool, delegation, or model change is needed.",
+          "evidenceRefs": [
+            {
+              "kind": "execution-transcript",
+              "id": "session-insight-6-1",
+              "type": "session_meta",
+              "line": 1
+            }
+          ],
+          "modelVersion": "session-insights-v1"
+        },
+        {
+          "id": "session-insight:session-usage-efficiency",
+          "kind": "redacted-summary",
+          "episodeRef": null,
+          "status": "candidate",
+          "labels": [
+            "session-usage-efficiency",
+            "High"
+          ],
+          "summary": "本次分析覆盖 23 个会话，其中 4 个达到活跃长会话阈值，最长约 311 分钟。 这些活动证据只描述投入；当前 token 或 credit 证据不足，不能据此推断模型偏好、质量或节省。",
+          "evidenceRefs": [
+            {
+              "kind": "execution-transcript",
+              "id": "session-insight-7-1",
+              "type": "session_meta",
+              "line": 1
+            }
+          ],
+          "modelVersion": "session-insights-v1"
+        }
+      ]
+    },
+    "usageActivity": {
+      "schemaVersion": 2,
+      "dateBasis": "UTC",
+      "measurementBasis": "session-starts-active-estimate-model-active-session-days-skill-invocations-and-loads",
+      "truncated": false,
+      "dates": [
+        "2026-06-19",
+        "2026-06-20",
+        "2026-06-21",
+        "2026-06-22",
+        "2026-06-23",
+        "2026-06-24",
+        "2026-06-25",
+        "2026-06-26",
+        "2026-06-27",
+        "2026-06-28",
+        "2026-06-29",
+        "2026-06-30",
+        "2026-07-01",
+        "2026-07-02",
+        "2026-07-03",
+        "2026-07-04",
+        "2026-07-05",
+        "2026-07-06",
+        "2026-07-07",
+        "2026-07-08",
+        "2026-07-09",
+        "2026-07-10",
+        "2026-07-11",
+        "2026-07-12",
+        "2026-07-13",
+        "2026-07-14",
+        "2026-07-15",
+        "2026-07-16",
+        "2026-07-17",
+        "2026-07-18",
+        "2026-07-19",
+        "2026-07-20",
+        "2026-07-21"
+      ],
+      "sessions": {
+        "total": 23,
+        "starts": [
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          4,
+          4,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          4
+        ],
+        "activeMinutes": [
+          274.8,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          332.3,
+          113.7,
+          5.5,
+          0,
+          0,
+          0,
+          0,
+          6.5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          65.1
+        ]
+      },
+      "models": [],
+      "skills": [
+        {
+          "name": "vercel-deploy",
+          "total": 4,
+          "daily": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "frontend-design",
+          "total": 3,
+          "daily": [
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "usageEfficiency": {
+      "schemaVersion": 2,
+      "selection": {
+        "strategy": "all-eligible",
+        "eligibleSessionCount": 23,
+        "analyzedSessionCount": 23,
+        "complete": true
+      },
+      "roles": {
+        "userThreadCandidateCount": 13,
+        "childAgentCandidateCount": 10
+      },
+      "longSessions": {
+        "activeCount": 4,
+        "wallOnlyCount": 0,
+        "longestActiveMinutes": 310.7,
+        "activeRatio": 0.1739,
+        "estimate": {
+          "method": "capped-event-gap",
+          "activeThresholdMinutes": 45,
+          "gapCapMinutes": 5,
+          "idleGapMinutes": 30
+        },
+        "samples": [
+          {
+            "alias": "S1",
+            "sessionRef": "qsr1-0f3f1f55fb1222229910c678",
+            "role": "child-agent-candidate",
+            "activeMinutes": 310.7,
+            "failureCount": 20,
+            "userInputSummary": "目前题库的内容，汉字和数学这些题目都是存在数据库中吗？还是以文件的形式存在的？"
+          },
+          {
+            "alias": "S2",
+            "sessionRef": "qsr1-18a48e47d8cc00b983842d96",
+            "role": "child-agent-candidate",
+            "activeMinutes": 246.5,
+            "failureCount": 2,
+            "userInputSummary": "​rainbow-prd.md​ 这个是我本期项目的PRD，你先了解一下整体，然后我们一起对焦一下整体需求，看看还有哪些问题需要澄清，另外当前工作目录是我的项目空间，工程相关脚手架已经搭建好，后面开发就基于这个工程架构"
+          },
+          {
+            "alias": "S3",
+            "sessionRef": "qsr1-65c93c39f7f62ee57cd1670e",
+            "role": "child-agent-candidate",
+            "activeMinutes": 95.9,
+            "failureCount": 1,
+            "userInputSummary": "现在想和你对焦下英语模块的设计，我女儿现在5岁，双语幼儿园中班，有一定的英文基础，学校每天会给他们听英文歌曲，老师也会跟他们纯英文沟通"
+          },
+          {
+            "alias": "S4",
+            "sessionRef": "qsr1-56f54b03a9404907542d7799",
+            "role": "child-agent-candidate",
+            "activeMinutes": 60.1,
+            "failureCount": 0,
+            "userInputSummary": "请检查下项目代码是否都已经提交到git仓库，如果没有请提交"
+          }
+        ]
+      },
+      "accounting": {
+        "mode": "effort-proxy",
+        "responseCount": 0,
+        "modelAttributedResponseCount": 0,
+        "unattributedResponseCount": 0,
+        "usageFieldObservedCount": 0,
+        "nonZeroUsageCount": 0,
+        "exactCreditsAvailable": false,
+        "pricingVersion": null
+      },
+      "modelUsage": [],
+      "outcomeReview": {
+        "status": "required",
+        "reviewedCandidateCount": 0,
+        "reviewedActiveLongCount": 0,
+        "comparableModelOutcomeEvidence": false,
+        "recommendation": "controlled-a-b-required"
+      },
+      "reviewLead": {
+        "id": "session-usage-outcome-review-gap",
+        "title": "4 个长会话候选仍待结果复核",
+        "reason": "23 个已分析会话中有 4 个（17.4%）超过估算活跃时长阈值，最长估算为 310.7 分钟，其中 0 个已有结果复核；另有 0 个长跨度可能来自空闲或恢复。这只是调查线索，尚未确认存在效率、任务拆分、工具链或模型问题。",
+        "expectedOutcome": "每个展示候选都完成任务族、结果和摩擦分类，让报告能够判断是否真的需要改进。",
+        "aiFixPrompt": "/better-loop 复核这些会话\n\n4 个长会话候选仍待结果复核\n\n## 先核对的会话\n\n- S1：session id `task-629c2695bf924bbca129.session.execution`，分析引用 `qsr1-0f3f1f55fb1222229910c678`；子 Agent 候选，估算活跃约 310.7 分钟，失败事件 20 次；用户输入：“目前题库的内容，汉字和数学这些题目都是存在数据库中吗？还是以文件的形式存在的？”\n- S2：session id `task-fe2b33d7491d42998125.session.execution`，分析引用 `qsr1-18a48e47d8cc00b983842d96`；子 Agent 候选，估算活跃约 246.5 分钟，失败事件 2 次；用户输入：“​rainbow-prd.md​ 这个是我本期项目的PRD，你先了解一下整体，然后我们一起对焦一下整体需求，看看还有哪些问题需要澄清，另外当前工作目录是我的项目空间，工程相关脚手架已经搭建好，后面开发就基于这个工程架构”\n- S3：session id `task-d174203a9e6e41869cec.session.execution`，分析引用 `qsr1-65c93c39f7f62ee57cd1670e`；子 Agent 候选，估算活跃约 95.9 分钟，失败事件 1 次；用户输入：“现在想和你对焦下英语模块的设计，我女儿现在5岁，双语幼儿园中班，有一定的英文基础，学校每天会给他们听英文歌曲，老师也会跟他们纯英文沟通”\n- S4：session id `task-3b14821c0cf342cc88bd.session.execution`，分析引用 `qsr1-56f54b03a9404907542d7799`；子 Agent 候选，估算活跃约 60.1 分钟，失败事件 0 次；用户输入：“请检查下项目代码是否都已经提交到git仓库，如果没有请提交”\n\n## 先做什么\n\n在操作系统临时目录创建 <run>，从项目根运行：\n\n```bash\nnode scripts/session-analysis.mjs insights --platform qoder --workspace . --selection all-eligible --limit 1000 --format json --output <run>/insights.json\nnode scripts/session-analysis/usage-review-packet.mjs --source <run>/insights.json --workspace . --limit 8 --session-ref qsr1-0f3f1f55fb1222229910c678 --session-ref qsr1-18a48e47d8cc00b983842d96 --session-ref qsr1-65c93c39f7f62ee57cd1670e --session-ref qsr1-56f54b03a9404907542d7799 --output <run>/.review-packet.json\n```\n\n只为 S1, S2, S3, S4 写入 taskFamily、outcome、friction、confidence 和 evidenceReason；先完成复核，不改业务代码，也不创建 Memory、Skill 或 Hook。\n\n## 我们看到了什么\n\n23 个已分析会话中有 4 个（17.4%）超过估算活跃时长阈值，最长估算为 310.7 分钟，其中 0 个已有结果复核；另有 0 个长跨度可能来自空闲或恢复。这只是调查线索，尚未确认存在效率、任务拆分、工具链或模型问题。\n\n## 为什么值得复核\n\n未复核前无法区分复杂任务、工具链摩擦、暂停恢复噪音或正常的长任务。\n\n## 预期结果\n\n每个展示候选都完成任务族、结果和摩擦分类，让报告能够判断是否真的需要改进。\n\n## 范围\n\n只生成隐私安全的会话效率复核和 reader report，不改业务代码，不把墙钟跨度当作活跃成本。原始 session id 只用于本提示词内的定位，不得复制到最终报告、review JSON 或其他读者可见字段。这是完整的 4/4 候选视图；结论仍需经过语义复核。\n\n## 怎样算完成\n\n<run>/.review.json 对 S1, S2, S3, S4 各有一条有效复核；语义复核生成 <run>/insights.reviewed.json；<run>/report.md 以 reviewed source 校验通过。复核未确认问题时，不创建优化项。\n\n## 验证\n\n- 运行 `node scripts/session-analysis/usage-semantic-review.mjs --source <run>/insights.json --packet <run>/.review-packet.json --review <run>/.review.json --output <run>/insights.reviewed.json`\n- 运行 `node scripts/session-analysis/validate-usage-report.mjs --source <run>/insights.reviewed.json --report <run>/report.md`，必须返回 `ok: true`\n- 确认 reviewed source 的 `outcomeReview.reviewedActiveLongCount` 等于已复核的展示别名数；通过后删除两个私有临时 review 文件",
+        "sampleCoverage": {
+          "shown": 4,
+          "total": 4,
+          "complete": true
+        }
+      }
+    },
+    "learningCapture": {
+      "schemaVersion": 1,
+      "state": "N/A",
+      "summary": "暂不适用——需要两个可比的观察窗口和一次改进对比。",
+      "interventions": []
+    }
+  },
+  "dimensions": [
+    {
+      "id": "task-understanding"
+    },
+    {
+      "id": "controlled-execution"
+    },
+    {
+      "id": "change-validation"
+    },
+    {
+      "id": "reliable-delivery"
+    },
+    {
+      "id": "learning-capture"
+    }
+  ],
+  "findings": [
+    {
+      "id": "no-behavioral-validation"
+    },
+    {
+      "id": "no-delivery-gate"
+    },
+    {
+      "id": "no-env-reproducibility"
+    },
+    {
+      "id": "agent-entrypoint-no-routing"
+    }
+  ]
+}

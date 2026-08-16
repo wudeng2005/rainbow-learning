@@ -1,0 +1,8 @@
+schema_version: 1
+module_path: 073eb95b-cb30-4eda-9592-879bc970e1c7/fabd1ba4-78ab-4509-84b2-cbff0d20a80f
+title: 答题页采用全屏沉浸式布局并移除通用 Layout 包裹
+scope: []
+source_files: []
+depends_on: []
+related_to:
+    - path: 073eb95b-cb30-4eda-9592-879bc970e1c7/850f3156-2ea2-42e7-ae37-d873a9dae375

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本周专项全景</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px;
+}
+.slide {
+  width: 1280px; height: 720px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px 48px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.header h1 {
+  font-size: 28px; font-weight: 700; color: #1a1a2e;
+}
+.header .subtitle {
+  font-size: 14px; color: #666; margin-top: 4px;
+}
+.status-badges {
+  display: flex; gap: 12px;
+}
+.badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 600;
+}
+.badge-green { background: #e6f9ee; color: #16a34a; }
+.badge-yellow { background: #fef9e6; color: #d97706; }
+.badge-red { background: #fee6e6; color: #dc2626; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-green { background: #16a34a; }
+.dot-yellow { background: #d97706; }
+.dot-red { background: #dc2626; }
+
+.overview-bar {
+  display: flex; gap: 16px; margin-bottom: 24px;
+}
+.stat-card {
+  flex: 1; background: #f8f9fc; border-radius: 12px;
+  padding: 16px 20px; text-align: center;
+  border: 1px solid #e8ecf4;
+}
+.stat-card .num { font-size: 32px; font-weight: 800; color: #4338ca; }
+.stat-card .label { font-size: 13px; color: #666; margin-top: 4px; }
+
+.content {
+  flex: 1; display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+}
+.domain-card {
+  border-radius: 12px; padding: 20px 24px;
+  border-left: 5px solid;
+  display: flex; flex-direction: column;
+}
+.domain-card h3 {
+  font-size: 16px; font-weight: 700; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.domain-card ul {
+  list-style: none; font-size: 13.5px; color: #444; line-height: 1.8;
+}
+.domain-card ul li::before {
+  content: "•"; margin-right: 8px; font-weight: bold;
+}
+.card-hrbp { background: #f0f4ff; border-color: #4338ca; }
+.card-hrbp h3 { color: #4338ca; }
+.card-recruit { background: #f0fdf4; border-color: #16a34a; }
+.card-recruit h3 { color: #16a34a; }
+.card-comp { background: #fefce8; border-color: #d97706; }
+.card-comp h3 { color: #d97706; }
+.card-other { background: #fdf2f8; border-color: #db2777; }
+.card-other h3 { color: #db2777; }
+
+.tag {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; margin-left: 6px;
+}
+.tag-dev { background: #dbeafe; color: #1d4ed8; }
+.tag-align { background: #fef3c7; color: #92400e; }
+.tag-design { background: #ede9fe; color: #6d28d9; }
+
+.progress-row {
+  display: flex; gap: 8px; margin-top: auto; padding-top: 10px;
+}
+.progress-item {
+  font-size: 12px; color: #555; display: flex; align-items: center; gap: 4px;
+}
+.progress-item .pi-dot {
+  width: 8px; height: 8px; border-radius: 2px;
+}
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div>
+      <h1>📋 本周专项全景总览</h1>
+      <div class="subtitle">8条业务线 · 19个在进行专项</div>
+    </div>
+    <div class="status-badges">
+      <div class="badge badge-green"><span class="dot dot-green"></span>正常 16</div>
+      <div class="badge badge-yellow"><span class="dot dot-yellow"></span>需关注 3</div>
+      <div class="badge badge-red"><span class="dot dot-red"></span>阻塞 0</div>
+    </div>
+  </div>
+
+  <div class="overview-bar">
+    <div class="stat-card"><div class="num">19</div><div class="label">在进行专项</div></div>
+    <div class="stat-card"><div class="num">14</div><div class="label">开发阶段</div></div>
+    <div class="stat-card"><div class="num">4</div><div class="label">对焦中</div></div>
+    <div class="stat-card"><div class="num">1</div><div class="label">设计中</div></div>
+  </div>
+
+  <div class="content">
+    <div class="domain-card card-hrbp">
+      <h3>🏢 HRBP 线</h3>
+      <ul>
+        <li>两大方向：<b>组织诊断</b> + <b>人才识别</b></li>
+        <li>各 BP 线存在差异化需求</li>
+        <li>策略：技术底层做抽象，业务各自交付</li>
+      </ul>
+    </div>
+
+    <div class="domain-card card-recruit">
+      <h3>🎯 招聘 & SSC <span class="tag tag-dev">开发中</span></h3>
+      <ul>
+        <li>国内：follow 控股 AI Native 项目技术底座</li>
+        <li>海外：独立做专项建设</li>
+      </ul>
+    </div>
+
+    <div class="domain-card card-comp">
+      <h3>💰 薪酬福利 <span class="tag tag-design">设计中</span></h3>
+      <ul>
+        <li>薪酬域：与控股侧专项联系密切，整体联动推进</li>
+        <li>福利域：面向海外福利 COE，控股侧尚在建设中</li>
+      </ul>
+    </div>
+
+    <div class="domain-card card-other">
+      <h3>🌟 OC / OD / TD <span class="tag tag-align">对焦中</span></h3>
+      <ul>
+        <li>与控股垂域保持联系协同</li>
+        <li>当前各组织百花齐放，独立探索</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

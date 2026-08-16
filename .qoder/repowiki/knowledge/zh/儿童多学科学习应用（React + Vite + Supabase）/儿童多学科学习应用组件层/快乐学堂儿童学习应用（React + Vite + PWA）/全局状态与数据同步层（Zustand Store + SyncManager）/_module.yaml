@@ -1,0 +1,14 @@
+schema_version: 1
+module_path: 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/53979e35-2d62-4c67-b491-77ab0d7386d6
+title: 全局状态与数据同步层（Zustand Store + SyncManager）
+scope:
+    - src/store/
+    - src/lib/
+    - src/hooks/
+    - src/types/
+    - src/data/
+source_files: []
+depends_on: []
+related_to:
+    - path: 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/14d11153-6170-4184-b779-b5196d9e0998
+    - path: 96180a6e-3dba-4b3d-837f-a5826676bb31/1115f17e-7a79-41c2-b261-0fc5f8ff1bf2/7d7cb82c-c4dd-40b7-b010-8e9fe191a102

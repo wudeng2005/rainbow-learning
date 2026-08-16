@@ -1,0 +1,9 @@
+schema_version: 1
+module_path: 073eb95b-cb30-4eda-9592-879bc970e1c7
+title: 儿童学习应用（React + Vite + Supabase）
+scope: []
+source_files: []
+depends_on: []
+related_to:
+    - path: 96180a6e-3dba-4b3d-837f-a5826676bb31
+    - path: ceb820c3-c40e-4333-a094-75de22b2f97a

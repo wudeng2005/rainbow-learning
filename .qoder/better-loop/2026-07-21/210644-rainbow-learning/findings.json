@@ -1,0 +1,194 @@
+{
+  "summary": {
+    "projectName": "rainbow-learning",
+    "locale": "zh-CN",
+    "modelId": "agent-work-loop-v4",
+    "reportContractVersion": 24,
+    "overview": "项目具备清晰的 Agent 引导和基础 lint/typecheck 反馈，但缺少自动化行为验证、交付门禁和环境复现路径，导致变更正确性和部署安全性无法被机械化保障。",
+    "aiAgentPractice": {
+      "inspectedSurfaces": [
+        "Rules",
+        "Hooks",
+        "Plugins",
+        "Memories"
+      ],
+      "coverageRows": [
+        {
+          "surface": "Rules",
+          "scopes": [
+            "Project"
+          ],
+          "count": 2,
+          "paths": [
+            "AGENTS.md",
+            ".qoder/rules/project-rules.md"
+          ]
+        },
+        {
+          "surface": "Hooks",
+          "scopes": [
+            "Global"
+          ],
+          "count": 1,
+          "paths": [
+            "~/.qoder/settings.json"
+          ]
+        },
+        {
+          "surface": "Plugins",
+          "scopes": [
+            "Plugin"
+          ],
+          "count": 2,
+          "paths": [
+            "better-loop",
+            "qoder-create-plugin"
+          ]
+        },
+        {
+          "surface": "Memories",
+          "scopes": [
+            "Project"
+          ],
+          "count": 54,
+          "paths": [
+            "~/.qoder/memories/019c216e/projects/Users-eden-AI-qoder-workspace-rainbow-learning/common_pitfalls_experience/汉字题ID前缀判断应为'ch_'而非'c_'.md",
+            "~/.qoder/memories/019c216e/projects/Users-eden-AI-qoder-workspace-rainbow-learning/development_code_specification/反馈卡片UI样式规范.md",
+            "~/.qoder/memories/019c216e/projects/Users-eden-AI-qoder-workspace-rainbow-learning/development_practice_specification/5岁儿童教育产品UIUX设计实践规范.md",
+            "~/.qoder/memories/019c216e/projects/Users-eden-AI-qoder-workspace-rainbow-learning/project_build_configuration/汉字题目生成构建流程.md",
+            "~/.qoder/memories/019c216e/projects/Users-eden-AI-qoder-workspace-rainbow-learning/project_introduction/Rainbow快乐学堂项目概况.md"
+          ]
+        }
+      ]
+    },
+    "suggestions": [
+      {
+        "id": "add-test-script",
+        "kind": "try-existing",
+        "title": "利用 Vite 内置能力添加最小行为验证",
+        "reason": "Vite 生态原生支持 Vitest，项目已有 vite.config.ts；添加一个 npm test 脚本和少量关键路径测试即可建立行为反馈层。",
+        "confidence": "Medium",
+        "owner": "项目维护者",
+        "nextStep": "安装 vitest，为核心 store 逻辑添加 1-2 个单元测试，在 package.json 中注册 test 脚本。",
+        "validation": "运行 npm test 确认通过；修改一个 store 逻辑后测试能捕获回归。"
+      },
+      {
+        "id": "add-env-example",
+        "kind": "try-existing",
+        "title": "创建 .env.example 降低环境搭建门槛",
+        "reason": "项目依赖 Supabase 环境变量（.env.local），但无模板文件；新会话或新贡献者必须猜测变量名。",
+        "confidence": "High",
+        "owner": "项目维护者",
+        "nextStep": "从 .env.local 提取变量名（不含值），创建 .env.example 并在 AGENTS.md 中引用。",
+        "validation": "删除 node_modules 和 .env.local 后，按 AGENTS.md 指引可一次性完成环境搭建。"
+      }
+    ],
+    "assignmentSummaries": [],
+    "dimensions": [
+      {
+        "id": "task-understanding",
+        "label": "任务理解",
+        "score": 72,
+        "summary": "AGENTS.md 和项目规则提供了简洁的编码规范与目录结构，54 条 Memory 积累了丰富的领域上下文；但缺少任务路由和高风险区域标注。",
+        "findingRefs": [
+          "agent-entrypoint-no-routing"
+        ]
+      },
+      {
+        "id": "controlled-execution",
+        "label": "可控执行",
+        "score": 55,
+        "summary": "标准 npm 脚本覆盖运行和构建，lockfile 保证依赖可复现；但缺少运行时版本锁定、环境模板和 setup/doctor 命令。",
+        "findingRefs": [
+          "no-env-reproducibility"
+        ]
+      },
+      {
+        "id": "change-validation",
+        "label": "改动验证",
+        "score": 45,
+        "summary": "ESLint + tsc 提供基础静态检查，但项目无任何测试文件和测试运行器；47 次编辑事件后未观测到行为验证。",
+        "findingRefs": [
+          "no-behavioral-validation"
+        ]
+      },
+      {
+        "id": "reliable-delivery",
+        "label": "可靠交付",
+        "score": 40,
+        "summary": "Vercel 部署路径存在但无前置门禁；无 CI、无分支保护、无 PR 审核流程，变更可直达生产。",
+        "findingRefs": [
+          "no-delivery-gate"
+        ]
+      },
+      {
+        "id": "learning-capture",
+        "label": "经验沉淀",
+        "score": 42,
+        "summary": "54 条 Memory 和 87 条 episode 记录表明积累机制存在，但无规范化事件支持重复模式检测，无持久化改进的后续验证。",
+        "findingRefs": []
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "no-behavioral-validation",
+      "title": "变更缺少行为验证层",
+      "severity": "High",
+      "reason": "项目无任何测试文件、测试运行器或测试脚本。唯一的自动化检查是 ESLint 和 tsc 类型检查，无法捕获逻辑回归。会话证据显示 47 次编辑后均未执行行为验证。",
+      "expectedOutput": [
+        "package.json 包含 test 脚本",
+        "至少 2 个 store 逻辑测试文件通过"
+      ],
+      "expectedArtifact": "Test suite",
+      "aiFixPrompt": "/better-loop fix this issue\n\n为项目添加最小行为验证层：安装 Vitest，在 package.json 添加 test 脚本，为 useLearningStore 和 useMathLearningStore 各写一个核心逻辑测试。\n\n## Validation\n\n- 运行 npm test 确认全部通过\n- 故意引入一个逻辑错误，确认测试能捕获",
+      "dimensionRefs": [
+        "change-validation"
+      ]
+    },
+    {
+      "id": "no-delivery-gate",
+      "title": "变更到生产部署无门禁",
+      "severity": "Medium",
+      "reason": "无 CI 流水线、无 pre-commit/pre-push hook、无分支保护。lint 和 typecheck 为本地可选执行，Vercel 部署无前置验证。破损变更可不经任何检查直达生产。",
+      "expectedOutput": [
+        "typecheck 失败时部署被阻止",
+        "正常代码可顺利部署"
+      ],
+      "expectedArtifact": "Git hook or Vercel build gate",
+      "aiFixPrompt": "/better-loop fix this issue\n\n添加最小交付门禁：在 package.json 中增加 pre-push hook（通过 simple-git-hooks 或 husky），执行 tsc -b 和 eslint；或在 vercel.json 中配置 build 命令确保部署前 typecheck 通过。\n\n## Validation\n\n- 引入一个类型错误，确认 pre-push 或 Vercel build 阶段阻止部署\n- 修复后确认正常推送/部署成功",
+      "dimensionRefs": [
+        "reliable-delivery"
+      ]
+    },
+    {
+      "id": "no-env-reproducibility",
+      "title": "环境复现路径缺失",
+      "severity": "Low",
+      "reason": "无 .nvmrc、无 packageManager 字段、无 .env.example、无 setup/doctor 命令。Agent 或新贡献者必须猜测 Node 版本并手动创建 Supabase 环境变量。",
+      "expectedOutput": [
+        ".nvmrc 和 .env.example 文件存在",
+        "AGENTS.md 包含 setup 命令指引"
+      ],
+      "expectedArtifact": "Environment template",
+      "aiFixPrompt": "/better-loop fix this issue\n\n添加环境复现最小路径：创建 .nvmrc（写入当前 Node 主版本）、创建 .env.example（列出 VITE_SUPABASE_URL 和 VITE_SUPABASE_ANON_KEY 变量名）、在 AGENTS.md 中添加一行 setup 指引。\n\n## Validation\n\n- 确认 .nvmrc 和 .env.example 存在\n- 按 AGENTS.md 指引可在空目录完成 cp .env.example .env.local && npm install && npm run dev",
+      "dimensionRefs": [
+        "controlled-execution"
+      ]
+    },
+    {
+      "id": "agent-entrypoint-no-routing",
+      "title": "Agent 入口缺少任务路由与风险标注",
+      "severity": "Low",
+      "reason": "AGENTS.md 提供编码规范但无 '修改 X 后运行 Y' 的验证路由，无高风险区域标注（如大型 JSON 数据文件、Supabase schema、部署配置），Agent 需自行发现验证路径。",
+      "expectedOutput": [
+        "AGENTS.md 包含验证路由和高风险区域标注"
+      ],
+      "expectedArtifact": "Updated AGENTS.md",
+      "aiFixPrompt": "/better-loop fix this issue\n\n在 AGENTS.md 中补充：1) 验证路由（修改组件后运行 npm run lint && npm run build）；2) 高风险区域（src/data/*.json 为题库数据、.env.local 含密钥、vercel.json 影响部署）。\n\n## Validation\n\n- AGENTS.md 包含验证命令映射和高风险区域列表\n- 新会话中 Agent 能直接引用 AGENTS.md 找到正确的验证命令",
+      "dimensionRefs": [
+        "task-understanding"
+      ]
+    }
+  ]
+}

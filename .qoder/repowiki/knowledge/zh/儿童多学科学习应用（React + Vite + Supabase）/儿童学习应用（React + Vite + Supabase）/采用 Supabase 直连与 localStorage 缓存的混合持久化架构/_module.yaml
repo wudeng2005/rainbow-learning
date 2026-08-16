@@ -1,0 +1,8 @@
+schema_version: 1
+module_path: 073eb95b-cb30-4eda-9592-879bc970e1c7/5382e2a0-ee5c-40b5-b174-07fa511f2faa
+title: 采用 Supabase 直连与 localStorage 缓存的混合持久化架构
+scope: []
+source_files: []
+depends_on: []
+related_to:
+    - path: 073eb95b-cb30-4eda-9592-879bc970e1c7/dc048bab-7793-47fa-b627-a2c966675344
