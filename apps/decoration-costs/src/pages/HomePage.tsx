@@ -86,10 +86,27 @@ export default function HomePage() {
       </section>
 
       {/* 统计小卡 */}
-      <section className="grid grid-cols-3 gap-3 mb-5">
-        <StatCard label="总项目" value={summary.projectCount} unit="个" color="bg-white" />
-        <StatCard label="未付清" value={summary.unpaidCount} unit="个" color="bg-white" />
-        <StatCard label="已支出" value={formatMoney(summary.totalPaid)} unit="" color="bg-accent-soft text-accent" />
+      <section className="grid grid-cols-2 gap-3 mb-5">
+        {/* 总项目 / 未付清 合并卡 */}
+        <div className="col-span-2 bg-white rounded-2xl p-3 shadow-sm flex items-center justify-around text-center">
+          <div>
+            <p className="text-xs text-text-secondary mb-1">总项目</p>
+            <p className="text-lg font-bold font-num text-text-primary">
+              {summary.projectCount}
+              <span className="text-xs font-normal text-text-secondary ml-0.5">个</span>
+            </p>
+          </div>
+          <div className="w-px h-8 bg-gray-100" />
+          <div>
+            <p className="text-xs text-text-secondary mb-1">未付清</p>
+            <p className="text-lg font-bold font-num text-text-primary">
+              {summary.unpaidCount}
+              <span className="text-xs font-normal text-text-secondary ml-0.5">个</span>
+            </p>
+          </div>
+        </div>
+        <StatCard label="待支付" value={formatMoney(summary.totalUnpaid)} unit="" color="bg-danger-soft" />
+        <StatCard label="已支出" value={formatMoney(summary.totalPaid)} unit="" color="bg-accent-soft" />
       </section>
 
       {/* 分类支出 */}

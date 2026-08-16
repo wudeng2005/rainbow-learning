@@ -53,6 +53,8 @@ export interface DashboardSummary {
   totalBudget: number
   totalPaid: number
   totalRemaining: number
+  /** 待支付总额：各项目未付金额之和 */
+  totalUnpaid: number
   executionRate: number
   projectCount: number
   paidOffCount: number

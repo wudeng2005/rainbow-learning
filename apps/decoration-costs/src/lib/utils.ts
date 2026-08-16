@@ -66,6 +66,14 @@ export function computeDashboardSummary(
   const executionRate = calcExecutionRate(totalPaid, budget.total_budget)
   const paidOffCount = projects.filter(p => p.status === '已付清').length
 
+  // 待支付总额：每个项目的应付总额减去已付，取非负后求和
+  const totalUnpaid = projects.reduce((sum, proj) => {
+    const paid = payments
+      .filter(p => p.project_id === proj.project_id)
+      .reduce((s, p) => s + p.amount, 0)
+    return sum + Math.max(0, proj.total_amount - paid)
+  }, 0)
+
   const categorySpending = categoriesL1.map((l1) => {
     const projectIds = new Set(
       projects.filter(p => p.category_l1_id === l1.category_l1_id).map(p => p.project_id)
@@ -99,6 +107,7 @@ export function computeDashboardSummary(
     totalBudget: budget.total_budget,
     totalPaid,
     totalRemaining,
+    totalUnpaid,
     executionRate,
     projectCount: projects.length,
     paidOffCount,
