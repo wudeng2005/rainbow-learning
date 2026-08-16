@@ -10,7 +10,7 @@ const NAV_ITEMS = [
 export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-border safe-bottom">
-      <div className="max-w-[600px] mx-auto flex items-center justify-around h-16 px-2">
+      <div className="max-w-[600px] md:max-w-[760px] mx-auto flex items-center justify-around h-16 px-2">
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.path}

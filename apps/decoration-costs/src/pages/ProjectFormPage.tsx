@@ -109,7 +109,7 @@ export default function ProjectFormPage() {
     <div className="animate-fade-in-up">
       <PageHeader title={isEdit ? '编辑项目' : '新增费用项目'} />
 
-      <div className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm space-y-4 sm:space-y-5">
         {/* 一级分类 */}
         <div>
           <label className="block text-sm font-medium text-text-secondary mb-1.5">一级分类</label>
@@ -181,11 +181,11 @@ export default function ProjectFormPage() {
         {/* 项目名称 */}
         <FormInput label="项目名称" value={name} onChange={setName} placeholder="例如：全屋半包施工费" />
 
-        {/* 收款方 */}
-        <FormInput label="收款方" value={vendor} onChange={setVendor} placeholder="例如：远创工程" />
-
-        {/* 项目总计 */}
-        <FormAmount label="项目费用总计" value={totalAmount} onChange={setTotalAmount} placeholder="0" />
+        {/* 收款方 + 项目总计（宽屏双列） */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          <FormInput label="收款方" value={vendor} onChange={setVendor} placeholder="例如：远创工程" />
+          <FormAmount label="项目费用总计" value={totalAmount} onChange={setTotalAmount} placeholder="0" />
+        </div>
 
         {/* 备注 */}
         <div>
@@ -223,7 +223,7 @@ export default function ProjectFormPage() {
             {showFirstPayment && (
               <div className="space-y-3 bg-primary-soft/30 rounded-xl p-3">
                 <FormAmount label="首次支付金额" value={firstPaymentAmount} onChange={setFirstPaymentAmount} placeholder="0" />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-text-secondary mb-1.5">支付时间</label>
                     <input
