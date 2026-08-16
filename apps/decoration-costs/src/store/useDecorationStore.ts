@@ -26,6 +26,8 @@ interface DecorationState {
   projects: Project[]
   payments: Payment[]
   initialized: boolean
+  /** 本地最后修改时间（ISO），用于多设备启动时比较新旧 */
+  last_modified_at: string
 }
 
 interface DecorationActions {
@@ -65,6 +67,10 @@ function sortPaymentsByDate(items: Payment[]): Payment[] {
   return [...items].sort((a, b) => new Date(b.paid_at).getTime() - new Date(a.paid_at).getTime())
 }
 
+function nowISO(): string {
+  return new Date().toISOString()
+}
+
 export const useDecorationStore = create<DecorationState & DecorationActions>()(
   persist(
     (set, get) => ({
@@ -74,9 +80,10 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
       projects: [],
       payments: [],
       initialized: true,
+      last_modified_at: '',
 
       setBudget: (total) => {
-        set({ budget: { total_budget: total } })
+        set({ budget: { total_budget: total }, last_modified_at: nowISO() })
       },
 
       addProject: (project, firstPayment) => {
@@ -109,6 +116,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
         set({
           projects: sortProjectsByDate([...get().projects, newProject]),
           payments: newPayments,
+          last_modified_at: nowISO(),
         })
 
         return projectId
@@ -125,13 +133,14 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
             status: paid >= total ? '已付清' : '未付清',
           }
         })
-        set({ projects: sortProjectsByDate(projects) })
+        set({ projects: sortProjectsByDate(projects), last_modified_at: nowISO() })
       },
 
       deleteProject: (projectId) => {
         set({
           projects: get().projects.filter(p => p.project_id !== projectId),
           payments: get().payments.filter(p => p.project_id !== projectId),
+          last_modified_at: nowISO(),
         })
       },
 
@@ -148,9 +157,9 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           const paid = payments.filter(p => p.project_id === projectId).reduce((sum, p) => sum + p.amount, 0)
           const status = paid >= project.total_amount ? '已付清' : '未付清'
           const projects = get().projects.map((p): Project => (p.project_id === projectId ? { ...p, status } : p))
-          set({ payments, projects: sortProjectsByDate(projects) })
+          set({ payments, projects: sortProjectsByDate(projects), last_modified_at: nowISO() })
         } else {
-          set({ payments })
+          set({ payments, last_modified_at: nowISO() })
         }
       },
 
@@ -164,9 +173,9 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           const paid = payments.filter(p => p.project_id === project.project_id).reduce((sum, p) => sum + p.amount, 0)
           const status = paid >= project.total_amount ? '已付清' : '未付清'
           const projects = get().projects.map((p): Project => (p.project_id === project.project_id ? { ...p, status } : p))
-          set({ payments, projects: sortProjectsByDate(projects) })
+          set({ payments, projects: sortProjectsByDate(projects), last_modified_at: nowISO() })
         } else {
-          set({ payments })
+          set({ payments, last_modified_at: nowISO() })
         }
       },
 
@@ -178,7 +187,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           name: name.trim(),
           is_custom: true,
         }
-        set({ categoriesL2: [...get().categoriesL2, newCategory] })
+        set({ categoriesL2: [...get().categoriesL2, newCategory], last_modified_at: nowISO() })
         return id
       },
 
@@ -237,6 +246,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           categoriesL2: data.categoriesL2 ?? get().categoriesL2,
           projects: data.projects ?? get().projects,
           payments: data.payments ?? get().payments,
+          last_modified_at: nowISO(),
         })
       },
 
@@ -252,6 +262,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           categoriesL2: DEFAULT_CATEGORIES_L2,
           projects: [],
           payments: [],
+          last_modified_at: nowISO(),
         })
       },
     }),

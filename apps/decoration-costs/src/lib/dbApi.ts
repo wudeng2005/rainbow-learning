@@ -9,13 +9,15 @@ export interface CloudState {
   categoriesL2: CategoryL2[]
   projects: Project[]
   payments: Payment[]
+  /** 云端最后同步时间（budgets.updated_at） */
+  lastModifiedAt: string
 }
 
 /** 从云端拉取完整状态 */
 export async function fetchCloudState(): Promise<CloudState | null> {
   const [{ data: budgetRows }, { data: l1Rows }, { data: l2Rows }, { data: projectRows }, { data: paymentRows }] =
     await Promise.all([
-      supabase.from('decoration_budgets').select('total_budget').eq('user_id', USER_ID).maybeSingle(),
+      supabase.from('decoration_budgets').select('total_budget,updated_at').eq('user_id', USER_ID).maybeSingle(),
       supabase.from('decoration_categories_l1').select('*').order('sort_order'),
       supabase.from('decoration_categories_l2').select('*'),
       supabase.from('decoration_projects').select('*').order('created_at', { ascending: false }),
@@ -26,6 +28,7 @@ export async function fetchCloudState(): Promise<CloudState | null> {
 
   return {
     budget: { total_budget: Number(budgetRows?.total_budget ?? 500000) },
+    lastModifiedAt: (budgetRows?.updated_at as string) ?? '',
     categoriesL1: (l1Rows ?? []).map(r => ({
       category_l1_id: r.category_l1_id,
       name: r.name,
@@ -102,12 +105,12 @@ export async function pushCloudState(state: DecorationState): Promise<void> {
     if (error) throw error
   }
 
-  // 5. 写入预算
-  await upsertCloudBudget(budget.total_budget)
+  // 5. 写入预算（同时写入本地最后修改时间，作为云端新旧标记）
+  await upsertCloudBudget(budget.total_budget, state.last_modified_at || new Date().toISOString())
 }
 
 /** 写入/更新云端预算（user_id 无唯一约束，采用先查后写） */
-async function upsertCloudBudget(totalBudget: number): Promise<void> {
+async function upsertCloudBudget(totalBudget: number, updatedAt?: string): Promise<void> {
   const { data, error: queryError } = await supabase
     .from('decoration_budgets')
     .select('id')
@@ -118,13 +121,13 @@ async function upsertCloudBudget(totalBudget: number): Promise<void> {
   if (data) {
     const { error } = await supabase
       .from('decoration_budgets')
-      .update({ total_budget: Number(totalBudget) })
+      .update({ total_budget: Number(totalBudget), updated_at: updatedAt ?? new Date().toISOString() })
       .eq('user_id', USER_ID)
     if (error) throw error
   } else {
     const { error } = await supabase
       .from('decoration_budgets')
-      .insert({ user_id: USER_ID, total_budget: Number(totalBudget) })
+      .insert({ user_id: USER_ID, total_budget: Number(totalBudget), updated_at: updatedAt ?? new Date().toISOString() })
     if (error) throw error
   }
 }

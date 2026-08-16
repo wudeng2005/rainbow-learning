@@ -97,4 +97,5 @@ export interface DecorationState {
   categoriesL2: CategoryL2[]
   projects: Project[]
   payments: Payment[]
+  last_modified_at?: string
 }

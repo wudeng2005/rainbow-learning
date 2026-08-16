@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { useDecorationStore } from '@/store/useDecorationStore'
 import { fetchCloudState, pushCloudState } from '@/lib/dbApi'
+import type { CloudState } from '@/lib/dbApi'
+import type { DecorationState } from '@/types'
 
 export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error'
 
@@ -11,7 +13,7 @@ interface SyncStatusState {
   set: (patch: Partial<Omit<SyncStatusState, 'set'>>) => void
 }
 
-/** 云同步状态（供设置页展示） */
+/** 云同步状态（内部使用） */
 export const useSyncStatus = create<SyncStatusState>((set) => ({
   status: 'idle',
   lastSyncAt: null,
@@ -57,11 +59,31 @@ async function push() {
   }
 }
 
+/** 云端与本地按主键做并集合并（冲突时本地优先），保证任何一端的数据都不丢失 */
+function mergeCloudAndLocal(cloud: CloudState, local: DecorationState) {
+  function mergeById<T>(cloudArr: T[], localArr: T[], key: (item: T) => string): T[] {
+    const map = new Map<string, T>()
+    for (const item of cloudArr) map.set(key(item), item)
+    for (const item of localArr) map.set(key(item), item)
+    return [...map.values()]
+  }
+  return {
+    budget: local.budget,
+    categoriesL1: mergeById(cloud.categoriesL1, local.categoriesL1, (c) => c.category_l1_id),
+    categoriesL2: mergeById(cloud.categoriesL2, local.categoriesL2, (c) => c.category_l2_id),
+    projects: mergeById(cloud.projects, local.projects, (p) => p.project_id),
+    payments: mergeById(cloud.payments, local.payments, (p) => p.payment_id),
+  }
+}
+
 /**
  * 应用启动时初始化云同步：
  * - 订阅本地数据变化，自动防抖推送云端
- * - 本地已有数据：以本地为准，延迟推送一次（把历史数据补进数据库）
- * - 全新设备（无本地数据）：尝试从云端拉取恢复
+ * - 全新设备（无本地数据）：从云端拉取恢复
+ * - 有本地数据：
+ *   - 双方都有时间标记 → 新的覆盖旧的（相同则不动）
+ *   - 缺少标记（旧版本升级）→ 并集合并后推送，确保不丢任何设备的更新
+ *   - 云端为空 → 直接推送本地
  */
 export function initCloudSync() {
   useDecorationStore.subscribe((state, prev) => {
@@ -77,9 +99,8 @@ export function initCloudSync() {
   })
 
   const hasLocal = localStorage.getItem(STORAGE_KEY) !== null
-  if (hasLocal) {
-    scheduleCloudPush(2000)
-  } else {
+
+  if (!hasLocal) {
     fetchCloudState()
       .then((cloud) => {
         if (cloud && (cloud.projects.length > 0 || cloud.payments.length > 0)) {
@@ -89,5 +110,32 @@ export function initCloudSync() {
       .catch(() => {
         // 云端不可用时静默忽略，保持本地优先
       })
+    return
   }
+
+  const localAt = useDecorationStore.getState().last_modified_at || ''
+  fetchCloudState()
+    .then((cloud) => {
+      const cloudAt = cloud?.lastModifiedAt || ''
+      const cloudHasData = !!cloud && (cloud.projects.length > 0 || cloud.payments.length > 0 || !!cloudAt)
+
+      if (!cloudHasData) {
+        scheduleCloudPush(2000)
+        return
+      }
+      if (localAt && cloudAt) {
+        if (localAt > cloudAt) {
+          scheduleCloudPush(2000)
+        } else if (cloudAt > localAt) {
+          useDecorationStore.getState().importData(cloud!)
+        }
+        return
+      }
+      // 迁移场景：本地缺少时间标记，做并集合并后推送
+      const merged = mergeCloudAndLocal(cloud!, useDecorationStore.getState())
+      useDecorationStore.getState().importData(merged)
+    })
+    .catch(() => {
+      // 启动时云端不可用：保持本地数据，后续变更仍会触发推送
+    })
 }
