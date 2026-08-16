@@ -67,6 +67,14 @@ export async function fetchCloudState(): Promise<CloudState | null> {
 export async function pushCloudState(state: DecorationState): Promise<void> {
   const { budget, categoriesL1, categoriesL2, projects, payments } = state
 
+  // 安全闸：本地无任何业务数据而云端有时，拒绝推送，防止空状态设备 wipe 云端真实数据
+  if (projects.length === 0 && payments.length === 0) {
+    const { count, error: countError } = await supabase
+      .from('decoration_projects')
+      .select('*', { count: 'exact', head: true })
+    if (!countError && (count ?? 0) > 0) return
+  }
+
   // 1. 清理旧数据
   await supabase.from('decoration_payments').delete().neq('payment_id', '')
   await supabase.from('decoration_projects').delete().neq('project_id', '')

@@ -17,6 +17,7 @@ import {
   formatMoney,
   generateId,
   getTodayStr,
+  localTodayStr,
 } from '@/lib/utils'
 
 interface DecorationState {
@@ -28,6 +29,8 @@ interface DecorationState {
   initialized: boolean
   /** 本地最后修改时间（ISO），用于多设备启动时比较新旧 */
   last_modified_at: string
+  /** 更新日志：有数据变更的日期列表（YYYY-MM-DD，降序） */
+  update_log: string[]
 }
 
 interface DecorationActions {
@@ -55,7 +58,7 @@ interface DecorationActions {
   resetAll: () => void
 }
 
-const DEFAULT_BUDGET: Budget = { total_budget: 500000 }
+export const DEFAULT_BUDGET: Budget = { total_budget: 500000 }
 
 const STORAGE_KEY = 'decoration-costs-v1'
 
@@ -71,6 +74,13 @@ function nowISO(): string {
   return new Date().toISOString()
 }
 
+/** 将今天记入更新日志（去重、降序、最多保留 400 天） */
+function withLog(log: string[]): string[] {
+  const today = localTodayStr()
+  if (log.includes(today)) return log
+  return [today, ...log].sort((a, b) => (a < b ? 1 : -1)).slice(0, 400)
+}
+
 export const useDecorationStore = create<DecorationState & DecorationActions>()(
   persist(
     (set, get) => ({
@@ -81,9 +91,10 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
       payments: [],
       initialized: true,
       last_modified_at: '',
+      update_log: [],
 
       setBudget: (total) => {
-        set({ budget: { total_budget: total }, last_modified_at: nowISO() })
+        set({ budget: { total_budget: total }, last_modified_at: nowISO(), update_log: withLog(get().update_log) })
       },
 
       addProject: (project, firstPayment) => {
@@ -117,6 +128,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           projects: sortProjectsByDate([...get().projects, newProject]),
           payments: newPayments,
           last_modified_at: nowISO(),
+          update_log: withLog(get().update_log),
         })
 
         return projectId
@@ -133,7 +145,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
             status: paid >= total ? '已付清' : '未付清',
           }
         })
-        set({ projects: sortProjectsByDate(projects), last_modified_at: nowISO() })
+        set({ projects: sortProjectsByDate(projects), last_modified_at: nowISO(), update_log: withLog(get().update_log) })
       },
 
       deleteProject: (projectId) => {
@@ -141,6 +153,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           projects: get().projects.filter(p => p.project_id !== projectId),
           payments: get().payments.filter(p => p.project_id !== projectId),
           last_modified_at: nowISO(),
+          update_log: withLog(get().update_log),
         })
       },
 
@@ -157,9 +170,9 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           const paid = payments.filter(p => p.project_id === projectId).reduce((sum, p) => sum + p.amount, 0)
           const status = paid >= project.total_amount ? '已付清' : '未付清'
           const projects = get().projects.map((p): Project => (p.project_id === projectId ? { ...p, status } : p))
-          set({ payments, projects: sortProjectsByDate(projects), last_modified_at: nowISO() })
+          set({ payments, projects: sortProjectsByDate(projects), last_modified_at: nowISO(), update_log: withLog(get().update_log) })
         } else {
-          set({ payments, last_modified_at: nowISO() })
+          set({ payments, last_modified_at: nowISO(), update_log: withLog(get().update_log) })
         }
       },
 
@@ -173,9 +186,9 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           const paid = payments.filter(p => p.project_id === project.project_id).reduce((sum, p) => sum + p.amount, 0)
           const status = paid >= project.total_amount ? '已付清' : '未付清'
           const projects = get().projects.map((p): Project => (p.project_id === project.project_id ? { ...p, status } : p))
-          set({ payments, projects: sortProjectsByDate(projects), last_modified_at: nowISO() })
+          set({ payments, projects: sortProjectsByDate(projects), last_modified_at: nowISO(), update_log: withLog(get().update_log) })
         } else {
-          set({ payments, last_modified_at: nowISO() })
+          set({ payments, last_modified_at: nowISO(), update_log: withLog(get().update_log) })
         }
       },
 
@@ -187,7 +200,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           name: name.trim(),
           is_custom: true,
         }
-        set({ categoriesL2: [...get().categoriesL2, newCategory], last_modified_at: nowISO() })
+        set({ categoriesL2: [...get().categoriesL2, newCategory], last_modified_at: nowISO(), update_log: withLog(get().update_log) })
         return id
       },
 
@@ -246,13 +259,14 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           categoriesL2: data.categoriesL2 ?? get().categoriesL2,
           projects: data.projects ?? get().projects,
           payments: data.payments ?? get().payments,
+          update_log: data.update_log ?? get().update_log,
           last_modified_at: nowISO(),
         })
       },
 
       exportData: () => {
-        const { budget, categoriesL1, categoriesL2, projects, payments } = get()
-        return JSON.stringify({ budget, categoriesL1, categoriesL2, projects, payments }, null, 2)
+        const { budget, categoriesL1, categoriesL2, projects, payments, update_log } = get()
+        return JSON.stringify({ budget, categoriesL1, categoriesL2, projects, payments, update_log }, null, 2)
       },
 
       resetAll: () => {
@@ -262,6 +276,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
           categoriesL2: DEFAULT_CATEGORIES_L2,
           projects: [],
           payments: [],
+          update_log: [],
           last_modified_at: nowISO(),
         })
       },

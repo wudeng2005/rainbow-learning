@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { useDecorationStore } from '@/store/useDecorationStore'
+import { useDecorationStore, DEFAULT_BUDGET } from '@/store/useDecorationStore'
 import { fetchCloudState, pushCloudState } from '@/lib/dbApi'
 import type { CloudState } from '@/lib/dbApi'
 import type { DecorationState } from '@/types'
@@ -68,11 +68,18 @@ function mergeCloudAndLocal(cloud: CloudState, local: DecorationState) {
     return [...map.values()]
   }
   return {
-    budget: local.budget,
+    // 预算：本地仍是默认值而云端已修改时，采用云端值，避免默认值覆盖真实数据
+    budget:
+      local.budget.total_budget === DEFAULT_BUDGET.total_budget &&
+      cloud.budget.total_budget !== DEFAULT_BUDGET.total_budget
+        ? cloud.budget
+        : local.budget,
     categoriesL1: mergeById(cloud.categoriesL1, local.categoriesL1, (c) => c.category_l1_id),
     categoriesL2: mergeById(cloud.categoriesL2, local.categoriesL2, (c) => c.category_l2_id),
     projects: mergeById(cloud.projects, local.projects, (p) => p.project_id),
     payments: mergeById(cloud.payments, local.payments, (p) => p.payment_id),
+    // 更新日志仅本地维护，合并时保留本地记录
+    update_log: local.update_log ?? [],
   }
 }
 
@@ -117,7 +124,8 @@ export function initCloudSync() {
   fetchCloudState()
     .then((cloud) => {
       const cloudAt = cloud?.lastModifiedAt || ''
-      const cloudHasData = !!cloud && (cloud.projects.length > 0 || cloud.payments.length > 0 || !!cloudAt)
+      // 仅当云端存在实际业务数据时才视为"有数据"，避免只有默认预算记录时覆盖本地
+      const cloudHasData = !!cloud && (cloud.projects.length > 0 || cloud.payments.length > 0)
 
       if (!cloudHasData) {
         scheduleCloudPush(2000)

@@ -25,9 +25,19 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['index.html', 'manifest.webmanifest', '**/*.css', 'favicon.svg', 'icon-192.png', 'icon-512.png'],
+        // index.html 不预缓存：导航请求走 NetworkFirst，保证旧设备能及时拿到新版本
+        globPatterns: ['manifest.webmanifest', 'favicon.svg', 'icon-192.png', 'icon-512.png'],
+        cleanupOutdatedCaches: true,
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'pages-cache',
+              networkTimeoutSeconds: 3,
+            },
+          },
           {
             urlPattern: /\/assets\/.*\.(js|css)$/,
             handler: 'CacheFirst',

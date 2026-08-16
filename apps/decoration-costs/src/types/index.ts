@@ -98,4 +98,6 @@ export interface DecorationState {
   projects: Project[]
   payments: Payment[]
   last_modified_at?: string
+  /** 有数据变更的日期列表（YYYY-MM-DD，降序），仅本地维护 */
+  update_log?: string[]
 }

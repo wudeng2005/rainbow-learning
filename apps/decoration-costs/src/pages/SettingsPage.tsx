@@ -1,21 +1,12 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDecorationStore } from '@/store/useDecorationStore'
 import PageHeader from '@/components/PageHeader'
+import UpdateCalendar from '@/components/UpdateCalendar'
 
 export default function SettingsPage() {
   const navigate = useNavigate()
-  const { resetAll, budget } = useDecorationStore()
-
-  const [showResetConfirm, setShowResetConfirm] = useState(false)
-  const [message, setMessage] = useState('')
-
-  const handleReset = () => {
-    resetAll()
-    setShowResetConfirm(false)
-    setMessage('数据已清空')
-    setTimeout(() => setMessage(''), 2000)
-  }
+  const budget = useDecorationStore((s) => s.budget)
+  const updateLog = useDecorationStore((s) => s.update_log)
 
   return (
     <div className="animate-fade-in-up">
@@ -44,37 +35,11 @@ export default function SettingsPage() {
         </button>
       </section>
 
-      {/* 清空数据 */}
+      {/* 更新日志 */}
       <section className="bg-white rounded-2xl p-4 shadow-sm">
-        <button
-          onClick={() => setShowResetConfirm(true)}
-          className="w-full h-11 rounded-xl border border-danger text-danger text-sm font-medium active:scale-[0.98] transition-transform"
-        >
-          清空所有数据
-        </button>
-        {message && <p className="text-xs text-center mt-2 text-text-secondary">{message}</p>}
+        <h3 className="font-bold text-text-primary mb-3">更新日志</h3>
+        <UpdateCalendar dates={updateLog} />
       </section>
-
-      {/* 重置确认 */}
-      {showResetConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="bg-white rounded-2xl p-5 w-full max-w-sm">
-            <h3 className="text-lg font-bold text-text-primary mb-2">确认清空？</h3>
-            <p className="text-sm text-text-secondary mb-5">此操作将删除所有项目、支付记录和自定义分类，不可恢复。</p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowResetConfirm(false)}
-                className="flex-1 h-11 rounded-xl bg-gray-100 text-text-secondary text-sm font-medium"
-              >
-                取消
-              </button>
-              <button onClick={handleReset} className="flex-1 h-11 rounded-xl bg-danger text-white text-sm font-semibold">
-                清空
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
