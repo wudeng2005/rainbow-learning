@@ -85,28 +85,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 统计小卡 */}
-      <section className="grid grid-cols-2 gap-3 mb-5">
-        {/* 总项目 / 未付清 合并卡 */}
-        <div className="col-span-2 bg-white rounded-2xl p-3 shadow-sm flex items-center justify-around text-center">
-          <div>
-            <p className="text-xs text-text-secondary mb-1">总项目</p>
-            <p className="text-lg font-bold font-num text-text-primary">
-              {summary.projectCount}
-              <span className="text-xs font-normal text-text-secondary ml-0.5">个</span>
-            </p>
-          </div>
-          <div className="w-px h-8 bg-gray-100" />
-          <div>
-            <p className="text-xs text-text-secondary mb-1">未付清</p>
-            <p className="text-lg font-bold font-num text-text-primary">
-              {summary.unpaidCount}
-              <span className="text-xs font-normal text-text-secondary ml-0.5">个</span>
-            </p>
-          </div>
+      {/* 金额统计行：已确定 / 待支付 / 已支出 */}
+      <section className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
+        <AmountCard
+          label="已确定"
+          value={formatMoney(summary.totalUnpaid + summary.totalPaid)}
+          color="bg-white"
+        />
+        <AmountCard label="待支付" value={formatMoney(summary.totalUnpaid)} color="bg-danger-soft" />
+        <AmountCard label="已支出" value={formatMoney(summary.totalPaid)} color="bg-accent-soft" />
+      </section>
+
+      {/* 总项目 / 未付清 合并卡 */}
+      <section className="bg-white rounded-2xl p-3 shadow-sm flex items-center justify-around text-center mb-5">
+        <div>
+          <p className="text-xs text-text-secondary mb-1">总项目</p>
+          <p className="text-lg font-bold font-num text-text-primary">
+            {summary.projectCount}
+            <span className="text-xs font-normal text-text-secondary ml-0.5">个</span>
+          </p>
         </div>
-        <StatCard label="待支付" value={formatMoney(summary.totalUnpaid)} unit="" color="bg-danger-soft" />
-        <StatCard label="已支出" value={formatMoney(summary.totalPaid)} unit="" color="bg-accent-soft" />
+        <div className="w-px h-8 bg-gray-100" />
+        <div>
+          <p className="text-xs text-text-secondary mb-1">未付清</p>
+          <p className="text-lg font-bold font-num text-text-primary">
+            {summary.unpaidCount}
+            <span className="text-xs font-normal text-text-secondary ml-0.5">个</span>
+          </p>
+        </div>
       </section>
 
       {/* 分类支出 */}
@@ -160,14 +166,11 @@ function PlusIcon({ className }: { className?: string }) {
   )
 }
 
-function StatCard({ label, value, unit, color }: { label: string; value: string | number; unit: string; color: string }) {
+function AmountCard({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className={`${color} rounded-2xl p-3 shadow-sm text-center`}>
+    <div className={`${color} rounded-2xl p-2.5 sm:p-3 shadow-sm text-center`}>
       <p className="text-xs text-text-secondary mb-1">{label}</p>
-      <p className="text-lg font-bold font-num text-text-primary">
-        {value}
-        {unit && <span className="text-xs font-normal text-text-secondary ml-0.5">{unit}</span>}
-      </p>
+      <p className="text-base sm:text-lg font-bold font-num text-text-primary whitespace-nowrap">{value}</p>
     </div>
   )
 }
