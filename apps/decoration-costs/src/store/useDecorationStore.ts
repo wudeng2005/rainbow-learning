@@ -12,7 +12,12 @@ import type {
   ProjectStatus,
 } from '@/types'
 import { DEFAULT_CATEGORIES_L1, DEFAULT_CATEGORIES_L2 } from '@/data/categories'
-import { calcExecutionRate, formatMoney, generateId, getTodayStr } from '@/lib/utils'
+import {
+  computeDashboardSummary,
+  formatMoney,
+  generateId,
+  getTodayStr,
+} from '@/lib/utils'
 
 interface DecorationState {
   budget: Budget
@@ -213,51 +218,7 @@ export const useDecorationStore = create<DecorationState & DecorationActions>()(
 
       getDashboardSummary: () => {
         const { budget, projects, payments, categoriesL1 } = get()
-        const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0)
-        const totalRemaining = Math.max(0, budget.total_budget - totalPaid)
-        const executionRate = calcExecutionRate(totalPaid, budget.total_budget)
-        const paidOffCount = projects.filter(p => p.status === '已付清').length
-        const categorySpending = categoriesL1.map((l1) => {
-          const projectIds = new Set(
-            get()
-              .projects.filter(p => p.category_l1_id === l1.category_l1_id)
-              .map(p => p.project_id)
-          )
-          const amount = payments.filter(p => projectIds.has(p.project_id)).reduce((sum, p) => sum + p.amount, 0)
-          return {
-            category_l1_id: l1.category_l1_id,
-            name: l1.name,
-            icon: l1.icon,
-            amount,
-            percentage: totalPaid > 0 ? Math.round((amount / totalPaid) * 1000) / 10 : 0,
-          }
-        })
-
-        const recentPayments = sortPaymentsByDate(payments)
-          .slice(0, 5)
-          .map((p) => {
-            const project = projects.find(proj => proj.project_id === p.project_id)
-            return {
-              payment_id: p.payment_id,
-              project_id: p.project_id,
-              project_name: project?.name ?? '未知项目',
-              amount: p.amount,
-              paid_at: p.paid_at,
-              payment_node: p.payment_node,
-            }
-          })
-
-        return {
-          totalBudget: budget.total_budget,
-          totalPaid,
-          totalRemaining,
-          executionRate,
-          projectCount: projects.length,
-          paidOffCount,
-          unpaidCount: projects.length - paidOffCount,
-          categorySpending,
-          recentPayments,
-        }
+        return computeDashboardSummary(budget, projects, payments, categoriesL1)
       },
 
       getCategorySpending: () => {

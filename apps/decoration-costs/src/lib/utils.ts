@@ -1,3 +1,5 @@
+import type { Budget, CategoryL1, DashboardSummary, Payment, Project } from '@/types'
+
 /** 格式化金额：¥xx,xxx */
 export function formatMoney(amount: number): string {
   return new Intl.NumberFormat('zh-CN', {
@@ -44,4 +46,58 @@ export function parseAmount(value: string): number {
 export function calcExecutionRate(paid: number, budget: number): number {
   if (budget <= 0) return 0
   return Math.min(100, Math.round((paid / budget) * 1000) / 10)
+}
+
+/** 仪表盘汇总数据（纯函数，可在组件 useMemo / store 中复用） */
+export function computeDashboardSummary(
+  budget: Budget,
+  projects: Project[],
+  payments: Payment[],
+  categoriesL1: CategoryL1[]
+): DashboardSummary {
+  const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0)
+  const totalRemaining = Math.max(0, budget.total_budget - totalPaid)
+  const executionRate = calcExecutionRate(totalPaid, budget.total_budget)
+  const paidOffCount = projects.filter(p => p.status === '已付清').length
+
+  const categorySpending = categoriesL1.map((l1) => {
+    const projectIds = new Set(
+      projects.filter(p => p.category_l1_id === l1.category_l1_id).map(p => p.project_id)
+    )
+    const amount = payments.filter(p => projectIds.has(p.project_id)).reduce((sum, p) => sum + p.amount, 0)
+    return {
+      category_l1_id: l1.category_l1_id,
+      name: l1.name,
+      icon: l1.icon,
+      amount,
+      percentage: totalPaid > 0 ? Math.round((amount / totalPaid) * 1000) / 10 : 0,
+    }
+  })
+
+  const recentPayments = [...payments]
+    .sort((a, b) => new Date(b.paid_at).getTime() - new Date(a.paid_at).getTime())
+    .slice(0, 5)
+    .map((p) => {
+      const project = projects.find(proj => proj.project_id === p.project_id)
+      return {
+        payment_id: p.payment_id,
+        project_id: p.project_id,
+        project_name: project?.name ?? '未知项目',
+        amount: p.amount,
+        paid_at: p.paid_at,
+        payment_node: p.payment_node,
+      }
+    })
+
+  return {
+    totalBudget: budget.total_budget,
+    totalPaid,
+    totalRemaining,
+    executionRate,
+    projectCount: projects.length,
+    paidOffCount,
+    unpaidCount: projects.length - paidOffCount,
+    categorySpending,
+    recentPayments,
+  }
 }

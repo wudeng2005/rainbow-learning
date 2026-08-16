@@ -1,12 +1,20 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDecorationStore, formatMoney } from '@/store/useDecorationStore'
-import { formatCompactMoney } from '@/lib/utils'
+import { computeDashboardSummary, formatCompactMoney } from '@/lib/utils'
 import type { CategorySpendingItem, RecentPaymentItem } from '@/types'
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const summary = useDecorationStore((s) => s.getDashboardSummary())
+  const budget = useDecorationStore((s) => s.budget)
+  const projects = useDecorationStore((s) => s.projects)
+  const payments = useDecorationStore((s) => s.payments)
+  const categoriesL1 = useDecorationStore((s) => s.categoriesL1)
+
+  const summary = useMemo(
+    () => computeDashboardSummary(budget, projects, payments, categoriesL1),
+    [budget, projects, payments, categoriesL1]
+  )
 
   const executionColor = useMemo(() => {
     if (summary.executionRate >= 90) return 'bg-danger'
