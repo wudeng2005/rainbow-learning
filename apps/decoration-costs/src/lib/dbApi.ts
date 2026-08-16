@@ -103,16 +103,33 @@ export async function pushCloudState(state: DecorationState): Promise<void> {
   }
 
   // 5. 写入预算
-  const { error: budgetError } = await supabase
+  await upsertCloudBudget(budget.total_budget)
+}
+
+/** 写入/更新云端预算（user_id 无唯一约束，采用先查后写） */
+async function upsertCloudBudget(totalBudget: number): Promise<void> {
+  const { data, error: queryError } = await supabase
     .from('decoration_budgets')
-    .upsert({ user_id: USER_ID, total_budget: Number(budget.total_budget) }, { onConflict: 'user_id' })
-  if (budgetError) throw budgetError
+    .select('id')
+    .eq('user_id', USER_ID)
+    .maybeSingle()
+  if (queryError) throw queryError
+
+  if (data) {
+    const { error } = await supabase
+      .from('decoration_budgets')
+      .update({ total_budget: Number(totalBudget) })
+      .eq('user_id', USER_ID)
+    if (error) throw error
+  } else {
+    const { error } = await supabase
+      .from('decoration_budgets')
+      .insert({ user_id: USER_ID, total_budget: Number(totalBudget) })
+    if (error) throw error
+  }
 }
 
 /** 仅更新云端预算 */
 export async function updateCloudBudget(totalBudget: number): Promise<void> {
-  const { error } = await supabase
-    .from('decoration_budgets')
-    .upsert({ user_id: USER_ID, total_budget: Number(totalBudget) }, { onConflict: 'user_id' })
-  if (error) throw error
+  await upsertCloudBudget(totalBudget)
 }
