@@ -27,6 +27,22 @@ let timer: number | undefined
 let running = false
 let queued = false
 
+/** 页面切换时拉取云端最新数据（仅当云端比本地新时覆盖，防止旧数据反噬本地） */
+export function refreshFromCloud() {
+  fetchCloudState()
+    .then((cloud) => {
+      if (!cloud || (cloud.projects.length === 0 && cloud.payments.length === 0)) return
+      const localAt = useDecorationStore.getState().last_modified_at || ''
+      const cloudAt = cloud.lastModifiedAt || ''
+      if (cloudAt && cloudAt > localAt) {
+        useDecorationStore.getState().importData(cloud)
+      }
+    })
+    .catch(() => {
+      // 云端不可用时静默忽略，继续展示本地数据
+    })
+}
+
 /** 数据变更后防抖推送云端 */
 export function scheduleCloudPush(delay = 1500) {
   window.clearTimeout(timer)

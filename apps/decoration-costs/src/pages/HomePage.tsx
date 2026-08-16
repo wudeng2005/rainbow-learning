@@ -1,11 +1,18 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDecorationStore, formatMoney } from '@/store/useDecorationStore'
-import { computeDashboardSummary, formatCompactMoney } from '@/lib/utils'
+import { computeDashboardSummary } from '@/lib/utils'
+import { refreshFromCloud } from '@/lib/cloudSync'
 import type { CategorySpendingItem, RecentPaymentItem } from '@/types'
 
 export default function HomePage() {
   const navigate = useNavigate()
+
+  // 进入首页时拉取云端最新数据
+  useEffect(() => {
+    refreshFromCloud()
+  }, [])
+
   const budget = useDecorationStore((s) => s.budget)
   const projects = useDecorationStore((s) => s.projects)
   const payments = useDecorationStore((s) => s.payments)
@@ -53,7 +60,7 @@ export default function HomePage() {
         {/* 执行进度条 */}
         <div className="mb-3">
           <div className="flex items-center justify-between text-xs text-primary-soft mb-1.5">
-            <span>已支出 {formatCompactMoney(summary.totalPaid)}</span>
+            <span>已支出 {formatMoney(summary.totalPaid)}</span>
             <span>执行率 {summary.executionRate}%</span>
           </div>
           <div className="h-2.5 bg-black/20 rounded-full overflow-hidden">
@@ -82,7 +89,7 @@ export default function HomePage() {
       <section className="grid grid-cols-3 gap-3 mb-5">
         <StatCard label="总项目" value={summary.projectCount} unit="个" color="bg-white" />
         <StatCard label="未付清" value={summary.unpaidCount} unit="个" color="bg-white" />
-        <StatCard label="已支出" value={formatCompactMoney(summary.totalPaid)} unit="" color="bg-accent-soft text-accent" />
+        <StatCard label="已支出" value={formatMoney(summary.totalPaid)} unit="" color="bg-accent-soft text-accent" />
       </section>
 
       {/* 分类支出 */}

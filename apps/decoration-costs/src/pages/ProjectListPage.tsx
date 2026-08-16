@@ -1,11 +1,18 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useDecorationStore, formatMoney } from '@/store/useDecorationStore'
 import PageHeader from '@/components/PageHeader'
+import { refreshFromCloud } from '@/lib/cloudSync'
 import type { Project } from '@/types'
 
 export default function ProjectListPage() {
   const navigate = useNavigate()
+
+  // 进入项目页时拉取云端最新数据
+  useEffect(() => {
+    refreshFromCloud()
+  }, [])
+
   const [searchParams] = useSearchParams()
   const initialCategory = searchParams.get('category') || 'all'
 

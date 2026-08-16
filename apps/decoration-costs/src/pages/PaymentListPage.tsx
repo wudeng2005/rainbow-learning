@@ -1,12 +1,19 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDecorationStore, formatMoney } from '@/store/useDecorationStore'
 import PageHeader from '@/components/PageHeader'
 import { formatDate } from '@/lib/utils'
+import { refreshFromCloud } from '@/lib/cloudSync'
 import type { Payment } from '@/types'
 
 export default function PaymentListPage() {
   const navigate = useNavigate()
+
+  // 进入流水页时拉取云端最新数据
+  useEffect(() => {
+    refreshFromCloud()
+  }, [])
+
   const { payments, projects } = useDecorationStore()
 
   const list = useMemo(() => {
