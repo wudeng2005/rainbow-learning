@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useDecorationStore } from '@/store/useDecorationStore'
 import PageHeader from '@/components/PageHeader'
 import { fetchCloudState, pushCloudState } from '@/lib/dbApi'
+import { useSyncStatus } from '@/lib/cloudSync'
 
 export default function SettingsPage() {
   const navigate = useNavigate()
@@ -12,6 +13,8 @@ export default function SettingsPage() {
   const [syncing, setSyncing] = useState(false)
   const [syncMessage, setSyncMessage] = useState('')
   const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const syncStatus = useSyncStatus((s) => s.status)
+  const lastSyncAt = useSyncStatus((s) => s.lastSyncAt)
 
   const handleExport = () => {
     const data = exportData()
@@ -134,6 +137,15 @@ export default function SettingsPage() {
           </button>
         </div>
         {syncMessage && <p className="text-xs text-center mt-2 text-text-secondary">{syncMessage}</p>}
+        <p className="text-xs text-center mt-2 text-text-tertiary">
+          {syncStatus === 'synced' && lastSyncAt
+            ? `已自动同步 · ${new Date(lastSyncAt).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}`
+            : syncStatus === 'syncing'
+              ? '正在同步到云端...'
+              : syncStatus === 'error'
+                ? '云端未同步（数据库不可用，数据已保存在本机）'
+                : '数据变更将自动保存到云端'}
+        </p>
       </section>
 
       {/* 数据导入导出 */}
